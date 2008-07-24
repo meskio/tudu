@@ -1,0 +1,12 @@
+<!ELEMENT todo (title?, date?, priority?, category?, text?, todo*)>
+<!ATTLIST todo 
+	done ( yes | no ) "no"
+	collapse ( yes | no ) "no">
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT deadline (day, month, year)>
+	<!ELEMENT day (#PCDATA)>
+	<!ELEMENT mont (#PCDATA)>
+	<!ELEMENT year (#PCDATA)>
+<!ELEMENT priority (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT text (#PCDATA)>

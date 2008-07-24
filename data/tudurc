@@ -1,0 +1,83 @@
+# Include other config files:
+#@include = "/home/foobar/.tudu_keys"
+
+[ general ]
+collapse     = no  #collapse by default
+days_warn    = 2   #days before the deadline for warn
+#sort all the todo with given order
+#t = title
+#d = done
+#l = deadline
+#p = priority
+#e = percent
+#u = user
+#the same leters in capital are for inverse order
+sort_order   = lpu
+#the editor for the texts, default is inline editor.
+#For vim:
+#editor       = "/usr/bin/vim %s"
+
+[ keys ]
+# All the key definition for todo
+out          = h   #out one level in depth
+in           = l   #in one leve in depth
+down         = j
+up           = k
+# move todos
+move_down    = J
+move_up      = K
+             
+delete       = dd  #delete one todo
+delDeadline  = dt
+delPriority  = df
+paste        = p   #paste the last deleted
+pasteUp      = P   #paste the last deleted upper than the cursor
+done         = m   #mark as done
+addTodo      = o
+addTodoUp    = O   #add todo upper than the cursor
+editTitle    = a
+editDeadline = t
+setPriority  = f   #add or modify the priority
+setCategory  = C   #add or modify the category
+editText     = e
+upText       = x
+downText     = z
+collapse     = c
+sortByTitle  = bt
+sortRevTitle = bT
+sortByDone   = bd
+sortRevDone  = bD
+sortByDeadline = bl
+sortRevDeadline = bL
+sortByPriority = bp
+sortRevPriority = bP
+sortByCategory = bc
+sortRevCategory = bC
+sortByUser   = bu
+sortRevUser  = bU
+save         = s   #save todo
+help         = ?
+quit         = q
+quitNoSave   = Q   
+            
+[ theme ]
+# windows in screen by rows and columns
+# sintax: row = height(width|win, width|win, ...)
+# win can be empty or: help, tree, info, blank, 
+# height can be empty, absolute or percent with % at the end
+# width can be like height
+row = (help)
+row = 1(blank)
+row = 70%(tree)
+row = (text)
+row = (info)
+# columns of the tree window
+columns = title,priority,category,deadline
+# colors the first one is the text color the second the background
+# valid colors: black, red, green, yellow, blue, magenta, cyan, white, transparent
+# or a color defined like: (r, g, b)
+# with r, g and b numbers from 0 to 1000
+color = white, transparent # default colors
+selected = green, transparent
+help = white, blue
+deadlineMark = red, transparent

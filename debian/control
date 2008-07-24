@@ -1,0 +1,19 @@
+Source: tudu
+Section: utils
+Priority: optional
+Maintainer: Ruben Pollan Bella <meskio@amedias.org>
+Build-Depends: debhelper (>= 5.0.0), cdbs, libncurses5-dev, libstdc++-dev
+Standards-Version: 3.8.0
+Homepage: http://cauterized.net/~meskio/tudu/
+
+Package: tudu
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Command line hierarchical ToDo list
+ ToDo list manager in ncurses, with hierarchical representation of the tasks. 
+ Each task has:
+   * Title
+   * Long text description
+   * Deadline (tudu warns you when the date is approaching)
+   * Categories
+   * Priorities

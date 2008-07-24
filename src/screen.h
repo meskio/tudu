@@ -1,0 +1,73 @@
+
+/**************************************************************************
+ * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ *                                                                        *
+ *  This file is part of TuDu.                                            *
+ *                                                                        *
+ *  TuDu is free software; you can redistribute it and/or modify          *
+ *  it under the terms of the GNU General Public License as published by  *
+ *  the Free Software Foundation; either version 3 of the License.        *
+ *                                                                        *
+ *  TuDu is distributed in the hope that it will be useful,               *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *  GNU General Public License for more details.                          *
+ *                                                                        *
+ *  You should have received a copy of the GNU General Public License     *
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ **************************************************************************/
+
+#ifndef SCREEN_H
+#define SCREEN_H
+
+#include <ncurses.h>
+#include <string>
+#include <ctime>
+#include "window.h"
+#include "text.h"
+#include "data.h"
+#include "config.h"
+#include "editor.h"
+
+class Screen
+{
+public:
+	Screen(Config& c);
+	~Screen();
+
+	void resizeTerm();
+	void drawTask(int line, int depth, ToDo& t, bool isCursor=false);
+	void drawText(Text &t);
+	void scrollUpText(Text &t);
+	void scrollDownText(Text &t);
+	void deadlineClear(int line);
+	void priorityClear(int line);
+	bool editTitle(int line, int depth, bool haveChild, string& str);
+	void editText(Text& t);
+	void editDeadline(int line, Date& deadline, bool done);
+	void setPriority(int line, int& priority);
+	void setCategory(int line, string& category);
+	void treeClear();
+	int treeLines();
+	void infoMsg(const char str[]);
+	void infoClear();
+	void infoPercent(int percent);
+	void helpPopUp(string str[], int len);
+private:
+	Window *whelp;
+	Window *wtree;
+	Window *wpriority;
+	Window *wcategory;
+	Window *wdeadline;
+	Window *wtext;
+	Window *winfo;
+	Config &config;
+	LineEditor lineEditor;
+	DateEditor dateEditor;
+	PriorityEditor priorityEditor;
+	window_coor coor[NUM_WINDOWS];
+
+	void draw();
+};
+
+#endif

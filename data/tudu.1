@@ -1,0 +1,53 @@
+.\"  Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            
+.\"                                                                        
+.\"   This file is part of TuDu.                                           
+.\"                                                                        
+.\"   TuDu is free software; you can redistribute it and/or modify         
+.\"   it under the terms of the GNU General Public License as published by 
+.\"   the Free Software Foundation; either version 3 of the License.       
+.\"                                                                        
+.\"   TuDu is distributed in the hope that it will be useful,              
+.\"   but WITHOUT ANY WARRANTY; without even the implied warranty of       
+.\"   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+.\"   GNU General Public License for more details.                         
+.\"                                                                        
+.\"   You should have received a copy of the GNU General Public License    
+.\"   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+.\"
+.TH TuDu 1 "December 2007" Unix "User Manuals"
+.SH NAME
+TuDu \- Tool for control your to do lists.
+.SH SYNOPSIS
+.PP 
+\fBtudu \fR[\fB-f \fItudu_file\fR] [\fB-c \fIconfig_file\fR] [\fB-v[v]\fR] [\fB-h\fR]
+.SH DESCRIPTION
+.PP
+\fBTuDu\fR is a comand line interface for manage hierarchical todos. Every todo have title, description and deadline (optional). Also it shows the percent that you have done.
+.SH OPTIONS
+.IP "-f \fItudu_file\fP" 10
+load tudu file
+.IP "-c \fIconfig-file\fP" 10
+load specific config file
+.IP "-v" 10
+Display the TuDu version number.
+.IP "-vv" 10
+Display license and copyright information.
+.IP "-h" 10
+Display help.
+.SH FILES
+.PP
+.IP "~/.tudurc"
+User configuration file.
+.IP "~/.tudu.xml"
+User default tudu.
+.SH NO WARRANTIES
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.SH SEE ALSO
+.PP
+TuDu Home Page: http://www.cauterized.net/~meskio/tudu/
+.SH AUTHOR
+.PP
+Ruben Pollan <meskio@noblezabaturra.org>

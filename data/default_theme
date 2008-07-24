@@ -1,0 +1,5 @@
+[ theme ]
+row = (help)
+row = 40%(tree,20|text)
+row = (,blank)
+row = (info)

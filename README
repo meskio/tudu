@@ -1,0 +1,26 @@
+Compile
+=======
+
+ For compiling the program execute:
+ $ make
+
+
+Install
+=======
+
+ For installing the program execute:
+ # make install
+
+
+Usage
+=====
+
+Usage: tudu [options]
+        -f file load tudu file
+        -c file load specific config file
+
+        -v      show version
+        -h      show this usage message
+
+The default config file is in ~/.tudurc
+The file tudurc in the source code is an example of config file.

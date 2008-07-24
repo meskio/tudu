@@ -1,0 +1,33 @@
+0.3.2
+	* Fixed a segfault in i386 editing priorities
+	* Added support for delete priority
+
+0.3.1
+	* Changed tudurc from /usr/local/share/tudu to /usr/local/etc
+
+0.3
+	* Added @include to config files
+	* Added theme support in config files
+	* Addeѕ support for resizing term
+	* Added sort by percent done
+	* Added scroll in help screen
+	* Fixed sort errors
+	* Fixed problems with temporal files
+	* Fixed problems with empty tudus
+
+0.2.1
+	* Fixed bug: saving files in amd64
+	* Fixed bug: inheritance deadlines
+	* Fixed bug: normal text editor
+	* Fixed bug: category editor
+
+0.2
+	* Added deadline date.
+	* Added categories.
+	* Added priorities.
+	* Added support for sort the ToDos from different sort methods.
+	* Allowed to edit the text of the ToDos with an external editor.
+	* Fixed some segfaults and bugs.
+
+0.1
+	* First version.

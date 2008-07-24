@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
+<todo>
+	<todo done="no" collapse="no">
+		<title>support for international chars (UTF-8)</title>
+		<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
+</text>
+	</todo>
+	<todo done="no" collapse="yes">
+		<title>document</title>
+		<text>
+</text>
+		<todo done="no" collapse="no">
+			<title>devel</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>user</title>
+			<text>
+</text>
+		</todo>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>clean code</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="yes">
+		<title>flipadas</title>
+		<text>
+</text>
+		<todo done="no" collapse="no">
+			<title>one task two places</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>rigth arrow del new subtask</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>roadmaps in a window</title>
+			<text>
+</text>
+		</todo>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>cli interface</title>
+		<text>
+</text>
+	</todo>
+</todo>

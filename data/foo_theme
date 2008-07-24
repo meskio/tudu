@@ -1,0 +1,22 @@
+[ theme ]
+# windows in screen by rows and columns
+# sintax: row = height(width|win, width|win, ...)
+# win can be empty or: help, tree, info, blank, 
+# height can be empty, absolute or percent with % at the end
+# width can be like height
+row = (help)
+row = 1(blank)
+row = 60%(tree,60|text)
+row = (,blank)
+row = (info)
+# columns of the tree window
+columns = title,priority,category,deadline
+# colors the first one is the text color the second the background
+# valid colors: black, red, green, yellow, blue, magenta, cyan, white, transparent
+# or a color defined like: (r, g, b)
+# with r, g and b numbers from 0 to 1000
+color = cyan, transparent
+selected = green, transparent
+help = (756,200,100), blue
+tree = magenta, (134,72,890)
+deadlineMark = red, transparent

@@ -51,4 +51,37 @@
 		<text>
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>make a mark on the left of the task tree to show if the task has any collapsed child tasks or not</title>
+		<text>Right now its impossible to tell just by looking if a task has any
+collapsed subtasks or not. A mark on the left side, for example (+)
+would be nice to show it. If the task has collapsed subtasks, then
+a (+) mark would be on the left, and if that is expanded, that would
+change to (-)
+
+The task tree should look like this (please view with fixed-width font):
+
+ ├──[ ] this task has no child tasks
+(+)─[X] this task has collapsed child tasks and is marked as done
+(-)─[ ] this task has expanded child tasks
+ │  (+)─[ ] child task 1 with more sub-child tasks
+ │   ├──[X] child task 2 without any more child tasks (marked as done)
+ │  (-)─[ ] child task 3 with expanded sub child tasks
+ │       ├──[ ] child sub task 4
+ │       └──[ ] child sub task 5
+
+Maybe the ASCII-art can be better, but just to show the idea.
+
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>sort by done</title>
+		<text>When all the subtasks are done it should count as done.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>title editor multi-linear</title>
+		<text>
+</text>
+	</todo>
 </todo>

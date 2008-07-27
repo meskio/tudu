@@ -17,55 +17,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef PARSER_H
-#define PARSER_H
-
-#include <fstream>
-#include "data.h"
 #include "sched.h"
-#include "text.h"
 
-#ifndef SHARE_DIR
-#define SHARE_DIR "/usr/local/share/tudu"
-#endif
-#define PATH_DTD SHARE_DIR"/tudu.dtd"
-
-class Parser
+void Sched::add(pToDo todo)
 {
-public:
-	Parser(const char* path);
-	~Parser();
+	list<pToDo>::iterator i;
 
-	bool parse(ToDo& todo, Sched& sched);
-private:
-	Sched *sched;
-	ifstream file;
-	string str;
-	string txt;
-	bool collect_text;
-	bool deadline;
-	bool scheduled;
-
-	void ptag(iToDo& iterator, Sched& sched);
-	void patt(iToDo& iterator);
-	char amp();
-};
-
-class Writer
-{
-public:
-	Writer(const char* path, ToDo& t);
-	~Writer();
-
-	void save();
-private:
-	ofstream file;
-	ToDo& todo;
-	iToDo* i;
-	char path[128];
-
-	void _save();
-	void amp(string& str);
-};
-
-#endif
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+	sched.insert(i, todo);
+}

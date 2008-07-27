@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -22,8 +22,8 @@
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
-Interface::Interface(Screen &s, iToDo &t, Config &c, Writer &w) 
-		: screen(s), cursor(t), config(c), writer(w), copied(NULL)
+Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
+		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
 {
 	tree_begin = 0;
 	tree_end = screen.treeLines();

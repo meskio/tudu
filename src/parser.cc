@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -29,7 +29,7 @@ Parser::~Parser()
 	file.close();
 }
 
-bool Parser::parse(ToDo& todo)
+bool Parser::parse(ToDo& todo, Sched& sched)
 {
 	char ch;
 	bool tag = false, att = false;
@@ -57,7 +57,7 @@ bool Parser::parse(ToDo& todo)
 				if (!tag) return false;
 				tag = false;
 				collect_text = false;
-				if (!att) ptag(iterator);
+				if (!att) ptag(iterator,sched);
 				else {
 					patt(iterator);
 					att = false;
@@ -70,7 +70,7 @@ bool Parser::parse(ToDo& todo)
 				{
 					if (!att)
 					{
-						ptag(iterator);
+						ptag(iterator,sched);
 						att = true;
 						str = "";
 					} else if (str.length()) {
@@ -108,7 +108,7 @@ char Parser::amp()
 	else return ' ';
 }
 
-void Parser::ptag(iToDo& iterator)
+void Parser::ptag(iToDo& iterator, Sched& sched)
 {
 	static bool first_todo = true;
 
@@ -132,13 +132,24 @@ void Parser::ptag(iToDo& iterator)
 	{
 		iterator->getTitle() = txt;
 	}
+	if ("deadline" == str)
+	{
+		deadline = true;
+	}
+	if ("/deadline" == str)
+	{
+		deadline = false;
+	}
 	if ("day" == str)
 	{
 		collect_text = true;
 	}
 	if ("/day" == str)
 	{
-		iterator->deadline().day() = atoi(txt.c_str());
+		if (deadline)
+			iterator->deadline().day() = atoi(txt.c_str());
+		else if (scheduled)
+			iterator->sched().day() = atoi(txt.c_str());
 	}
 	if ("month" == str)
 	{
@@ -146,7 +157,10 @@ void Parser::ptag(iToDo& iterator)
 	}
 	if ("/month" == str)
 	{
-		iterator->deadline().month() = atoi(txt.c_str());
+		if (deadline)
+			iterator->deadline().month() = atoi(txt.c_str());
+		else if (scheduled)
+			iterator->sched().month() = atoi(txt.c_str());
 	}
 	if ("year" == str)
 	{
@@ -154,7 +168,10 @@ void Parser::ptag(iToDo& iterator)
 	}
 	if ("/year" == str)
 	{
-		iterator->deadline().year() = atoi(txt.c_str());
+		if (deadline)
+			iterator->deadline().year() = atoi(txt.c_str());
+		else if (scheduled)
+			iterator->sched().year() = atoi(txt.c_str());
 	}
 	if ("priority" == str)
 	{
@@ -180,6 +197,16 @@ void Parser::ptag(iToDo& iterator)
 	{
 		if ('\n' == txt[0]) txt.erase(0,1);
 		iterator->getText() = txt;
+	}
+	if ("scheduled" == str)
+	{
+		scheduled = true;
+	}
+	if ("/scheduled" == str)
+	{
+		if (iterator->sched().valid())
+			sched.add(&(*iterator));
+		scheduled = false;
 	}
 }
 
@@ -284,6 +311,21 @@ void Writer::_save()
 			amp(str);
 			file << "<text>" << str;
 			file << "</text>" << endl;
+		}
+		if ((*i)->sched().valid())
+		{
+			Date &date = (*i)->sched();
+
+			putTabs((*i).depth()+1);
+			file << "<scheduled>" << endl;
+			putTabs((*i).depth()+2);
+			file << "<day>" << date.day() << "</day>" << endl;
+			putTabs((*i).depth()+2);
+			file << "<month>" << date.month() << "</month>" << endl;
+			putTabs((*i).depth()+2);
+			file << "<year>" << date.year() << "</year>" << endl;
+			putTabs((*i).depth()+1);
+			file << "</scheduled>" << endl;
 		}
 		(*i).in();
 		_save();

@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -51,6 +51,11 @@ Text& ToDo::getText()
 Date& ToDo::deadline()
 {
 	return _deadline;
+}
+
+Date& ToDo::sched()
+{
+	return _sched;
 }
 
 bool& ToDo::done()

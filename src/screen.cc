@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>       *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -86,6 +86,7 @@ Screen::~Screen()
 	delete wdeadline;
 	delete wtext;
 	delete winfo;
+	delete wschedule;
 	clear ();
 	refresh ();
 	endwin ();
@@ -149,6 +150,11 @@ void Screen::draw()
 		winfo = new Window(c.lines, c.cols, c.y, c.x);
 	else
 		winfo = NULL;
+	c = coor[WSCHEDULE];
+	if (c.exist)
+		wschedule = new Window(c.lines, c.cols, c.y, c.x);
+	else
+		wschedule = NULL;
 }
 
 void Screen::resizeTerm()
@@ -223,6 +229,13 @@ void Screen::resizeTerm()
 		winfo->_resize(c.lines, c.cols);
 		winfo->_mv(c.y, c.x);
 		winfo->_erase();
+	}
+	c = coor[WSCHEDULE];
+	if (c.exist)
+	{
+		wschedule->_resize(c.lines, c.cols);
+		wschedule->_mv(c.y, c.x);
+		wschedule->_erase();
 	}
 }
 

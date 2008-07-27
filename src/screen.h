@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -61,6 +61,7 @@ private:
 	Window *wdeadline;
 	Window *wtext;
 	Window *winfo;
+	Window *wschedule;
 	Config &config;
 	LineEditor lineEditor;
 	DateEditor dateEditor;

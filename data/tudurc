@@ -68,7 +68,7 @@ quitNoSave   = Q
 # width can be like height
 row = (help)
 row = 1(blank)
-row = 70%(tree)
+row = 70%(70%tree|schedule)
 row = (text)
 row = (info)
 # columns of the tree window

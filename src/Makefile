@@ -1,6 +1,6 @@
 PROG=tudu
 SRCS=tudu.cc interface.cc window.cc data.cc parser.cc text.cc config.cc date.cc
-SRCS+= editor.cc screen.cc
+SRCS+= editor.cc screen.cc sched.cc
 CXX=g++
 CFLAGS=-g -Wall -O2 -DSHARE_DIR=\"$(SHARE_DIR)\" -DETC_DIR=\"$(ETC_DIR)\"
 

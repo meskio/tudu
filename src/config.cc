@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>       *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -353,6 +353,8 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 		w.window = WTEXT;
 	else if ("info" == fmt)
 		w.window = WINFO;
+	else if ("schedule" == fmt)
+		w.window = WSCHEDULE;
 	else
 	{
 		fprintf(stderr, "Error: unknown window %s\n", fmt.c_str());

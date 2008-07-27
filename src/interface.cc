@@ -609,6 +609,7 @@ void Interface::help()
 	str[i++] = "  " + list["done"] + "\tmark or unmark as done\n";
 	str[i++] = "  " + list["delete"] + "\tdelete line\n";
 	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
+	str[i++] = "  " + list["delPriority"] + "\tdelete priority\n";
 	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
 	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";

@@ -370,6 +370,11 @@ void Screen::drawText(Text &t)
 	}
 }
 
+void Screen::drawSched(Sched &sched)
+{
+	//FIXME
+}
+
 void Screen::scrollUpText(Text& t)
 {
 	if (coor[WTEXT].exist)

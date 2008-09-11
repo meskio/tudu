@@ -38,6 +38,7 @@ public:
 	void resizeTerm();
 	void drawTask(int line, int depth, ToDo& t, bool isCursor=false);
 	void drawText(Text &t);
+	void drawSched(Sched &sched);
 	void scrollUpText(Text &t);
 	void scrollDownText(Text &t);
 	void deadlineClear(int line);

@@ -4,6 +4,7 @@
 [ general ]
 collapse     = no  #collapse by default
 days_warn    = 2   #days before the deadline for warn
+days_sched   = 2   #days displayed at the scheduler
 #sort all the todo with given order
 #t = title
 #d = done

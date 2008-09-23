@@ -21,8 +21,24 @@
 
 void Sched::add(pToDo todo)
 {
-	list<pToDo>::iterator i;
+	sched_l::iterator i;
 
 	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
 	sched.insert(i, todo);
+}
+
+int Sched::get(Date& from, Date& to, sched_l& list)
+{
+	sched_l::iterator i;
+	int num_scheds = 0;
+
+	list.clear();
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
+	for (;  (i != sched.end()) && ((*i)->sched() < to); i++)
+	{
+		num_scheds++;
+		list.push_back(*i);
+	}
+
+	return num_scheds;
 }

@@ -24,10 +24,13 @@
 #include "data.h"
 #include "date.h"
 
+typedef list<pToDo> sched_l;
+
 class Sched
 {
 public:
 	void add(pToDo todo);
+	int get(Date& from, Date& to, sched_l& list);
 private:
 	list<pToDo> sched;
 };

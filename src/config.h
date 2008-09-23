@@ -103,6 +103,7 @@ public:
 	void getActionList(action_list& list);
 	bool getCollapse();
 	int getDaysWarn();
+	int getDaysSched();
 	char* getSortOrder();
 	char* getEditor();
 	bool genWindowCoor(int lines, int cols, window_coor coor[]);
@@ -112,6 +113,7 @@ private:
 	key_map tree_keys;
 	bool collapse;
 	int  days_warn_deadline;
+	int  days_sched;
 	char sort_order[16];
 	char editor[64];
 	/* themes */

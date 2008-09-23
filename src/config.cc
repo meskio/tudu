@@ -124,6 +124,10 @@ void Config::getGeneralOption(string& option, string& value)
 	{
 		days_warn_deadline = atoi(value.c_str());
 	}
+	if ("days_sched" == option)
+	{
+		days_sched = atoi(value.c_str());
+	}
 	if ("sort_order" == option)
 	{
 		strncpy(sort_order, value.c_str(), 16);
@@ -529,6 +533,11 @@ bool Config::getCollapse()
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
+}
+
+int Config::getDaysSched()
+{
+	return days_sched;
 }
 
 char* Config::getSortOrder()

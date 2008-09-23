@@ -114,6 +114,52 @@ int Date::daysLeft()
 	return daysleft;
 }
 
+Date Date::operator-(int days)
+{
+	Date d(_day, _month, _year);
+
+	d._day -= days;
+	while (d._day <= 0)
+	{
+		d._month--;
+		if (d._month == 0)
+		{
+			d._month = 12;
+			d._year--;
+		}
+
+		switch (d._month)
+		{
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+				d._day += 31;
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				d._day += 30;
+			case 2:
+				/* if leap year */
+				if ((d._year % 4 == 0) && !((d._year % 100 == 0) && (d._year % 1000 != 0)))
+				{
+					d._day += 29;
+				}
+				else
+				{
+					d._day += 28;
+				}
+				break;
+		}
+	}
+
+	return d;
+}
+
 bool Date::operator<(Date d)
 {
 	if (d._year < _year)

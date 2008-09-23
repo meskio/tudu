@@ -149,6 +149,7 @@ void Interface::drawTodo()
 
 	cursor = aux;
 	drawCursor();
+	screen.drawSched(sched);
 }
 
 void Interface::_calculateLines(int& line_counter)

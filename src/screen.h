@@ -28,6 +28,7 @@
 #include "data.h"
 #include "config.h"
 #include "editor.h"
+#include "sched.h"
 
 class Screen
 {
@@ -41,6 +42,8 @@ public:
 	void drawSched(Sched &sched);
 	void scrollUpText(Text &t);
 	void scrollDownText(Text &t);
+	void scrollUpSched(Sched &sched);
+	void scrollDownSched(Sched &sched);
 	void deadlineClear(int line);
 	void priorityClear(int line);
 	bool editTitle(int line, int depth, bool haveChild, string& str);

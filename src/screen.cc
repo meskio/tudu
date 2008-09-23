@@ -372,7 +372,20 @@ void Screen::drawText(Text &t)
 
 void Screen::drawSched(Sched &sched)
 {
+	time_t t = time(NULL);
+	struct tm* pt = localtime(&t);
+	Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+	sched_l sched_list;
+	Date d_from = today-config.getDaysSched();
+
+	sched.get(d_from,today,sched_list);
+
 	//FIXME
+	for (sched_l::iterator i = sched_list.begin(); i != sched_list.end(); i++)
+	{
+		wschedule->_addstr((*i)->getTitle());
+	}
+	wschedule->_refresh();
 }
 
 void Screen::scrollUpText(Text& t)
@@ -393,6 +406,16 @@ void Screen::scrollDownText(Text& t)
 		t.scroll_down(*wtext);
 		wtree->_attroff(COLOR_TEXT);
 	}
+}
+
+void Screen::scrollUpSched(Sched &sched)
+{
+	//FIXME
+}
+
+void Screen::scrollDownSched(Sched &sched)
+{
+	//FIXME
 }
 
 void Screen::deadlineClear(int line)

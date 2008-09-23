@@ -33,6 +33,7 @@ public:
 	bool valid(); /* if valid date if year == 1900 is invalid */
 	bool correct(); /* if this date exist */
 	int daysLeft();
+	Date operator-(int days);
 	bool operator<(Date d);
 	bool operator>(Date d);
 	bool operator!=(Date d);

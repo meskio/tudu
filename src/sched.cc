@@ -27,6 +27,23 @@ void Sched::add(pToDo todo)
 	sched.insert(i, todo);
 }
 
+void Sched::del(pToDo todo)
+{
+	sched.remove(todo);
+	// FIXME: remove this
+	/*sched_l::iterator i;
+
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+	while ((i != sched.end()) && ((*i)->sched() == todo->sched()))
+	{
+		if (*i == *todo)
+		{
+
+			break;
+		}
+	}*/
+}
+
 int Sched::get(Date& from, Date& to, sched_l& list)
 {
 	sched_l::iterator i;

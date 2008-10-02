@@ -74,6 +74,7 @@ private:
 	void del();
 	void delDeadline();
 	void delPriority();
+	void delSched();
 	void paste();
 	void pasteUp();
 	bool editLine(string& str);
@@ -84,6 +85,7 @@ private:
 	void addLineUp();
 	void modifyLine();
 	void editText();
+	void editSched();
 	void upText();
 	void downText();
 	void collapse();

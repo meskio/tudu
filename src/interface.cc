@@ -73,6 +73,7 @@ void Interface::main()
 			if ("delete" == action) del();
 			if ("delDeadline" == action) delDeadline();
 			if ("delPriority" == action) delPriority();
+			if ("delSched" == action) delSched();
 			if ("paste" == action) paste();
 			if ("pasteUp" == action) pasteUp();
 			if ("done" == action) done();
@@ -83,6 +84,7 @@ void Interface::main()
 			if ("setPriority" == action) setPriority();
 			if ("setCategory" == action) setCategory();
 			if ("editText" == action) editText();
+			if ("editSched" == action) editSched();
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
@@ -337,6 +339,12 @@ void Interface::delPriority()
 	screen.priorityClear(cursor_line());
 }
 
+void Interface::delSched()
+{
+	sched.del(&(*cursor));
+	cursor->sched().year() = 1900;
+}
+
 void Interface::paste()
 {
 
@@ -495,6 +503,14 @@ void Interface::editText()
 		screen.editText(cursor->getText());
 		screen.infoClear();
 	}
+}
+
+void Interface::editSched()
+{
+	sched.del(&(*cursor));
+	screen.editSched(cursor->sched());
+	sched.add(&(*cursor));
+	screen.drawSched(sched);
 }
 
 void Interface::upText()

@@ -142,3 +142,9 @@ int Window::_mv(int y, int x)
 {
 	return mvwin(win, y, x);
 }
+
+int Window::_delwin()
+{
+	return delwin(win);
+}
+

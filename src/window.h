@@ -50,6 +50,7 @@ public:
 	int _cols();
 	int _resize(int lines, int columns);
 	int _mv(int y, int x);
+	int _delwin();
 protected:
 	WINDOW *win;
 };

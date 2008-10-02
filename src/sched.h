@@ -30,6 +30,7 @@ class Sched
 {
 public:
 	void add(pToDo todo);
+	void del(pToDo todo);
 	int get(Date& from, Date& to, sched_l& list);
 private:
 	list<pToDo> sched;

@@ -372,20 +372,38 @@ void Screen::drawText(Text &t)
 
 void Screen::drawSched(Sched &sched)
 {
-	time_t t = time(NULL);
-	struct tm* pt = localtime(&t);
-	Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
-	sched_l sched_list;
-	Date d_from = today-config.getDaysSched();
-
-	sched.get(d_from,today,sched_list);
-
-	//FIXME
-	for (sched_l::iterator i = sched_list.begin(); i != sched_list.end(); i++)
+	if (coor[WSCHEDULE].exist)
 	{
-		wschedule->_addstr((*i)->getTitle());
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+		sched_l sched_list;
+		Date d_end = today + config.getDaysSched();
+		sched.get(today,d_end,sched_list);
+
+		//FIXME
+		Date last;
+		wschedule->_erase();
+		wschedule->_move(0,0);
+		for (sched_l::iterator i = sched_list.begin(); i != sched_list.end(); i++)
+		{
+			if ((*i)->done()) continue;
+			if ((*i)->sched() != last)
+			{
+				last = (*i)->sched();
+
+				char str[32];
+				sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
+				wschedule->_attron(A_BOLD);
+				wschedule->_addstr(str);
+				wschedule->_attroff(A_BOLD);
+			}
+			wschedule->_addstr("    ");
+			wschedule->_addstr((*i)->getTitle());
+			wschedule->_addstr("\n");
+		}
+		wschedule->_refresh();
 	}
-	wschedule->_refresh();
 }
 
 void Screen::scrollUpText(Text& t)
@@ -544,6 +562,58 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 		}
 		wdeadline->_refresh();
 	}
+}
+
+bool Screen::editSched(Date& s)
+{
+	if (coor[WSCHEDULE].exist)
+	{
+		char date[11];
+		bool save;
+
+		/* Create window for edit scheduled */
+		Window sched_box( 3, 20, coor[WSCHEDULE].lines/2+coor[WSCHEDULE].y-1, 
+				coor[WSCHEDULE].cols/2+coor[WSCHEDULE].x-10);
+		sched_box._box();
+		sched_box._addstr(0, 2, "Scheduler editor");
+		sched_box._refresh();
+
+		/* if is not valid date use today date */
+		if (s.valid())
+		{
+			sprintf(date, "%02d/%02d/%04d", s.day(),
+					s.month(), s.year());
+		}
+		else
+		{
+			time_t t = time(NULL);
+			struct tm* pt = localtime(&t);
+			strftime(date, 11, "%02d/%02m/%04Y", pt);
+		}
+
+		/* edit and store */
+		dateEditor.getText() = date;
+		dateEditor.cursorPos() = 0;
+		save = dateEditor.edit(sched_box, 1, 5, 11);
+		sched_box._delwin();
+		wschedule->_redraw();
+		wschedule->_refresh();
+		if (save)
+		{
+			strncpy(date, dateEditor.getText().c_str(), 10);
+			date[2] = '\0';
+			date[5] = '\0';
+			Date d(atoi(date), atoi(date+3), atoi(date+6));
+			if (d.correct())
+			{
+				s = d;
+				return true;
+			}
+			else
+				return false;
+		}
+	}
+	return false;
 }
 
 void Screen::setPriority(int line, int& priority)

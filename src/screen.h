@@ -49,6 +49,7 @@ public:
 	bool editTitle(int line, int depth, bool haveChild, string& str);
 	void editText(Text& t);
 	void editDeadline(int line, Date& deadline, bool done);
+	bool editSched(Date& s);
 	void setPriority(int line, int& priority);
 	void setCategory(int line, string& category);
 	void treeClear();

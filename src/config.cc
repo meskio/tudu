@@ -695,6 +695,11 @@ bool Config::genWindowCoor(int lines, int cols, window_coor coor[])
 				if (coor[WINFO].lines != 1)
 					return false;
 				break;
+			case WSCHEDULE:
+				if ((coor[WSCHEDULE].lines < 5) ||
+				   (coor[WSCHEDULE].cols < 22))
+					return false;
+				break;
 			case WTREE:
 				x_tree = x;
 				coor[WTREE].cols--;

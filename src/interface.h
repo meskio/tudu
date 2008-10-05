@@ -62,6 +62,7 @@ private:
 	void _drawTodo();
 	void eraseCursor();
 	void drawCursor();
+	bool isHide(iToDo& todo);
 	void left();
 	void right();
 	void up();
@@ -85,6 +86,7 @@ private:
 	void upText();
 	void downText();
 	void collapse();
+	void hide_done();
 	void sortByTitle();
 	void sortByDone();
 	void sortByDeadline();

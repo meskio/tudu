@@ -96,10 +96,13 @@ typedef struct {
 class Config
 {
 public:
+	Config();
+
 	bool load(const char* path);
 	bool getAction(char key, string& action);
 	void getActionList(action_list& list);
 	bool getCollapse();
+	bool& getHideDone();
 	int getDaysWarn();
 	char* getSortOrder();
 	char* getEditor();
@@ -109,6 +112,7 @@ public:
 private:
 	key_map tree_keys;
 	bool collapse;
+	bool hide_done;
 	int  days_warn_deadline;
 	char sort_order[16];
 	char editor[64];

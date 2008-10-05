@@ -28,6 +28,12 @@
 #define C_GENERAL 2
 #define C_THEME 3
 
+Config::Config()
+{
+	collapse = false;
+	hide_done = false;
+}
+
 bool Config::load(const char* path)
 {
 	int context = C_NULL;
@@ -118,6 +124,17 @@ void Config::getGeneralOption(string& option, string& value)
 		if ("no" == value)
 		{
 			collapse = false;
+		}
+	}
+	if ("hide_done" == option)
+	{
+		if ("yes" == value)
+		{
+			hide_done = true;
+		}
+		if ("no" == value)
+		{
+			hide_done = false;
 		}
 	}
 	if ("days_warn" == option)
@@ -522,6 +539,11 @@ int Config::getContext(string& str)
 bool Config::getCollapse()
 {
 	return collapse;
+}
+
+bool& Config::getHideDone()
+{
+	return hide_done;
 }
 
 int Config::getDaysWarn()

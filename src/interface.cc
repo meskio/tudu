@@ -86,6 +86,7 @@ void Interface::main()
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
+			if ("hide_done" == action) hide_done();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -155,7 +156,8 @@ void Interface::_calculateLines(int& line_counter)
 {
 	for (; !(cursor.end()); ++cursor)
 	{
-		cursor->line = line_counter++;
+		if (!isHide(cursor))
+			cursor->line = line_counter++;
 		if (!isCollapse())
 		{
 			cursor.in();
@@ -170,7 +172,8 @@ void Interface::_drawTodo()
 	for (; !(cursor.end()); ++cursor)
 	{
 		if (cursor->line >= tree_end) break;
-		if (cursor->line >= tree_begin) 
+		if ((cursor->line >= tree_begin) &&
+		    (!isHide(cursor)))
 			screen.drawTask(cursor_line(), cursor.depth(), 
 					*cursor);
 		if (!isCollapse())
@@ -210,6 +213,11 @@ void Interface::drawCursor()
 				true);
 		screen.drawText(cursor->getText());
 	}
+}
+
+bool Interface::isHide(iToDo& todo)
+{
+	return (!config.getHideDone() || todo->done());
 }
 
 void Interface::left()
@@ -269,6 +277,23 @@ void Interface::up()
 {
 	eraseCursor();
 	--cursor;
+	while (isHide(cursor))
+	{
+		if (cursor.begin())
+		{
+			while (isHide(cursor))
+			{
+				++cursor;
+				if (cursor.end())
+				{
+					// FIXME: peta si no hay
+					break;
+				}
+			}
+			break;
+		}
+		--cursor;
+	}
 	drawCursor();
 }
 
@@ -276,9 +301,24 @@ void Interface::down()
 {
 	eraseCursor();
 	++cursor;
-	if (cursor.end())
+	if (cursor.end()) --cursor;
+	while (isHide(cursor))
 	{
-		--cursor;
+		if (cursor.end())
+		{
+			--cursor;
+			while (isHide(cursor))
+			{
+				--cursor;
+				if (cursor.begin())
+				{
+					// FIXME: peta si no hay
+					break;
+				}
+			}
+			break;
+		}
+		++cursor;
 	}
 	drawCursor();
 }
@@ -509,6 +549,12 @@ void Interface::downText()
 void Interface::collapse()
 {
 	cursor->getCollapse() = !cursor->getCollapse();
+	drawTodo();
+}
+
+void Interface::hide_done()
+{
+	config.getHideDone() = !config.getHideDone();
 	drawTodo();
 }
 

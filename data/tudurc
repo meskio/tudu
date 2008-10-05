@@ -3,6 +3,7 @@
 
 [ general ]
 collapse     = no  #collapse by default
+hide_done    = yes  #hide done tasks
 days_warn    = 2   #days before the deadline for warn
 #sort all the todo with given order
 #t = title
@@ -43,6 +44,7 @@ editText     = e
 upText       = x
 downText     = z
 collapse     = c
+hideDone     = M   #hide/show done tasks
 sortByTitle  = bt
 sortRevTitle = bT
 sortByDone   = bd

@@ -86,7 +86,7 @@ void Interface::main()
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
-			if ("hide_done" == action) hide_done();
+			if ("hideDone" == action) hide_done();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -217,7 +217,7 @@ void Interface::drawCursor()
 
 bool Interface::isHide(iToDo& todo)
 {
-	return (!config.getHideDone() || todo->done());
+	return (config.getHideDone() && !todo->done());
 }
 
 void Interface::left()

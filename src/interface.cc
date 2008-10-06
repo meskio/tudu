@@ -610,7 +610,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 37
+#define LINES_HELP 39
 void Interface::help()
 {
 	action_list list;
@@ -628,6 +628,7 @@ void Interface::help()
 	str[i++] = "  " + list["done"] + "\tmark or unmark as done\n";
 	str[i++] = "  " + list["delete"] + "\tdelete line\n";
 	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
+	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
 	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
 	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
@@ -635,6 +636,7 @@ void Interface::help()
 	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";
 	str[i++] = "  " + list["editText"] + "\tedit text\n";
 	str[i++] = "  " + list["editDeadline"] + "\tedit/add deadline\n";
+	str[i++] = "  " + list["editSched"] + "\tedit/add schedule\n";
 	str[i++] = "  " + list["setPriority"] + "\tadd or modify the priority\n";
 	str[i++] = "  " + list["setCategory"] + "\tadd or modify the category\n";
 	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";

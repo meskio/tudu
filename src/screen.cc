@@ -568,15 +568,13 @@ bool Screen::editSched(Date& s)
 {
 	if (coor[WSCHEDULE].exist)
 	{
-		char date[11];
+		char date[12];
 		bool save;
 
-		/* Create window for edit scheduled */
-		Window sched_box( 3, 20, coor[WSCHEDULE].lines/2+coor[WSCHEDULE].y-1, 
-				coor[WSCHEDULE].cols/2+coor[WSCHEDULE].x-10);
-		sched_box._box();
-		sched_box._addstr(0, 2, "Scheduler editor");
-		sched_box._refresh();
+		wschedule->_attron(A_BOLD);
+		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
+		wschedule->_attroff(A_BOLD);
+		wschedule->_refresh();
 
 		/* if is not valid date use today date */
 		if (s.valid())
@@ -594,8 +592,7 @@ bool Screen::editSched(Date& s)
 		/* edit and store */
 		dateEditor.getText() = date;
 		dateEditor.cursorPos() = 0;
-		save = dateEditor.edit(sched_box, 1, 5, 11);
-		sched_box._delwin();
+		save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
 		wschedule->_redraw();
 		wschedule->_refresh();
 		if (save)

@@ -39,11 +39,9 @@ public:
 	void resizeTerm();
 	void drawTask(int line, int depth, ToDo& t, bool isCursor=false);
 	void drawText(Text &t);
-	void drawSched(Sched &sched);
+	void drawSched(Sched &sched, pToDo cursor = NULL);
 	void scrollUpText(Text &t);
 	void scrollDownText(Text &t);
-	void scrollUpSched(Sched &sched);
-	void scrollDownSched(Sched &sched);
 	void deadlineClear(int line);
 	void priorityClear(int line);
 	bool editTitle(int line, int depth, bool haveChild, string& str);

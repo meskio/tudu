@@ -30,18 +30,6 @@ void Sched::add(pToDo todo)
 void Sched::del(pToDo todo)
 {
 	sched.remove(todo);
-	// FIXME: remove this
-	/*sched_l::iterator i;
-
-	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
-	while ((i != sched.end()) && ((*i)->sched() == todo->sched()))
-	{
-		if (*i == *todo)
-		{
-
-			break;
-		}
-	}*/
 }
 
 int Sched::get(Date& from, Date& to, sched_l& list)
@@ -52,6 +40,22 @@ int Sched::get(Date& from, Date& to, sched_l& list)
 	list.clear();
 	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
 	for (;  (i != sched.end()) && ((*i)->sched() < to); i++)
+	{
+		num_scheds++;
+		list.push_back(*i);
+	}
+
+	return num_scheds;
+}
+
+int Sched::get(Date& from, sched_l& list)
+{
+	sched_l::iterator i;
+	int num_scheds = 0;
+
+	list.clear();
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
+	for (;  i != sched.end(); i++)
 	{
 		num_scheds++;
 		list.push_back(*i);

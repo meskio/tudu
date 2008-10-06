@@ -124,10 +124,6 @@ void Config::getGeneralOption(string& option, string& value)
 	{
 		days_warn_deadline = atoi(value.c_str());
 	}
-	if ("days_sched" == option)
-	{
-		days_sched = atoi(value.c_str());
-	}
 	if ("sort_order" == option)
 	{
 		strncpy(sort_order, value.c_str(), 16);
@@ -355,10 +351,10 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 		w.window = WTREE;
 	else if ("text" == fmt)
 		w.window = WTEXT;
-	else if ("info" == fmt)
-		w.window = WINFO;
 	else if ("schedule" == fmt)
 		w.window = WSCHEDULE;
+	else if ("info" == fmt)
+		w.window = WINFO;
 	else
 	{
 		fprintf(stderr, "Error: unknown window %s\n", fmt.c_str());
@@ -423,6 +419,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_TREE;
 	else if ("text" == option)
 		color_index = CT_TEXT;
+	else if ("schedule" == option)
+		color_index = CT_SCHEDULE;
 	else if ("info" == option)
 		color_index = CT_INFO;
 	else
@@ -533,11 +531,6 @@ bool Config::getCollapse()
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
-}
-
-int Config::getDaysSched()
-{
-	return days_sched;
 }
 
 char* Config::getSortOrder()
@@ -697,7 +690,7 @@ bool Config::genWindowCoor(int lines, int cols, window_coor coor[])
 				break;
 			case WSCHEDULE:
 				if ((coor[WSCHEDULE].lines < 5) ||
-				   (coor[WSCHEDULE].cols < 22))
+				   (coor[WSCHEDULE].cols < 29))
 					return false;
 				break;
 			case WTREE:

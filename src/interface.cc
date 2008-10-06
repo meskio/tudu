@@ -151,7 +151,7 @@ void Interface::drawTodo()
 
 	cursor = aux;
 	drawCursor();
-	screen.drawSched(sched);
+	screen.drawSched(sched, &(*cursor));
 }
 
 void Interface::_calculateLines(int& line_counter)
@@ -212,6 +212,7 @@ void Interface::drawCursor()
 		screen.drawTask(cursor_line(), cursor.depth(), *cursor, 
 				true);
 		screen.drawText(cursor->getText());
+		screen.drawSched(sched, &(*cursor));
 	}
 }
 
@@ -318,6 +319,7 @@ void Interface::del()
 {
 	if (copied) delete copied;
 	copied = &(*cursor);
+	//TODO: corner case sched.del(&(*cursor));
 	cursor.del();
 	--cursor;
 	if ((cursor.end()) && (cursor.begin()))
@@ -510,7 +512,7 @@ void Interface::editSched()
 	sched.del(&(*cursor));
 	screen.editSched(cursor->sched());
 	sched.add(&(*cursor));
-	screen.drawSched(sched);
+	screen.drawSched(sched, &(*cursor));
 }
 
 void Interface::upText()

@@ -24,6 +24,7 @@
 #define COLOR_HELP     COLOR_PAIR(CT_HELP)
 #define COLOR_TREE     COLOR_PAIR(CT_TREE)
 #define COLOR_TEXT     COLOR_PAIR(CT_TEXT)
+#define COLOR_SCHED    COLOR_PAIR(CT_SCHEDULE)
 #define COLOR_INFO     COLOR_PAIR(CT_INFO)
 
 #define PERCENT_COL (coor[WINFO].cols-7)
@@ -370,7 +371,7 @@ void Screen::drawText(Text &t)
 	}
 }
 
-void Screen::drawSched(Sched &sched)
+void Screen::drawSched(Sched &sched, pToDo cursor)
 {
 	if (coor[WSCHEDULE].exist)
 	{
@@ -378,14 +379,15 @@ void Screen::drawSched(Sched &sched)
 		struct tm* pt = localtime(&t);
 		Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
 		sched_l sched_list;
-		Date d_end = today + config.getDaysSched();
-		sched.get(today,d_end,sched_list);
+		sched.get(today,sched_list);
 
-		//FIXME
 		Date last;
+		int line = 0;
 		wschedule->_erase();
 		wschedule->_move(0,0);
-		for (sched_l::iterator i = sched_list.begin(); i != sched_list.end(); i++)
+		wschedule->_attron(COLOR_SCHED);
+		for (sched_l::iterator i = sched_list.begin(); 
+				(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
 		{
 			if ((*i)->done()) continue;
 			if ((*i)->sched() != last)
@@ -397,11 +399,18 @@ void Screen::drawSched(Sched &sched)
 				wschedule->_attron(A_BOLD);
 				wschedule->_addstr(str);
 				wschedule->_attroff(A_BOLD);
+				line++;
 			}
+			if (cursor == (*i))
+				wschedule->_attron(COLOR_SELECTED);
 			wschedule->_addstr("    ");
-			wschedule->_addstr((*i)->getTitle());
+			string title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
+			wschedule->_addstr(title);
 			wschedule->_addstr("\n");
+			if (cursor == (*i))
+				wschedule->_attroff(COLOR_SELECTED);
 		}
+		wschedule->_attroff(COLOR_SCHED);
 		wschedule->_refresh();
 	}
 }
@@ -424,16 +433,6 @@ void Screen::scrollDownText(Text& t)
 		t.scroll_down(*wtext);
 		wtree->_attroff(COLOR_TEXT);
 	}
-}
-
-void Screen::scrollUpSched(Sched &sched)
-{
-	//FIXME
-}
-
-void Screen::scrollDownSched(Sched &sched)
-{
-	//FIXME
 }
 
 void Screen::deadlineClear(int line)
@@ -593,7 +592,7 @@ bool Screen::editSched(Date& s)
 		dateEditor.getText() = date;
 		dateEditor.cursorPos() = 0;
 		save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
-		wschedule->_redraw();
+		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
 		wschedule->_refresh();
 		if (save)
 		{

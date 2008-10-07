@@ -30,7 +30,9 @@ class Sched
 {
 public:
 	void add(pToDo todo);
+	void add_recursive(pToDo todo);
 	void del(pToDo todo);
+	void del_recursive(pToDo todo);
 	int get(Date& from, Date& to, sched_l& list);
 	int get(Date& from, sched_l& list);
 private:

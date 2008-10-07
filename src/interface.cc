@@ -319,7 +319,7 @@ void Interface::del()
 {
 	if (copied) delete copied;
 	copied = &(*cursor);
-	//TODO: corner case sched.del(&(*cursor));
+	sched.del_recursive(&(*cursor));
 	cursor.del();
 	--cursor;
 	if ((cursor.end()) && (cursor.begin()))
@@ -349,10 +349,10 @@ void Interface::delSched()
 
 void Interface::paste()
 {
-
 	if (copied)
 	{
 		cursor.addChild(copied);
+		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
 	}
@@ -363,6 +363,7 @@ void Interface::pasteUp()
 	if (copied)
 	{
 		cursor.addChildUp(copied);
+		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
 	}

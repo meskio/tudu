@@ -19,6 +19,19 @@
 
 #include "sched.h"
 
+void Sched::add_recursive(pToDo todo)
+{
+	for (iToDo j(*todo) ; !j.end(); ++j)
+		add_recursive(&(*j));
+
+	if (todo->sched().valid())
+	{
+		sched_l::iterator i;
+		for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+		sched.insert(i, todo);
+	}
+}
+
 void Sched::add(pToDo todo)
 {
 	sched_l::iterator i;
@@ -29,6 +42,13 @@ void Sched::add(pToDo todo)
 
 void Sched::del(pToDo todo)
 {
+	sched.remove(todo);
+}
+
+void Sched::del_recursive(pToDo todo)
+{
+	for (iToDo i(*todo) ; !i.end(); ++i)
+		del_recursive(&(*i));
 	sched.remove(todo);
 }
 

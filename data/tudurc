@@ -3,6 +3,7 @@
 
 [ general ]
 collapse     = no  #collapse by default
+visual_tree  = no  #toggle graphical expanding tree
 days_warn    = 2   #days before the deadline for warn
 #sort all the todo with given order
 #t = title

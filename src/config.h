@@ -102,6 +102,7 @@ public:
 	bool getAction(char key, string& action);
 	void getActionList(action_list& list);
 	bool getCollapse();
+	bool getVisualTree();
 	int getDaysWarn();
 	char* getSortOrder();
 	char* getEditor();
@@ -111,6 +112,7 @@ public:
 private:
 	key_map tree_keys;
 	bool collapse;
+	bool visual_tree;
 	int  days_warn_deadline;
 	char sort_order[16];
 	char editor[64];

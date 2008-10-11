@@ -120,6 +120,17 @@ void Config::getGeneralOption(string& option, string& value)
 			collapse = false;
 		}
 	}
+	if ("visual_tree" == option)
+	{
+		if ("yes" == value)
+		{
+			visual_tree = true;
+		}
+		if ("no" == value)
+		{
+			visual_tree = false;
+		}
+	}
 	if ("days_warn" == option)
 	{
 		days_warn_deadline = atoi(value.c_str());
@@ -526,6 +537,11 @@ int Config::getContext(string& str)
 bool Config::getCollapse()
 {
 	return collapse;
+}
+
+bool Config::getVisualTree()
+{
+	return visual_tree;
 }
 
 int Config::getDaysWarn()

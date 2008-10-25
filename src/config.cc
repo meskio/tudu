@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>       *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -368,6 +368,8 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 		w.window = WTREE;
 	else if ("text" == fmt)
 		w.window = WTEXT;
+	else if ("schedule" == fmt)
+		w.window = WSCHEDULE;
 	else if ("info" == fmt)
 		w.window = WINFO;
 	else
@@ -434,6 +436,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_TREE;
 	else if ("text" == option)
 		color_index = CT_TEXT;
+	else if ("schedule" == option)
+		color_index = CT_SCHEDULE;
 	else if ("info" == option)
 		color_index = CT_INFO;
 	else
@@ -704,6 +708,11 @@ bool Config::genWindowCoor(int lines, int cols, window_coor coor[])
 				break;
 			case WINFO:
 				if (coor[WINFO].lines != 1)
+					return false;
+				break;
+			case WSCHEDULE:
+				if ((coor[WSCHEDULE].lines < 5) ||
+				   (coor[WSCHEDULE].cols < 29))
 					return false;
 				break;
 			case WTREE:

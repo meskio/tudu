@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -50,6 +50,7 @@ public:
 	int _cols();
 	int _resize(int lines, int columns);
 	int _mv(int y, int x);
+	int _delwin();
 protected:
 	WINDOW *win;
 };

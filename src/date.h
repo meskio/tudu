@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -33,6 +33,8 @@ public:
 	bool valid(); /* if valid date if year == 1900 is invalid */
 	bool correct(); /* if this date exist */
 	int daysLeft();
+	Date operator-(int days);
+	Date operator+(int days);
 	bool operator<(Date d);
 	bool operator>(Date d);
 	bool operator!=(Date d);

@@ -19,6 +19,7 @@ install: all
 	mkdir -p $(SHARE_DIR)
 	install -m644 data/tudu.dtd $(SHARE_DIR)
 	install -m644 data/welcome.xml $(SHARE_DIR)
+	mkdir -p $(ETC_DIR)
 	install -m644 data/tudurc $(ETC_DIR)
 	mkdir -p $(MAN_DIR)/man1
 	install -m644 data/tudu.1 $(MAN_DIR)/man1

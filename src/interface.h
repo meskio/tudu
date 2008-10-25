@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -34,6 +34,7 @@
 #include <map>
 #include <fstream>
 #include "data.h"
+#include "sched.h"
 #include "config.h"
 #include "parser.h"
 #include "editor.h"
@@ -42,13 +43,14 @@
 class Interface
 {
 public:
-	Interface(Screen& s, iToDo &t, Config &c, Writer &w);
+	Interface(Screen& s, iToDo &t, Sched& sch, Config &c, Writer &w);
 	~Interface();
 
 	void main();
 private:
 	Screen &screen;
 	iToDo &cursor;
+	Sched &sched;
 	Config &config;
 	Writer &writer;
 	/* number of begin and end line of the todos in screen */
@@ -73,6 +75,7 @@ private:
 	void del();
 	void delDeadline();
 	void delPriority();
+	void delSched();
 	void paste();
 	void pasteUp();
 	bool editLine(string& str);
@@ -83,6 +86,7 @@ private:
 	void addLineUp();
 	void modifyLine();
 	void editText();
+	void editSched();
 	void upText();
 	void downText();
 	void collapse();

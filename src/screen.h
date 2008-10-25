@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -28,6 +28,7 @@
 #include "data.h"
 #include "config.h"
 #include "editor.h"
+#include "sched.h"
 
 class Screen
 {
@@ -38,6 +39,7 @@ public:
 	void resizeTerm();
 	void drawTask(int line, int depth, ToDo& t, bool isCursor=false);
 	void drawText(Text &t);
+	void drawSched(Sched &sched, pToDo cursor = NULL);
 	void scrollUpText(Text &t);
 	void scrollDownText(Text &t);
 	void deadlineClear(int line);
@@ -45,6 +47,7 @@ public:
 	bool editTitle(int line, int depth, bool haveChild, string& str);
 	void editText(Text& t);
 	void editDeadline(int line, Date& deadline, bool done);
+	bool editSched(Date& s);
 	void setPriority(int line, int& priority);
 	void setCategory(int line, string& category);
 	void treeClear();
@@ -61,6 +64,7 @@ private:
 	Window *wdeadline;
 	Window *wtext;
 	Window *winfo;
+	Window *wschedule;
 	Config &config;
 	LineEditor lineEditor;
 	DateEditor dateEditor;

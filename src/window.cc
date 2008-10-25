@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -142,3 +142,9 @@ int Window::_mv(int y, int x)
 {
 	return mvwin(win, y, x);
 }
+
+int Window::_delwin()
+{
+	return delwin(win);
+}
+

@@ -17,55 +17,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef SCHEDULE_H
+#define SCHEDULE_H
 
-#include <fstream>
+#include <list>
 #include "data.h"
-#include "sched.h"
-#include "text.h"
+#include "date.h"
 
-#ifndef SHARE_DIR
-#define SHARE_DIR "/usr/local/share/tudu"
-#endif
-#define PATH_DTD SHARE_DIR"/tudu.dtd"
+typedef list<pToDo> sched_l;
 
-class Parser
+class Sched
 {
 public:
-	Parser(const char* path);
-	~Parser();
-
-	bool parse(ToDo& todo, Sched& sched);
+	void add(pToDo todo);
+	void add_recursive(pToDo todo);
+	void del(pToDo todo);
+	void del_recursive(pToDo todo);
+	int get(Date& from, Date& to, sched_l& list);
+	int get(Date& from, sched_l& list);
 private:
-	Sched *sched;
-	ifstream file;
-	string str;
-	string txt;
-	bool collect_text;
-	bool deadline;
-	bool scheduled;
-
-	void ptag(iToDo& iterator, Sched& sched);
-	void patt(iToDo& iterator);
-	char amp();
-};
-
-class Writer
-{
-public:
-	Writer(const char* path, ToDo& t);
-	~Writer();
-
-	void save();
-private:
-	ofstream file;
-	ToDo& todo;
-	iToDo* i;
-	char path[128];
-
-	void _save();
-	void amp(string& str);
+	list<pToDo> sched;
 };
 
 #endif

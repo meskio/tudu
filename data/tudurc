@@ -31,6 +31,7 @@ move_up      = K
 delete       = dd  #delete one todo
 delDeadline  = dt
 delPriority  = df
+delSched     = dS
 paste        = p   #paste the last deleted
 pasteUp      = P   #paste the last deleted upper than the cursor
 done         = m   #mark as done
@@ -41,6 +42,7 @@ editDeadline = t
 setPriority  = f   #add or modify the priority
 setCategory  = C   #add or modify the category
 editText     = e
+editSched    = S   #add or modify the scheduled date
 upText       = x
 downText     = z
 collapse     = c
@@ -70,7 +72,7 @@ quitNoSave   = Q
 # width can be like height
 row = (help)
 row = 1(blank)
-row = 70%(tree)
+row = 70%(tree,30|schedule)
 row = (text)
 row = (info)
 # columns of the tree window

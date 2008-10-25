@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -45,7 +45,7 @@ typedef map<string,string> action_list;
 #define MAX_THEME_WINDOWS 8
 #define MAX_THEME_ROWS 16
 #define MAX_THEME_TREECOLS 4
-#define NUM_WINDOWS 7
+#define NUM_WINDOWS 8
 #define WNULL 10
 #define WBLANK 11
 #define WHELP 0
@@ -55,6 +55,7 @@ typedef map<string,string> action_list;
 #define WPRIORITY 4
 #define WCATEGORY 5
 #define WDEADLINE 6
+#define WSCHEDULE 7
 typedef struct {
 	int window;
 	int width;
@@ -73,7 +74,7 @@ typedef struct {
 } window_coor;
 
 /* color theme */
-#define NUM_CT 7
+#define NUM_CT 8
 #define CT_DEFAULT 0
 #define CT_SELECTED 1
 #define CT_DEADLINE_MARK 2
@@ -81,6 +82,7 @@ typedef struct {
 #define CT_TREE 4
 #define CT_TEXT 5
 #define CT_INFO 6
+#define CT_SCHEDULE 7
 typedef struct {
 	bool exist;
 	short int foreground;

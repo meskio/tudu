@@ -17,55 +17,69 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef PARSER_H
-#define PARSER_H
-
-#include <fstream>
-#include "data.h"
 #include "sched.h"
-#include "text.h"
 
-#ifndef SHARE_DIR
-#define SHARE_DIR "/usr/local/share/tudu"
-#endif
-#define PATH_DTD SHARE_DIR"/tudu.dtd"
-
-class Parser
+void Sched::add_recursive(pToDo todo)
 {
-public:
-	Parser(const char* path);
-	~Parser();
+	for (iToDo j(*todo) ; !j.end(); ++j)
+		add_recursive(&(*j));
 
-	bool parse(ToDo& todo, Sched& sched);
-private:
-	Sched *sched;
-	ifstream file;
-	string str;
-	string txt;
-	bool collect_text;
-	bool deadline;
-	bool scheduled;
+	if (todo->sched().valid())
+	{
+		sched_l::iterator i;
+		for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+		sched.insert(i, todo);
+	}
+}
 
-	void ptag(iToDo& iterator, Sched& sched);
-	void patt(iToDo& iterator);
-	char amp();
-};
-
-class Writer
+void Sched::add(pToDo todo)
 {
-public:
-	Writer(const char* path, ToDo& t);
-	~Writer();
+	sched_l::iterator i;
 
-	void save();
-private:
-	ofstream file;
-	ToDo& todo;
-	iToDo* i;
-	char path[128];
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+	sched.insert(i, todo);
+}
 
-	void _save();
-	void amp(string& str);
-};
+void Sched::del(pToDo todo)
+{
+	sched.remove(todo);
+}
 
-#endif
+void Sched::del_recursive(pToDo todo)
+{
+	for (iToDo i(*todo) ; !i.end(); ++i)
+		del_recursive(&(*i));
+	sched.remove(todo);
+}
+
+int Sched::get(Date& from, Date& to, sched_l& list)
+{
+	sched_l::iterator i;
+	int num_scheds = 0;
+
+	list.clear();
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
+	for (;  (i != sched.end()) && ((*i)->sched() < to); i++)
+	{
+		num_scheds++;
+		list.push_back(*i);
+	}
+
+	return num_scheds;
+}
+
+int Sched::get(Date& from, sched_l& list)
+{
+	sched_l::iterator i;
+	int num_scheds = 0;
+
+	list.clear();
+	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
+	for (;  i != sched.end(); i++)
+	{
+		num_scheds++;
+		list.push_back(*i);
+	}
+
+	return num_scheds;
+}

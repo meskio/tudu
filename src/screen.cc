@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>       *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -24,6 +24,7 @@
 #define COLOR_HELP     COLOR_PAIR(CT_HELP)
 #define COLOR_TREE     COLOR_PAIR(CT_TREE)
 #define COLOR_TEXT     COLOR_PAIR(CT_TEXT)
+#define COLOR_SCHED    COLOR_PAIR(CT_SCHEDULE)
 #define COLOR_INFO     COLOR_PAIR(CT_INFO)
 
 #define PERCENT_COL (coor[WINFO].cols-7)
@@ -86,6 +87,7 @@ Screen::~Screen()
 	delete wdeadline;
 	delete wtext;
 	delete winfo;
+	delete wschedule;
 	clear ();
 	refresh ();
 	endwin ();
@@ -149,6 +151,11 @@ void Screen::draw()
 		winfo = new Window(c.lines, c.cols, c.y, c.x);
 	else
 		winfo = NULL;
+	c = coor[WSCHEDULE];
+	if (c.exist)
+		wschedule = new Window(c.lines, c.cols, c.y, c.x);
+	else
+		wschedule = NULL;
 }
 
 void Screen::resizeTerm()
@@ -223,6 +230,13 @@ void Screen::resizeTerm()
 		winfo->_resize(c.lines, c.cols);
 		winfo->_mv(c.y, c.x);
 		winfo->_erase();
+	}
+	c = coor[WSCHEDULE];
+	if (c.exist)
+	{
+		wschedule->_resize(c.lines, c.cols);
+		wschedule->_mv(c.y, c.x);
+		wschedule->_erase();
 	}
 }
 
@@ -354,6 +368,50 @@ void Screen::drawText(Text &t)
 		wtext->_erase();
 		t.print(*wtext);
 		wtree->_attroff(COLOR_TEXT);
+	}
+}
+
+void Screen::drawSched(Sched &sched, pToDo cursor)
+{
+	if (coor[WSCHEDULE].exist)
+	{
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+		sched_l sched_list;
+		sched.get(today,sched_list);
+
+		Date last;
+		int line = 0;
+		wschedule->_erase();
+		wschedule->_move(0,0);
+		wschedule->_attron(COLOR_SCHED);
+		for (sched_l::iterator i = sched_list.begin(); 
+				(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
+		{
+			if ((*i)->done()) continue;
+			if ((*i)->sched() != last)
+			{
+				last = (*i)->sched();
+
+				char str[32];
+				sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
+				wschedule->_attron(A_BOLD);
+				wschedule->_addstr(str);
+				wschedule->_attroff(A_BOLD);
+				line++;
+			}
+			if (cursor == (*i))
+				wschedule->_attron(COLOR_SELECTED);
+			wschedule->_addstr("    ");
+			string title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
+			wschedule->_addstr(title);
+			wschedule->_addstr("\n");
+			if (cursor == (*i))
+				wschedule->_attroff(COLOR_SELECTED);
+		}
+		wschedule->_attroff(COLOR_SCHED);
+		wschedule->_refresh();
 	}
 }
 
@@ -503,6 +561,55 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 		}
 		wdeadline->_refresh();
 	}
+}
+
+bool Screen::editSched(Date& s)
+{
+	if (coor[WSCHEDULE].exist)
+	{
+		char date[12];
+		bool save;
+
+		wschedule->_attron(A_BOLD);
+		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
+		wschedule->_attroff(A_BOLD);
+		wschedule->_refresh();
+
+		/* if is not valid date use today date */
+		if (s.valid())
+		{
+			sprintf(date, "%02d/%02d/%04d", s.day(),
+					s.month(), s.year());
+		}
+		else
+		{
+			time_t t = time(NULL);
+			struct tm* pt = localtime(&t);
+			strftime(date, 11, "%02d/%02m/%04Y", pt);
+		}
+
+		/* edit and store */
+		dateEditor.getText() = date;
+		dateEditor.cursorPos() = 0;
+		save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
+		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
+		wschedule->_refresh();
+		if (save)
+		{
+			strncpy(date, dateEditor.getText().c_str(), 10);
+			date[2] = '\0';
+			date[5] = '\0';
+			Date d(atoi(date), atoi(date+3), atoi(date+6));
+			if (d.correct())
+			{
+				s = d;
+				return true;
+			}
+			else
+				return false;
+		}
+	}
+	return false;
 }
 
 void Screen::setPriority(int line, int& priority)

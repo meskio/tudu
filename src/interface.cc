@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -22,8 +22,8 @@
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
-Interface::Interface(Screen &s, iToDo &t, Config &c, Writer &w) 
-		: screen(s), cursor(t), config(c), writer(w), copied(NULL)
+Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
+		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
 {
 	tree_begin = 0;
 	tree_end = screen.treeLines();
@@ -73,6 +73,7 @@ void Interface::main()
 			if ("delete" == action) del();
 			if ("delDeadline" == action) delDeadline();
 			if ("delPriority" == action) delPriority();
+			if ("delSched" == action) delSched();
 			if ("paste" == action) paste();
 			if ("pasteUp" == action) pasteUp();
 			if ("done" == action) done();
@@ -83,6 +84,7 @@ void Interface::main()
 			if ("setPriority" == action) setPriority();
 			if ("setCategory" == action) setCategory();
 			if ("editText" == action) editText();
+			if ("editSched" == action) editSched();
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
@@ -150,6 +152,7 @@ void Interface::drawTodo()
 
 	cursor = aux;
 	drawCursor();
+	screen.drawSched(sched, &(*cursor));
 }
 
 void Interface::_calculateLines(int& line_counter)
@@ -212,6 +215,7 @@ void Interface::drawCursor()
 		screen.drawTask(cursor_line(), cursor.depth(), *cursor, 
 				true);
 		screen.drawText(cursor->getText());
+		screen.drawSched(sched, &(*cursor));
 	}
 }
 
@@ -355,6 +359,7 @@ void Interface::del()
 {
 	if (copied) delete copied;
 	copied = &(*cursor);
+	sched.del_recursive(&(*cursor));
 	cursor.del();
 	--cursor;
 	if ((cursor.end()) && (cursor.begin()))
@@ -376,12 +381,18 @@ void Interface::delPriority()
 	screen.priorityClear(cursor_line());
 }
 
+void Interface::delSched()
+{
+	sched.del(&(*cursor));
+	cursor->sched().year() = 1900;
+}
+
 void Interface::paste()
 {
-
 	if (copied)
 	{
 		cursor.addChild(copied);
+		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
 	}
@@ -392,6 +403,7 @@ void Interface::pasteUp()
 	if (copied)
 	{
 		cursor.addChildUp(copied);
+		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
 	}
@@ -536,6 +548,14 @@ void Interface::editText()
 	}
 }
 
+void Interface::editSched()
+{
+	sched.del(&(*cursor));
+	screen.editSched(cursor->sched());
+	sched.add(&(*cursor));
+	screen.drawSched(sched, &(*cursor));
+}
+
 void Interface::upText()
 {
 	screen.scrollUpText(cursor->getText());
@@ -637,7 +657,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 37
+#define LINES_HELP 39
 void Interface::help()
 {
 	action_list list;
@@ -656,6 +676,7 @@ void Interface::help()
 	str[i++] = "  " + list["delete"] + "\tdelete line\n";
 	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
 	str[i++] = "  " + list["delPriority"] + "\tdelete priority\n";
+	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
 	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
 	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
@@ -663,6 +684,7 @@ void Interface::help()
 	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";
 	str[i++] = "  " + list["editText"] + "\tedit text\n";
 	str[i++] = "  " + list["editDeadline"] + "\tedit/add deadline\n";
+	str[i++] = "  " + list["editSched"] + "\tedit/add schedule\n";
 	str[i++] = "  " + list["setPriority"] + "\tadd or modify the priority\n";
 	str[i++] = "  " + list["setCategory"] + "\tadd or modify the category\n";
 	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";

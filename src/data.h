@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -54,6 +54,7 @@ public:
 	string& getTitle();
 	Text& getText();
 	Date& deadline();
+	Date& sched();
 	bool& done();
 	int& priority();
 	string& category();
@@ -67,6 +68,7 @@ protected:
 	string title;
 	bool _done;
 	Date _deadline;
+	Date _sched;
 	int  _priority;
 	string _category;
 	Text text;

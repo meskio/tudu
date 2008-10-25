@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>             *
+ * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -20,6 +20,7 @@
 #include "interface.h"
 #include "screen.h"
 #include "data.h"
+#include "sched.h"
 #include "parser.h"
 #include "config.h"
 
@@ -132,12 +133,13 @@ int main(int argc, char **argv, char *env[])
 
 	ToDo node("");
 	iToDo it(node);
+	Sched sched;
 	Parser p(file_xml);
-	if (!p.parse(node))
+	if (!p.parse(node,sched))
 	{
 		Parser welcome(WELCOME_FILE);
 		/* welcome file don't exist */
-		if (!welcome.parse(node))
+		if (!welcome.parse(node,sched))
 		{
 			fprintf(stderr, "Err: Welcome file don't exist. It should be %s\n", WELCOME_FILE);
 			exit(1);
@@ -146,7 +148,7 @@ int main(int argc, char **argv, char *env[])
 
 	Writer w(file_xml,node);
 	Screen screen(config);
-	Interface in(screen,it,config,w);
+	Interface in(screen,it,sched,config,w);
 	in.main();
 	return 0;
 }

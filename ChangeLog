@@ -1,6 +1,7 @@
 0.4
 	* Added scheluder for tasks
 	* Added hide done tasks
+	* Added paste as child
 	* Fixed help dirty close
 	* Added sort after edit priority, category, ...
 

@@ -77,6 +77,7 @@ void Interface::main()
 			if ("delSched" == action) delSched();
 			if ("paste" == action) paste();
 			if ("pasteUp" == action) pasteUp();
+			if ("pasteChild" == action) pasteChild();
 			if ("done" == action) done();
 			if ("addTodo" == action) addLine();
 			if ("addTodoUp" == action) addLineUp();
@@ -421,6 +422,18 @@ void Interface::pasteUp()
 	}
 }
 
+void Interface::pasteChild()
+{
+	if (copied)
+	{
+		cursor.in();
+		cursor.addChildUp(copied);
+		sched.add_recursive(copied);
+		copied = NULL;
+		drawTodo();
+	}
+}
+
 #define startTitle (cursor.depth() * 4 + 7)
 
 bool Interface::editLine(string& str)
@@ -677,7 +690,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 41
+#define LINES_HELP 42
 void Interface::help()
 {
 	action_list list;
@@ -699,6 +712,7 @@ void Interface::help()
 	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
 	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
 	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
+	str[i++] = "  " + list["pasteChild"] + "\tpaste the last deleted as child of the task\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
 	str[i++] = "  " + list["addTodoUp"] + "\tadd line upper than the cursor\n";
 	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";

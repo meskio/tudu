@@ -34,6 +34,7 @@ delPriority  = df
 delSched     = dS
 paste        = p   #paste the last deleted
 pasteUp      = P   #paste the last deleted upper than the cursor
+pasteChild   = V   #paste the last deleted as child of the task
 done         = m   #mark as done
 addTodo      = o
 addTodoUp    = O   #add todo upper than the cursor

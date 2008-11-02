@@ -78,6 +78,7 @@ private:
 	void delSched();
 	void paste();
 	void pasteUp();
+	void pasteChild();
 	bool editLine(string& str);
 	void editDeadline();
 	void setPriority();

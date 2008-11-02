@@ -84,7 +84,7 @@ Maybe the ASCII-art can be better, but just to show the idea.
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>sort after edit priority</title>
 		<text>
 </text>

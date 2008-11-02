@@ -432,6 +432,7 @@ bool Interface::editLine(string& str)
 	save = screen.editTitle(cursor_line(), cursor.depth(), 
 			cursor->haveChild(), str);
 	screen.infoClear();
+	drawTodo();
 	return save;
 }
 
@@ -440,6 +441,7 @@ void Interface::editDeadline()
 	screen.infoMsg("Editing deadline. Press enter for save it or esc for not save");
 	screen.editDeadline(cursor_line(), cursor->deadline(), cursor->done());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::setPriority()
@@ -447,6 +449,7 @@ void Interface::setPriority()
 	screen.infoMsg("Editing priority. Press enter for save it or esc for not save");
 	screen.setPriority(cursor_line(), cursor->priority());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::setCategory()
@@ -454,6 +457,7 @@ void Interface::setCategory()
 	screen.infoMsg("Editing category. Press enter for save it or esc for not save");
 	screen.setCategory(cursor_line(), cursor->category());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::addLine()

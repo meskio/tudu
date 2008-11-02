@@ -374,7 +374,10 @@ void Interface::del()
 	copied = &(*cursor);
 	sched.del_recursive(&(*cursor));
 	cursor.del();
-	up();
+	if (cursor.end() & cursor.begin())
+		left();
+	else
+		up();
 	drawTodo();
 }
 
@@ -721,5 +724,4 @@ void Interface::help()
 	str[i++] = "  " + list["quit"] + "\tquit\n";
 	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
 	screen.helpPopUp(str, i);
-	//drawTodo();
 }

@@ -21,11 +21,6 @@
 </text>
 		</todo>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>clean code</title>
-		<text>
-</text>
-	</todo>
 	<todo done="no" collapse="yes">
 		<title>flipadas</title>
 		<text>
@@ -73,40 +68,5 @@ Maybe the ASCII-art can be better, but just to show the idea.
 		<title>title editor multi-linear</title>
 		<text>
 </text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>v0.4</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>paste as child</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>sort by done</title>
-			<text>When all the subtasks are done it should count as done.
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>roadmaps in a window</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>dirty help</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>hide done tasks</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>sort after edit priority</title>
-			<text>
-</text>
-		</todo>
 	</todo>
 </todo>

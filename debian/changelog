@@ -1,3 +1,9 @@
+tudu (0.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Ruben Pollan Bella <meskio@amedias.org>  Sun, 02 Nov 2008 22:35:12 +0100
+
 tudu (0.3.2-1) unstable; urgency=low
 
   * New upstream release (Closes: #491152, #491224).

@@ -111,7 +111,6 @@ public:
 	 * l = deadline
 	 * p = priority
 	 * c = category
-	 * e = percent
 	 * u = user
 	 * the same leters in capital are for inverse order
 	 */

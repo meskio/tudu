@@ -2,6 +2,7 @@
 	* Added scheluder for tasks
 	* Added hide done tasks
 	* Added paste as child
+	* Merged sorts by done and percent, now both are by done
 	* Fixed help dirty close
 	* Added sort after edit priority, category, ...
 

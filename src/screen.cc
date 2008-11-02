@@ -257,7 +257,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	{
 		wtree->_addstr("[X] ");
 	}
-	else if (0 == chinf.percent)
+	else if (!t.haveChild())
 	{
 		wtree->_addstr("[ ] ");
 	}

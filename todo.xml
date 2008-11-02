@@ -36,7 +36,7 @@
 </text>
 		</todo>
 		<todo done="no" collapse="no">
-			<title>rigth arrow del new subtask</title>
+			<title>left arrow del new subtask</title>
 			<text>
 </text>
 		</todo>
@@ -78,12 +78,12 @@ Maybe the ASCII-art can be better, but just to show the idea.
 		<title>v0.4</title>
 		<text>
 </text>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>paste as child</title>
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>sort by done</title>
 			<text>When all the subtasks are done it should count as done.
 </text>

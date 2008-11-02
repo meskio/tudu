@@ -3,7 +3,7 @@
 
 [ general ]
 collapse     = no  #collapse by default
-hide_done    = yes  #hide done tasks
+hide_done    = no  #hide done tasks
 days_warn    = 2   #days before the deadline for warn
 #sort all the todo with given order
 #t = title

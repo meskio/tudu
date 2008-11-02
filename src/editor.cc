@@ -74,7 +74,7 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 		}
 		if (max_length <= text.length())
 			text.erase(max_length);
-		if (cursor >= max_length)
+		if (cursor >= (int) max_length)
 			cursor = max_length-1;
 		win._move(y, x);
 		win._addstr(text);

@@ -47,6 +47,7 @@ void Interface::main()
 	while (cursor.out());
 	while (--cursor);
 	drawTodo();
+
 	while (true) 
 	{
 		key = getch();
@@ -160,12 +161,14 @@ void Interface::_calculateLines(int& line_counter)
 	for (; !(cursor.end()); ++cursor)
 	{
 		if (!isHide(cursor))
-			cursor->line = line_counter++;
-		if (!isCollapse())
 		{
-			cursor.in();
-			_calculateLines(line_counter);
-			cursor.out();
+			cursor->line = line_counter++;
+			if (!isCollapse())
+			{
+				cursor.in();
+				_calculateLines(line_counter);
+				cursor.out();
+			}
 		}
 	}
 }
@@ -221,13 +224,18 @@ void Interface::drawCursor()
 
 bool Interface::isHide(iToDo& todo)
 {
-	return (config.getHideDone() && !todo->done());
+	return (config.getHideDone() && todo->done());
 }
 
 void Interface::left()
 {
 	eraseCursor();
-	cursor.out();
+	if (cursor.out() && isHide(cursor))
+	{
+		up();
+	}
+	else if (isHide(cursor))
+		cursor.addChild(new ToDo());
 	cursor->actCollapse() = false;
 	if (cursor->getCollapse())
 	{
@@ -246,6 +254,8 @@ void Interface::right()
 	eraseCursor();
 	cursor->actCollapse() = true;
 	cursor.in();
+	while (isHide(cursor) && ++cursor);
+
 	if (cursor.end())
 	{
 		cursor.addChild(new ToDo());
@@ -281,23 +291,24 @@ void Interface::up()
 {
 	eraseCursor();
 	--cursor;
+
+	/* Jump hide tasks */
 	while (isHide(cursor))
 	{
-		if (cursor.begin())
-		{
-			while (isHide(cursor))
-			{
-				++cursor;
-				if (cursor.end())
-				{
-					// FIXME: peta si no hay
-					break;
-				}
-			}
-			break;
-		}
+		if (cursor.begin()) break;
 		--cursor;
 	}
+	while (isHide(cursor))
+	{
+		++cursor;
+		if (cursor.end())
+		{
+			--cursor;
+			break;
+		}
+	}
+	if (isHide(cursor)) left();
+
 	drawCursor();
 }
 
@@ -306,24 +317,24 @@ void Interface::down()
 	eraseCursor();
 	++cursor;
 	if (cursor.end()) --cursor;
+
+	/* Jump hide tasks */
 	while (isHide(cursor))
 	{
+		++cursor;
 		if (cursor.end())
 		{
 			--cursor;
-			while (isHide(cursor))
-			{
-				--cursor;
-				if (cursor.begin())
-				{
-					// FIXME: peta si no hay
-					break;
-				}
-			}
 			break;
 		}
-		++cursor;
 	}
+	while (isHide(cursor))
+	{
+		if (cursor.begin()) break;
+		--cursor;
+	}
+	if (isHide(cursor)) left();
+
 	drawCursor();
 }
 
@@ -352,6 +363,8 @@ void Interface::done()
 		cursor->done() = false;
 	else
 		cursor->done() = true;
+	if (isHide(cursor))
+		down();
 	drawTodo();
 }
 
@@ -361,11 +374,7 @@ void Interface::del()
 	copied = &(*cursor);
 	sched.del_recursive(&(*cursor));
 	cursor.del();
-	--cursor;
-	if ((cursor.end()) && (cursor.begin()))
-	{
-		cursor.out();
-	}
+	up();
 	drawTodo();
 }
 
@@ -575,6 +584,10 @@ void Interface::collapse()
 void Interface::hide_done()
 {
 	config.getHideDone() = !config.getHideDone();
+	if (isHide(cursor)) up();
+	if (!config.getHideDone() && cursor->getTitle().empty())
+		//FIXME: if the user have an title empty will be destroy
+		del();
 	drawTodo();
 }
 
@@ -657,7 +670,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 39
+#define LINES_HELP 41
 void Interface::help()
 {
 	action_list list;
@@ -690,6 +703,7 @@ void Interface::help()
 	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";
 	str[i++] = "  " + list["upText"] + "\tscroll up the text\n";
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
+	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
 	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
 	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";

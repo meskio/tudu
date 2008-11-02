@@ -721,5 +721,5 @@ void Interface::help()
 	str[i++] = "  " + list["quit"] + "\tquit\n";
 	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
 	screen.helpPopUp(str, i);
-	drawTodo();
+	//drawTodo();
 }

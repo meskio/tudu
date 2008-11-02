@@ -6,6 +6,11 @@
 		<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>paste as child</title>
+		<text>
+</text>
+	</todo>
 	<todo done="no" collapse="yes">
 		<title>document</title>
 		<text>
@@ -37,11 +42,6 @@
 		</todo>
 		<todo done="no" collapse="no">
 			<title>rigth arrow del new subtask</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>roadmaps in a window</title>
 			<text>
 </text>
 		</todo>
@@ -84,13 +84,23 @@ Maybe the ASCII-art can be better, but just to show the idea.
 		<text>
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>sort after edit priority</title>
+		<text>
+</text>
+	</todo>
 	<todo done="yes" collapse="no">
 		<title>hide done tasks</title>
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>sort after edit priority</title>
+	<todo done="yes" collapse="no">
+		<title>dirty help</title>
+		<text>
+</text>
+	</todo>
+	<todo done="yes" collapse="no">
+		<title>roadmaps in a window</title>
 		<text>
 </text>
 	</todo>

@@ -1,6 +1,7 @@
 0.4
 	* Added scheluder for tasks
 	* Added hide done tasks
+	* Fixed help dirty close
 
 0.3.2
 	* Fixed a segfault in i386 editing priorities

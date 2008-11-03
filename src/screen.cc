@@ -251,8 +251,22 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	else
 		wtree->_attron(COLOR_TREE);
 	wtree->_move(line, 0);
-	wtree->_addstr("   ");
+
+	/* identation */
 	for (int i = 0; i < depth; ++i) wtree->_addstr("    ");
+	if (config.getVisualTree())
+		if (t.haveChild())
+		{
+			if ((!t.actCollapse()) && (t.getCollapse()))
+				wtree->_addstr("(+)");
+			else
+				wtree->_addstr("(-)");
+		}
+		else
+			wtree->_addstr("   ");
+	else
+		wtree->_addstr("   ");
+
 	if (t.done())
 	{
 		wtree->_addstr("[X] ");

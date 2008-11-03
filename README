@@ -24,3 +24,15 @@ Usage: tudu [options]
 
 The default config file is in ~/.tudurc
 The file tudurc in the source code is an example of config file.
+
+
+Notes
+=====
+
+Some environments (like Konsole of KDE3) don't show well the tasks that have
+childs. The normal way to show them is because they are bold, but in some 
+shells the bold characters are indistinguishable of the normal ones. For that
+cases (or others) there is the posibility of show "(+)", for the collapsed 
+tasks, and "(-)", for the expanded tasks, at the left of them. This option is
+activated on the config file by the option:
+visual_tree  = yes

@@ -21,11 +21,6 @@
 </text>
 		</todo>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>clean code</title>
-		<text>
-</text>
-	</todo>
 	<todo done="no" collapse="yes">
 		<title>flipadas</title>
 		<text>
@@ -36,12 +31,7 @@
 </text>
 		</todo>
 		<todo done="no" collapse="no">
-			<title>rigth arrow del new subtask</title>
-			<text>
-</text>
-		</todo>
-		<todo done="no" collapse="no">
-			<title>roadmaps in a window</title>
+			<title>left arrow del new subtask</title>
 			<text>
 </text>
 		</todo>
@@ -72,11 +62,6 @@ The task tree should look like this (please view with fixed-width font):
 
 Maybe the ASCII-art can be better, but just to show the idea.
 
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>sort by done</title>
-		<text>When all the subtasks are done it should count as done.
 </text>
 	</todo>
 	<todo done="no" collapse="no">

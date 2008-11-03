@@ -3,6 +3,7 @@
 
 [ general ]
 collapse     = no  #collapse by default
+hide_done    = no  #hide done tasks
 visual_tree  = no  #toggle graphical expanding tree
 days_warn    = 2   #days before the deadline for warn
 #sort all the todo with given order
@@ -34,6 +35,7 @@ delPriority  = df
 delSched     = dS
 paste        = p   #paste the last deleted
 pasteUp      = P   #paste the last deleted upper than the cursor
+pasteChild   = V   #paste the last deleted as child of the task
 done         = m   #mark as done
 addTodo      = o
 addTodoUp    = O   #add todo upper than the cursor
@@ -46,6 +48,7 @@ editSched    = S   #add or modify the scheduled date
 upText       = x
 downText     = z
 collapse     = c
+hideDone     = M   #hide/show done tasks
 sortByTitle  = bt
 sortRevTitle = bT
 sortByDone   = bd

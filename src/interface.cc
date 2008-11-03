@@ -47,6 +47,7 @@ void Interface::main()
 	while (cursor.out());
 	while (--cursor);
 	drawTodo();
+
 	while (true) 
 	{
 		key = getch();
@@ -76,6 +77,7 @@ void Interface::main()
 			if ("delSched" == action) delSched();
 			if ("paste" == action) paste();
 			if ("pasteUp" == action) pasteUp();
+			if ("pasteChild" == action) pasteChild();
 			if ("done" == action) done();
 			if ("addTodo" == action) addLine();
 			if ("addTodoUp" == action) addLineUp();
@@ -88,6 +90,7 @@ void Interface::main()
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
+			if ("hideDone" == action) hide_done();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -158,12 +161,15 @@ void Interface::_calculateLines(int& line_counter)
 {
 	for (; !(cursor.end()); ++cursor)
 	{
-		cursor->line = line_counter++;
-		if (!isCollapse())
+		if (!isHide(cursor))
 		{
-			cursor.in();
-			_calculateLines(line_counter);
-			cursor.out();
+			cursor->line = line_counter++;
+			if (!isCollapse())
+			{
+				cursor.in();
+				_calculateLines(line_counter);
+				cursor.out();
+			}
 		}
 	}
 }
@@ -173,7 +179,8 @@ void Interface::_drawTodo()
 	for (; !(cursor.end()); ++cursor)
 	{
 		if (cursor->line >= tree_end) break;
-		if (cursor->line >= tree_begin) 
+		if ((cursor->line >= tree_begin) &&
+		    (!isHide(cursor)))
 			screen.drawTask(cursor_line(), cursor.depth(), 
 					*cursor);
 		if (!isCollapse())
@@ -216,10 +223,20 @@ void Interface::drawCursor()
 	}
 }
 
+bool Interface::isHide(iToDo& todo)
+{
+	return (config.getHideDone() && todo->done());
+}
+
 void Interface::left()
 {
 	eraseCursor();
-	cursor.out();
+	if (cursor.out() && isHide(cursor))
+	{
+		up();
+	}
+	else if (isHide(cursor))
+		cursor.addChild(new ToDo());
 	cursor->actCollapse() = false;
 	if (cursor->getCollapse())
 	{
@@ -238,6 +255,8 @@ void Interface::right()
 	eraseCursor();
 	cursor->actCollapse() = true;
 	cursor.in();
+	while (isHide(cursor) && ++cursor);
+
 	if (cursor.end())
 	{
 		cursor.addChild(new ToDo());
@@ -273,6 +292,24 @@ void Interface::up()
 {
 	eraseCursor();
 	--cursor;
+
+	/* Jump hide tasks */
+	while (isHide(cursor))
+	{
+		if (cursor.begin()) break;
+		--cursor;
+	}
+	while (isHide(cursor))
+	{
+		++cursor;
+		if (cursor.end())
+		{
+			--cursor;
+			break;
+		}
+	}
+	if (isHide(cursor)) left();
+
 	drawCursor();
 }
 
@@ -280,10 +317,25 @@ void Interface::down()
 {
 	eraseCursor();
 	++cursor;
-	if (cursor.end())
+	if (cursor.end()) --cursor;
+
+	/* Jump hide tasks */
+	while (isHide(cursor))
 	{
+		++cursor;
+		if (cursor.end())
+		{
+			--cursor;
+			break;
+		}
+	}
+	while (isHide(cursor))
+	{
+		if (cursor.begin()) break;
 		--cursor;
 	}
+	if (isHide(cursor)) left();
+
 	drawCursor();
 }
 
@@ -312,6 +364,8 @@ void Interface::done()
 		cursor->done() = false;
 	else
 		cursor->done() = true;
+	if (isHide(cursor))
+		down();
 	drawTodo();
 }
 
@@ -321,11 +375,10 @@ void Interface::del()
 	copied = &(*cursor);
 	sched.del_recursive(&(*cursor));
 	cursor.del();
-	--cursor;
-	if ((cursor.end()) && (cursor.begin()))
-	{
-		cursor.out();
-	}
+	if (cursor.end() & cursor.begin())
+		left();
+	else
+		up();
 	drawTodo();
 }
 
@@ -369,6 +422,18 @@ void Interface::pasteUp()
 	}
 }
 
+void Interface::pasteChild()
+{
+	if (copied)
+	{
+		cursor.in();
+		cursor.addChildUp(copied);
+		sched.add_recursive(copied);
+		copied = NULL;
+		drawTodo();
+	}
+}
+
 #define startTitle (cursor.depth() * 4 + 7)
 
 bool Interface::editLine(string& str)
@@ -388,6 +453,7 @@ void Interface::editDeadline()
 	screen.infoMsg("Editing deadline. Press enter for save it or esc for not save");
 	screen.editDeadline(cursor_line(), cursor->deadline(), cursor->done());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::setPriority()
@@ -395,6 +461,7 @@ void Interface::setPriority()
 	screen.infoMsg("Editing priority. Press enter for save it or esc for not save");
 	screen.setPriority(cursor_line(), cursor->priority());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::setCategory()
@@ -402,6 +469,7 @@ void Interface::setCategory()
 	screen.infoMsg("Editing category. Press enter for save it or esc for not save");
 	screen.setCategory(cursor_line(), cursor->category());
 	screen.infoClear();
+	drawTodo();
 }
 
 void Interface::addLine()
@@ -532,6 +600,16 @@ void Interface::collapse()
 	drawTodo();
 }
 
+void Interface::hide_done()
+{
+	config.getHideDone() = !config.getHideDone();
+	if (isHide(cursor)) up();
+	if (!config.getHideDone() && cursor->getTitle().empty())
+		//FIXME: if the user have an title empty will be destroy
+		del();
+	drawTodo();
+}
+
 void Interface::sortByTitle()
 {
 	sortOrder[0] = 't';
@@ -611,7 +689,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 39
+#define LINES_HELP 42
 void Interface::help()
 {
 	action_list list;
@@ -629,9 +707,11 @@ void Interface::help()
 	str[i++] = "  " + list["done"] + "\tmark or unmark as done\n";
 	str[i++] = "  " + list["delete"] + "\tdelete line\n";
 	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
+	str[i++] = "  " + list["delPriority"] + "\tdelete priority\n";
 	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
 	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
 	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
+	str[i++] = "  " + list["pasteChild"] + "\tpaste the last deleted as child of the task\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
 	str[i++] = "  " + list["addTodoUp"] + "\tadd line upper than the cursor\n";
 	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";
@@ -643,6 +723,7 @@ void Interface::help()
 	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";
 	str[i++] = "  " + list["upText"] + "\tscroll up the text\n";
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
+	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
 	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
 	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";
@@ -660,5 +741,4 @@ void Interface::help()
 	str[i++] = "  " + list["quit"] + "\tquit\n";
 	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
 	screen.helpPopUp(str, i);
-	drawTodo();
 }

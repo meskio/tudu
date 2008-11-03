@@ -257,7 +257,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	{
 		wtree->_addstr("[X] ");
 	}
-	else if (0 == chinf.percent)
+	else if (!t.haveChild())
 	{
 		wtree->_addstr("[ ] ");
 	}
@@ -795,5 +795,44 @@ void Screen::helpPopUp(string str[], int len)
 
 	if (resized) ungetch(KEY_RESIZE);
 	h._erase();
-	h._refresh();
+
+	redrawwin(stdscr);
+	refresh();
+	wtree->_redraw();
+	wtree->_refresh();
+	if (coor[WHELP].exist)
+	{
+		whelp->_redraw();
+		whelp->_refresh();
+	}
+	if (coor[WPRIORITY].exist)
+	{
+		wpriority->_redraw();
+		wpriority->_refresh();
+	}
+	if (coor[WCATEGORY].exist)
+	{
+		wcategory->_redraw();
+		wcategory->_refresh();
+	}
+	if (coor[WDEADLINE].exist)
+	{
+		wdeadline->_redraw();
+		wdeadline->_refresh();
+	}
+	if (coor[WTEXT].exist)
+	{
+		wtext->_redraw();
+		wtext->_refresh();
+	}
+	if (coor[WINFO].exist)
+	{
+		winfo->_redraw();
+		winfo->_refresh();
+	}
+	if (coor[WSCHEDULE].exist)
+	{
+		wschedule->_redraw();
+		wschedule->_refresh();
+	}
 }

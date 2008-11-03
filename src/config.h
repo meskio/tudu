@@ -98,10 +98,13 @@ typedef struct {
 class Config
 {
 public:
+	Config();
+
 	bool load(const char* path);
 	bool getAction(char key, string& action);
 	void getActionList(action_list& list);
 	bool getCollapse();
+	bool& getHideDone();
 	bool getVisualTree();
 	int getDaysWarn();
 	char* getSortOrder();
@@ -112,6 +115,7 @@ public:
 private:
 	key_map tree_keys;
 	bool collapse;
+	bool hide_done;
 	bool visual_tree;
 	int  days_warn_deadline;
 	char sort_order[16];

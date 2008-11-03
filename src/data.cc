@@ -154,11 +154,31 @@ bool cmp(pToDo t1, pToDo t2)
 					res = t2->_done;
 					out = true;
 				}
+				else if (!t1->_done && (chinf1.percent == 100))
+				{
+					res = false;
+					out = true;
+				}
+				else if (!t2->_done && (chinf2.percent == 100))
+				{
+					res = true;
+					out = true;
+				}
 				break;
 			case 'D':
 				if (t1->_done != t2->_done)
 				{
 					res = t1->_done;
+					out = true;
+				}
+				else if (!t1->_done && (chinf1.percent == 100))
+				{
+					res = true;
+					out = true;
+				}
+				else if (!t2->_done && (chinf2.percent == 100))
+				{
+					res = false;
 					out = true;
 				}
 				break;

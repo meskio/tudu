@@ -60,13 +60,7 @@ Date& ToDo::sched()
 
 bool& ToDo::done()
 {
-	/*TODO if (!_done)
-	{
-		child_info info = getChildInfo();
-		return (info.percent == 100);
-	}
-	else*/
-		return _done;
+	return _done;
 }
 
 int& ToDo::priority()

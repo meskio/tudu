@@ -445,7 +445,6 @@ bool Interface::editLine(string& str)
 	save = screen.editTitle(cursor_line(), cursor.depth(), 
 			cursor->haveChild(), str);
 	screen.infoClear();
-	drawTodo();
 	return save;
 }
 

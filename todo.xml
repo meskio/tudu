@@ -69,19 +69,4 @@ Maybe the ASCII-art can be better, but just to show the idea.
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>v0.4</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>new task</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>percent</title>
-			<text>
-</text>
-		</todo>
-	</todo>
 </todo>

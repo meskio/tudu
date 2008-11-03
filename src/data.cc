@@ -160,9 +160,14 @@ bool cmp(pToDo t1, pToDo t2)
 					res = t2->_done;
 					out = true;
 				}
-				else if (chinf1.percent != chinf2.percent)
+				else if (!t1->_done && (chinf1.percent == 100))
 				{
-					res = (chinf1.percent < chinf2.percent);
+					res = false;
+					out = true;
+				}
+				else if (!t2->_done && (chinf2.percent == 100))
+				{
+					res = true;
 					out = true;
 				}
 				break;
@@ -172,9 +177,14 @@ bool cmp(pToDo t1, pToDo t2)
 					res = t1->_done;
 					out = true;
 				}
-				else if (chinf1.percent != chinf2.percent)
+				else if (!t1->_done && (chinf1.percent == 100))
 				{
-					res = (chinf1.percent > chinf2.percent);
+					res = true;
+					out = true;
+				}
+				else if (!t2->_done && (chinf2.percent == 100))
+				{
+					res = false;
 					out = true;
 				}
 				break;
@@ -238,6 +248,21 @@ bool cmp(pToDo t1, pToDo t2)
 						res = true;
 					else
 						res = (t1->_category>t2->_category);
+					out = true;
+				}
+				break;
+			/* Percent */
+			case 'e':
+				if (chinf1.percent != chinf2.percent)
+				{
+					res = (chinf1.percent < chinf2.percent);
+					out = true;
+				}
+				break;
+			case 'E':
+				if (chinf1.percent != chinf2.percent)
+				{
+					res = (chinf1.percent > chinf2.percent);
 					out = true;
 				}
 				break;

@@ -1,6 +1,7 @@
 0.4
 	* Added scheluder for tasks
 	* Added hide done tasks
+	* Added simple visual tree
 	* Added paste as child
 	* Sort by done uses 100% as done
 	* Fixed help dirty close

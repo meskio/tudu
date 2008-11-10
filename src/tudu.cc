@@ -37,7 +37,7 @@ using namespace std;
 #define ETC_DIR "/usr/local/etc"
 #endif
 
-#define VERSION "TuDu 0.3 (2008)"
+#define VERSION "TuDu 0.4.1 (2008)"
 #define WELCOME_FILE SHARE_DIR"/welcome.xml"
 #define CONFIG_FILE ETC_DIR"/tudurc"
 

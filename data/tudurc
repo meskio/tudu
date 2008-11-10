@@ -11,6 +11,7 @@ days_warn    = 2   #days before the deadline for warn
 #d = done
 #l = deadline
 #p = priority
+#c = category
 #e = percent
 #u = user
 #the same leters in capital are for inverse order

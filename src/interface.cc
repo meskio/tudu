@@ -398,6 +398,7 @@ void Interface::delSched()
 {
 	sched.del(&(*cursor));
 	cursor->sched().year() = 1900;
+	screen.drawSched(sched, &(*cursor));
 }
 
 void Interface::paste()
@@ -426,6 +427,7 @@ void Interface::pasteChild()
 {
 	if (copied)
 	{
+		cursor->actCollapse() = true;
 		cursor.in();
 		cursor.addChildUp(copied);
 		sched.add_recursive(copied);

@@ -36,15 +36,15 @@
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>reorder sched</title>
-		<text>
-</text>
-	</todo>
 	<todo done="no" collapse="yes">
 		<title>v0.4.1</title>
 		<text>
 </text>
+		<todo done="yes" collapse="no">
+			<title>reorder sched</title>
+			<text>
+</text>
+		</todo>
 		<todo done="yes" collapse="no">
 			<title>paste as child when collapsed</title>
 			<text>

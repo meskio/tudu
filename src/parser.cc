@@ -173,6 +173,15 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 		else if (scheduled)
 			iterator->sched().year() = atoi(txt.c_str());
 	}
+	if ("position" == str)
+	{
+		collect_text = true;
+	}
+	if ("/position" == str)
+	{
+		if (scheduled)
+			iterator->schedPosition() = atoi(txt.c_str());
+	}
 	if ("priority" == str)
 	{
 		collect_text = true;
@@ -324,6 +333,8 @@ void Writer::_save()
 			file << "<month>" << date.month() << "</month>" << endl;
 			putTabs((*i).depth()+2);
 			file << "<year>" << date.year() << "</year>" << endl;
+			putTabs((*i).depth()+1);
+			file << "<position>" << (*i)->schedPosition() << "</position>" << endl;
 			putTabs((*i).depth()+1);
 			file << "</scheduled>" << endl;
 		}

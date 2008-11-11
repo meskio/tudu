@@ -55,6 +55,7 @@ public:
 	Text& getText();
 	Date& deadline();
 	Date& sched();
+	int& schedPosition();
 	bool& done();
 	int& priority();
 	string& category();
@@ -69,6 +70,7 @@ protected:
 	bool _done;
 	Date _deadline;
 	Date _sched;
+	int sched_position; // position on the sched list, use for sort the list
 	int  _priority;
 	string _category;
 	Text text;

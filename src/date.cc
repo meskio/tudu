@@ -260,3 +260,15 @@ bool Date::operator!=(Date d)
 	else
 		return false;
 }
+
+bool Date::operator==(Date d)
+{
+	if (d._year !=  _year)
+		return false;
+	else if (d._month !=  _month)
+		return false;
+	else if (d._day != _day)
+		return false;
+	else
+		return true;
+}

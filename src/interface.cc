@@ -87,6 +87,8 @@ void Interface::main()
 			if ("setCategory" == action) setCategory();
 			if ("editText" == action) editText();
 			if ("editSched" == action) editSched();
+			if ("schedUp" == action) schedUp();
+			if ("schedDown" == action) schedDown();
 			if ("downText" == action) downText();
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
@@ -586,6 +588,18 @@ void Interface::editSched()
 	screen.drawSched(sched, &(*cursor));
 }
 
+void Interface::schedUp()
+{
+	sched.up(&(*cursor));
+	screen.drawSched(sched, &(*cursor));
+}
+
+void Interface::schedDown()
+{
+	sched.down(&(*cursor));
+	screen.drawSched(sched, &(*cursor));
+}
+
 void Interface::upText()
 {
 	screen.scrollUpText(cursor->getText());
@@ -691,7 +705,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 42
+#define LINES_HELP 43
 void Interface::help()
 {
 	action_list list;
@@ -724,6 +738,8 @@ void Interface::help()
 	str[i++] = "  " + list["setCategory"] + "\tadd or modify the category\n";
 	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";
 	str[i++] = "  " + list["upText"] + "\tscroll up the text\n";
+	str[i++] = "  " + list["schedUp"] + "\tmove up the task on the scheduler\n";
+	str[i++] = "  " + list["schedDown"] +  "\tmove down the task on the scheduler\n";
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
 	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";

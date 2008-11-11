@@ -38,6 +38,7 @@ public:
 	bool operator<(Date d);
 	bool operator>(Date d);
 	bool operator!=(Date d);
+	bool operator==(Date d);
 protected:
 	int _day, _month, _year;
 };

@@ -88,6 +88,8 @@ private:
 	void modifyLine();
 	void editText();
 	void editSched();
+	void schedUp();
+	void schedDown();
 	void upText();
 	void downText();
 	void collapse();

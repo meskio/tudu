@@ -10,4 +10,5 @@
 <!ELEMENT priority (#PCDATA)>
 <!ELEMENT category (#PCDATA)>
 <!ELEMENT text (#PCDATA)>
-<!ELEMENT scheduled (day, month, year)>
+<!ELEMENT scheduled (day, month, year,position?)>
+	<!ELEMENT position (#PCDATA)>

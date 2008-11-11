@@ -25,11 +25,7 @@ void Sched::add_recursive(pToDo todo)
 		add_recursive(&(*j));
 
 	if (todo->sched().valid())
-	{
-		sched_l::iterator i;
-		for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
-		sched.insert(i, todo);
-	}
+		add(todo);
 }
 
 void Sched::add(pToDo todo)
@@ -37,7 +33,55 @@ void Sched::add(pToDo todo)
 	sched_l::iterator i;
 
 	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
+	if (todo->schedPosition() == 0)
+	{
+		if ((*i)->sched() == todo->sched())
+		{
+			for (; ((*i)->sched() == todo->sched()); i++);
+			todo->schedPosition() = (*i)->schedPosition() + 1;
+			i++;
+		}
+		else
+			todo->schedPosition() = 1;
+	}
+	else
+		for (; ((*i)->sched() == todo->sched()) && ((*i)->schedPosition() < todo->schedPosition()); i++);
 	sched.insert(i, todo);
+}
+
+void Sched::up(pToDo todo)
+{
+	sched_l::iterator i,j;
+
+	for (i = sched.begin(); (i != sched.end()) && ((*i) != todo); i++);
+	j = i; j--;
+
+	/* if there is a task before swap them */
+	if ((i != sched.begin()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
+	{
+		sched.erase(i,i);
+		(*j)->schedPosition()++;
+		todo->schedPosition()--;
+		sched.insert(j, todo);
+	}
+}
+
+void Sched::down(pToDo todo)
+{
+	sched_l::iterator i,j;
+
+	for (i = sched.begin(); (i != sched.end()) && ((*i) != todo); i++);
+	j = i; j++;
+
+	/* if there is a task before swap them */
+	if ((i != sched.begin()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
+	{
+		sched.erase(i,i);
+		(*j)->schedPosition()--;
+		todo->schedPosition()++;
+		j++;
+		sched.insert(j, todo);
+	}
 }
 
 void Sched::del(pToDo todo)

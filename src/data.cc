@@ -26,6 +26,7 @@ ToDo::ToDo(string t, bool isDone, string txt)
 	cursor_in = false;
 	text = txt;
 	_priority = 0;
+	sched_position = 0;
 }
 
 ToDo::~ToDo()
@@ -56,6 +57,11 @@ Date& ToDo::deadline()
 Date& ToDo::sched()
 {
 	return _sched;
+}
+
+int& ToDo::schedPosition()
+{
+	return sched_position;
 }
 
 bool& ToDo::done()

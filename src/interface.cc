@@ -705,7 +705,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 43
+#define LINES_HELP 44
 void Interface::help()
 {
 	action_list list;

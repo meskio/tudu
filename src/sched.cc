@@ -38,6 +38,7 @@ void Sched::add(pToDo todo)
 		if ((*i)->sched() == todo->sched())
 		{
 			for (; ((*i)->sched() == todo->sched()); i++);
+			i--;
 			todo->schedPosition() = (*i)->schedPosition() + 1;
 			i++;
 		}
@@ -59,10 +60,11 @@ void Sched::up(pToDo todo)
 	/* if there is a task before swap them */
 	if ((i != sched.begin()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
 	{
-		sched.erase(i,i);
 		(*j)->schedPosition()++;
 		todo->schedPosition()--;
 		sched.insert(j, todo);
+		j = i; i++;
+		sched.erase(j,i);
 	}
 }
 
@@ -74,9 +76,9 @@ void Sched::down(pToDo todo)
 	j = i; j++;
 
 	/* if there is a task before swap them */
-	if ((i != sched.begin()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
+	if ((j != sched.end()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
 	{
-		sched.erase(i,i);
+		sched.erase(i,j);
 		(*j)->schedPosition()--;
 		todo->schedPosition()++;
 		j++;

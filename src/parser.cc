@@ -333,7 +333,7 @@ void Writer::_save()
 			file << "<month>" << date.month() << "</month>" << endl;
 			putTabs((*i).depth()+2);
 			file << "<year>" << date.year() << "</year>" << endl;
-			putTabs((*i).depth()+1);
+			putTabs((*i).depth()+2);
 			file << "<position>" << (*i)->schedPosition() << "</position>" << endl;
 			putTabs((*i).depth()+1);
 			file << "</scheduled>" << endl;

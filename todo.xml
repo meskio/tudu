@@ -37,36 +37,6 @@
 </text>
 	</todo>
 	<todo done="no" collapse="yes">
-		<title>v0.4.1</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>reorder sched</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>paste as child when collapsed</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>document category sort</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>refresh when delete sched</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>-v</title>
-			<text>
-</text>
-		</todo>
-	</todo>
-	<todo done="no" collapse="yes">
 		<title>v0.5</title>
 		<text>
 </text>

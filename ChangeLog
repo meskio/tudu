@@ -1,3 +1,8 @@
+0.4.1
+	* Added reorder tasks on the scheluder
+	* Fixed paste as child when task is collapsed
+	* Fixed refresh when sched is deleted
+
 0.4
 	* Added scheluder for tasks
 	* Added hide done tasks

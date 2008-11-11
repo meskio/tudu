@@ -39,6 +39,8 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 
 	str = "";
 	collect_text = false;
+	deadline = false;
+	scheduled = false;
 	while (file.get(ch))
 	{
 		switch (ch)

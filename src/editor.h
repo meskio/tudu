@@ -41,6 +41,8 @@ protected:
 	virtual void right();
 	virtual void up();
 	virtual void down();
+	virtual void home();
+	virtual void end();
 	virtual void backspace();
 	virtual void supr();
 	virtual void esc();
@@ -52,6 +54,8 @@ class LineEditor: public Editor
 protected:
 	void left();
 	void right();
+	void home();
+	void end();
 	void backspace();
 	void supr();
 	void esc();

@@ -63,6 +63,10 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				break;
 			case KEY_DOWN: down();
 				break;
+			case KEY_HOME: home();
+				break;
+			case KEY_END: end();
+				break;
 			case KEY_BACKSPACE: backspace();
 				break;
 			case KEY_DC: supr();
@@ -97,6 +101,8 @@ void Editor::left() {}
 void Editor::right() {}
 void Editor::up() {}
 void Editor::down() {}
+void Editor::home() {}
+void Editor::end() {}
 void Editor::backspace() {}
 void Editor::supr() {}
 void Editor::esc() {}
@@ -112,6 +118,16 @@ void LineEditor::left()
 void LineEditor::right()
 {
 	if (cursor<(int)text.length()) ++cursor;
+}
+
+void LineEditor::home()
+{
+	cursor = 0;
+}
+
+void LineEditor::end()
+{
+	cursor = text.length();
 }
 
 void LineEditor::backspace()

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
+<!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
 		<title>support for international chars (UTF-8)</title>
@@ -60,7 +60,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>left arrow del new subtask</title>
 			<text>
 </text>

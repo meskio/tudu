@@ -113,6 +113,7 @@ void Editor::other() {}
 void LineEditor::left()
 {
 	if (cursor>0) --cursor;
+	else if (text.length() == 0) exit = true;
 }
 
 void LineEditor::right()

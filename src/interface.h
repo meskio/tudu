@@ -57,6 +57,7 @@ private:
 	int tree_begin, tree_end;
 	pToDo copied;
 	char sortOrder[16];
+	string search_pattern;
 
 	void resizeTerm();
 	void drawTodo();

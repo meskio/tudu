@@ -97,6 +97,8 @@ public:
 	bool operator--();
 	bool in();
 	bool out();
+	void next();
+	void prev();
 	ToDo &operator*();
 	ToDo *operator->();
 	bool end();
@@ -119,13 +121,12 @@ public:
 	 */
 	void sort(char order[]);
 	bool search(string& str);
+	bool searchUp(string& str);
 protected:
 	pToDo root;
 	stack<list<pToDo>::iterator> path;
 	stack<pToDo> parents;
 	cursor_t cursor;
-
-	bool _search();
 };
 
 #endif

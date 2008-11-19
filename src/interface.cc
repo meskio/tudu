@@ -25,6 +25,7 @@
 Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
 		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
 {
+	search_pattern = "";
 	tree_begin = 0;
 	tree_end = screen.treeLines();
 
@@ -635,21 +636,32 @@ void Interface::search()
 
 	if (screen.searchText(pattern))
 	{
+		search_pattern = pattern;
 		if (cursor.search(pattern))
-		{
-		//TODO
-		}
+			drawTodo();
 	}
 }
 
 void Interface::search_next()
 {
-	//TODO
+	if (search_pattern != "")
+	{
+		if (cursor.search(search_pattern))
+			drawTodo();
+	}
+	else
+		screen.infoMsg("No search pattern");
 }
 
 void Interface::search_prev()
 {
-	//TODO
+	if (search_pattern != "")
+	{
+		if (cursor.searchUp(search_pattern))
+			drawTodo();
+	}
+	else
+		screen.infoMsg("No search pattern");
 }
 
 void Interface::sortByTitle()

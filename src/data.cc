@@ -370,6 +370,54 @@ bool iToDo::out()
 	}
 }
 
+void iToDo::next()
+{
+	in();
+	/* if there is no childs */
+	if (end())
+	{
+		/* while is the end of the childs go to the parent and move forward */
+		while (end() && !path.empty()) {
+			out();
+			operator++();
+		}
+
+		/* if is the last task continue from the beginning */
+		if (end() && path.empty())
+			cursor = parent->childs.begin();
+	}
+}
+
+void iToDo::prev()
+{
+	/* if is not the first child move up and go as deep as possible */
+	if (!begin())
+	{
+		operator--();
+		while ((*cursor)->haveChild())
+		{
+			in();
+			while (operator++());
+			operator--();
+		}
+	}
+	/* if is the first child go to the parent */
+	else
+	{
+		if (!out())
+		{
+			cursor = parent->childs.end();
+			cursor--;
+			while ((*cursor)->haveChild())
+			{
+				in();
+				while (operator++());
+				operator--();
+			}
+		}
+	}
+}
+
 ToDo &iToDo::operator*()
 {
 	if (!end()) return *(*cursor);
@@ -475,14 +523,34 @@ void iToDo::sort(char order[])
 	root->_sort();
 }
 
-bool iToDo::_search()
-{
-	//TODO
-}
-
 bool iToDo::search(string& str)
 {
-	iToDo begining = *this;
-	//TODO
+	pToDo begin = *cursor;
 
+	while (1)
+	{
+		next();
+		/* if the title contains str */
+		if ((*cursor)->title.find(str, 0) != string::npos)
+			return true;
+		/* if is the same as the beginning */
+		if (*cursor == begin)
+			return false;
+	}
+}
+
+bool iToDo::searchUp(string& str)
+{
+	pToDo begin = *cursor;
+
+	while (1)
+	{
+		prev();
+		/* if the title contains str */
+		if ((*cursor)->title.find(str, 0) != string::npos)
+			return true;
+		/* if is the same as the beginning */
+		if (*cursor == begin)
+			return false;
+	}
 }

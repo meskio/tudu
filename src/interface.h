@@ -95,6 +95,8 @@ private:
 	void collapse();
 	void hide_done();
 	void search();
+	void search_next();
+	void search_prev();
 	void sortByTitle();
 	void sortByDone();
 	void sortByDeadline();

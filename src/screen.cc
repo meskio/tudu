@@ -770,7 +770,7 @@ void Screen::infoPercent(int percent)
 	do { \
 	h._erase(); \
 	h._move(0,0); \
-	for (int i = cursor; (i<len) && (i-cursor<lines); ++i) \
+	for (int i = cursor; (i<=len) && (i-cursor<lines); ++i) \
 		h._addstr(str[i]); \
 	h._refresh(); \
 	} while (0)
@@ -800,7 +800,7 @@ void Screen::helpPopUp(string str[], int len)
 				resized = true;
 				break;
 			case KEY_DOWN:
-				if (cursor < len-lines)
+				if (cursor <= len-lines)
 				{
 					++cursor;
 					draw_help();
@@ -813,12 +813,24 @@ void Screen::helpPopUp(string str[], int len)
 					draw_help();
 				}
 				break;
+			case  KEY_NPAGE:
+				cursor += lines;
+				if (cursor > len-lines)
+					cursor = len + 1 - lines;
+				draw_help();
+				break;
+			case  KEY_PPAGE:
+				cursor -= lines;
+				if (cursor < 0)
+					cursor = 0;
+				draw_help();
+				break;
 			case KEY_HOME:
 				cursor = 0;
 				draw_help();
 				break;
 			case KEY_END:
-				cursor = len - lines;
+				cursor = len + 1 - lines;
 				draw_help();
 				break;
 			default: 

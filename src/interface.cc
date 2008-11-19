@@ -94,6 +94,8 @@ void Interface::main()
 			if ("collapse" == action) collapse();
 			if ("hideDone" == action) hide_done();
 			if ("search" == action) search();
+			if ("searchNext" == action) search_next();
+			if ("searchPrev" == action) search_prev();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -631,11 +633,23 @@ void Interface::search()
 {
 	string pattern("");
 
-	screen.searchText(pattern);
-	if (cursor.search(pattern))
+	if (screen.searchText(pattern))
 	{
-	//TODO
+		if (cursor.search(pattern))
+		{
+		//TODO
+		}
 	}
+}
+
+void Interface::search_next()
+{
+	//TODO
+}
+
+void Interface::search_prev()
+{
+	//TODO
 }
 
 void Interface::sortByTitle()
@@ -717,7 +731,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 45
+#define LINES_HELP 47
 void Interface::help()
 {
 	action_list list;
@@ -755,6 +769,8 @@ void Interface::help()
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
 	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
 	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
+	str[i++] = "  " + list["search_next"] + "\tgo to next search result\n";
+	str[i++] = "  " + list["search_prev"] + "\tgo to previous search result\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
 	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
 	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";

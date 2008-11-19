@@ -21,6 +21,7 @@
 #define EDITOR_H
 
 #include <string>
+#include <list>
 #include "window.h"
 
 class Editor
@@ -36,7 +37,9 @@ protected:
 	int cursor;
 	int key;
 	bool exit;
+	bool result;
 
+	virtual void initialize();
 	virtual void left();
 	virtual void right();
 	virtual void up();
@@ -45,8 +48,9 @@ protected:
 	virtual void end();
 	virtual void backspace();
 	virtual void supr();
-	virtual void esc();
 	virtual void other();
+	virtual void enter();
+	virtual void esc();
 };
 
 class LineEditor: public Editor
@@ -58,8 +62,19 @@ protected:
 	void end();
 	void backspace();
 	void supr();
-	void esc();
 	void other();
+};
+
+class SearchEditor: public LineEditor
+{
+protected:
+	list<string> history;
+	list<string>::iterator shown;
+
+	void initialize();
+	void up();
+	void down();
+	void enter();
 };
 
 class DateEditor: public Editor
@@ -67,7 +82,8 @@ class DateEditor: public Editor
 protected:
 	void left();
 	void right();
-	void esc();
+	void home();
+	void end();
 	void other();
 };
 
@@ -78,7 +94,6 @@ protected:
 	void down();
 	void backspace();
 	void supr();
-	void esc();
 	void other();
 };
 

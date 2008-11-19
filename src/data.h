@@ -118,11 +118,14 @@ public:
 	 * the same leters in capital are for inverse order
 	 */
 	void sort(char order[]);
+	bool search(string& str);
 protected:
 	pToDo root;
 	stack<list<pToDo>::iterator> path;
 	stack<pToDo> parents;
 	cursor_t cursor;
+
+	bool _search();
 };
 
 #endif

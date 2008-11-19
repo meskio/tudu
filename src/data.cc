@@ -474,3 +474,15 @@ void iToDo::sort(char order[])
 	}
 	root->_sort();
 }
+
+bool iToDo::_search()
+{
+	//TODO
+}
+
+bool iToDo::search(string& str)
+{
+	iToDo begining = *this;
+	//TODO
+
+}

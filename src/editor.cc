@@ -40,16 +40,18 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 {
 	bool resized = false;
 
+	initialize();
 	exit = false;
+	result = true;
 	win._move(y, x);
 	win._addstr(text);
 	win._move(y, x+cursor);
 	echo();
 	curs_set(1);
 	win._refresh();
-	key = win._getch();
-	while ('\n' != key)
+	while (!exit)
 	{
+		key = win._getch();
 		switch (key)
 		{
 			case KEY_RESIZE:
@@ -73,6 +75,8 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				break;
 			case '\e': esc();
 				break;
+			case '\n': enter();
+				break;
 			default: other();
 				break;
 		}
@@ -86,17 +90,16 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				win._addch(' ');
 		win._move(y, x+cursor);
 		win._refresh();
-		if (exit) break;
-		key = win._getch();
 	}
 	noecho();
 	curs_set(0);
 	win._refresh();
 
 	if (resized) ungetch(KEY_RESIZE);
-	return !exit;
+	return result;
 }
 
+void Editor::initialize() {}
 void Editor::left() {}
 void Editor::right() {}
 void Editor::up() {}
@@ -105,15 +108,28 @@ void Editor::home() {}
 void Editor::end() {}
 void Editor::backspace() {}
 void Editor::supr() {}
-void Editor::esc() {}
 void Editor::other() {}
 
+void Editor::esc()
+{ 
+	exit = true;
+	result = false;
+}
+
+void Editor::enter()
+{ 
+	exit = true;
+}
 
 
 void LineEditor::left()
 {
 	if (cursor>0) --cursor;
-	else if (text.length() == 0) exit = true;
+	else if (text.length() == 0)
+	{
+		exit = true;
+		result = false;
+	}
 }
 
 void LineEditor::right()
@@ -141,11 +157,6 @@ void LineEditor::supr()
 	if (cursor<(int)text.length()) text.erase(cursor, 1);
 }
 
-void LineEditor::esc()
-{
-	exit = true;
-}
-
 void LineEditor::other()
 {
 	if (key < 256)
@@ -153,6 +164,39 @@ void LineEditor::other()
 		text.insert(cursor,1,key);
 		++cursor;
 	}
+}
+
+void SearchEditor::initialize()
+{
+	shown = history.begin();
+	cursor = 0;
+	text = "";
+}
+
+void SearchEditor::up()
+{
+	if (shown != history.end())
+	{
+		text = *shown;
+		cursor = text.length();
+		shown++;
+	}
+}
+
+void SearchEditor::down()
+{
+	if (shown != history.begin())
+	{
+		shown--;
+		text = *shown;
+		cursor = text.length();
+	}
+}
+
+void SearchEditor::enter()
+{
+	exit = true;
+	history.push_front(text);
 }
 
 void DateEditor::left()
@@ -167,9 +211,14 @@ void DateEditor::right()
 	if ((2==cursor) || (5==cursor)) ++cursor;
 }
 
-void DateEditor::esc()
+void DateEditor::home()
 {
-	exit = true;
+	cursor = 0;
+}
+
+void DateEditor::end()
+{
+	cursor = 9;
 }
 
 void DateEditor::other()
@@ -216,11 +265,6 @@ void PriorityEditor::backspace()
 void PriorityEditor::supr()
 {
 	text = "N";
-}
-
-void PriorityEditor::esc()
-{
-	exit = true;
 }
 
 void PriorityEditor::other()

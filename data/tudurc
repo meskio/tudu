@@ -52,6 +52,7 @@ upText       = x
 downText     = z
 collapse     = c
 hideDone     = M   #hide/show done tasks
+search       = /
 sortByTitle  = bt
 sortRevTitle = bT
 sortByDone   = bd

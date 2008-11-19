@@ -52,6 +52,7 @@ public:
 	void setCategory(int line, string& category);
 	void treeClear();
 	int treeLines();
+	bool searchText(string& pattern);
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);
@@ -69,6 +70,7 @@ private:
 	LineEditor lineEditor;
 	DateEditor dateEditor;
 	PriorityEditor priorityEditor;
+	SearchEditor searchEditor;
 	window_coor coor[NUM_WINDOWS];
 
 	void draw();

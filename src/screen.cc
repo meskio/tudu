@@ -706,6 +706,26 @@ int Screen::treeLines()
 	return wtree->_lines();
 }
 
+bool Screen::searchText(string& pattern)
+{
+	if (coor[WINFO].exist)
+	{
+		bool save;
+
+		infoClear();
+		winfo->_addch(0,0,'/');
+		save = searchEditor.edit(*winfo, 0, 1, 
+				coor[WINFO].cols-PERCENT_COL-1);
+		pattern = searchEditor.getText();
+		infoClear();
+		return save;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Screen::infoMsg(const char str[])
 {
 	if (coor[WINFO].exist)

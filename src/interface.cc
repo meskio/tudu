@@ -93,6 +93,7 @@ void Interface::main()
 			if ("upText" == action) upText();
 			if ("collapse" == action) collapse();
 			if ("hideDone" == action) hide_done();
+			if ("search" == action) search();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -626,6 +627,17 @@ void Interface::hide_done()
 	drawTodo();
 }
 
+void Interface::search()
+{
+	string pattern("");
+
+	screen.searchText(pattern);
+	if (cursor.search(pattern))
+	{
+	//TODO
+	}
+}
+
 void Interface::sortByTitle()
 {
 	sortOrder[0] = 't';
@@ -705,7 +717,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 44
+#define LINES_HELP 45
 void Interface::help()
 {
 	action_list list;
@@ -742,6 +754,7 @@ void Interface::help()
 	str[i++] = "  " + list["schedDown"] +  "\tmove down the task on the scheduler\n";
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
 	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
+	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
 	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
 	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";

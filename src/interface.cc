@@ -638,9 +638,11 @@ bool Interface::_search()
 	if (hit.search(search_pattern))
 	{
 		iToDo first_hit = hit;
+		/* if is hide search the next one */
 		while (isHide(hit))
 		{
 			hit.search(search_pattern);
+			/* if there is only hidden tasks exit */
 			if (first_hit == hit)
 			{
 				res = false;
@@ -651,7 +653,12 @@ bool Interface::_search()
 	else
 		res = false;
 
-	if (res) cursor = hit;
+	if (res)
+	{
+		while (cursor.out()) cursor->actCollapse() = false;
+		cursor = hit;
+		while (hit.out()) hit->actCollapse() = true;
+	}
 	return res;
 }
 

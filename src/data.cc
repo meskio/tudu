@@ -314,6 +314,11 @@ iToDo& iToDo::operator=(const iToDo& t)
 	return *this;
 }
 
+bool iToDo::operator==(const iToDo& t)
+{
+	return (*t.cursor) == (*cursor);
+}
+
 bool iToDo::operator++()
 {
 	if (!end())

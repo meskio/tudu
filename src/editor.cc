@@ -75,7 +75,8 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				break;
 			case '\e': esc();
 				break;
-			case '\n': enter();
+			case '\n':
+			case KEY_ENTER: enter();
 				break;
 			default: other();
 				break;

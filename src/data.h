@@ -93,6 +93,7 @@ public:
 	iToDo(ToDo& t);
 
 	iToDo& operator=(const iToDo& t);
+	bool operator==(const iToDo& t);
 	bool operator++();
 	bool operator--();
 	bool in();

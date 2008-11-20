@@ -630,6 +630,31 @@ void Interface::hide_done()
 	drawTodo();
 }
 
+bool Interface::_search()
+{
+	bool res = true;
+	iToDo hit = cursor;
+
+	if (hit.search(search_pattern))
+	{
+		iToDo first_hit = hit;
+		while (isHide(hit))
+		{
+			hit.search(search_pattern);
+			if (first_hit == hit)
+			{
+				res = false;
+				break;
+			}
+		}
+	}
+	else
+		res = false;
+
+	if (res) cursor = hit;
+	return res;
+}
+
 void Interface::search()
 {
 	string pattern("");
@@ -637,18 +662,20 @@ void Interface::search()
 	if (screen.searchText(pattern))
 	{
 		search_pattern = pattern;
-		if (cursor.search(pattern))
+		if (_search())
 			drawTodo();
+		else
+			screen.infoMsg("Not found");
 	}
 }
 
 void Interface::search_next()
 {
 	if (search_pattern != "")
-	{
-		if (cursor.search(search_pattern))
+		if (_search())
 			drawTodo();
-	}
+		else
+			screen.infoMsg("Not found");
 	else
 		screen.infoMsg("No search pattern");
 }
@@ -656,10 +683,10 @@ void Interface::search_next()
 void Interface::search_prev()
 {
 	if (search_pattern != "")
-	{
-		if (cursor.searchUp(search_pattern))
+		if (_search())
 			drawTodo();
-	}
+		else
+			screen.infoMsg("Not found");
 	else
 		screen.infoMsg("No search pattern");
 }

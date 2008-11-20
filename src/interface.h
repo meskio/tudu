@@ -95,6 +95,7 @@ private:
 	void downText();
 	void collapse();
 	void hide_done();
+	bool _search();
 	void search();
 	void search_next();
 	void search_prev();

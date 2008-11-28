@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
-<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
+<!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
 		<title>support for international chars (UTF-8)</title>
 		<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>reorder sched is boggus</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>automake</title>
+		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="yes">
@@ -52,11 +62,6 @@
 		</todo>
 		<todo done="yes" collapse="no">
 			<title>search '/'</title>
-			<text>
-</text>
-		</todo>
-		<todo done="no" collapse="no">
-			<title>numbers like vim for repeat a command</title>
 			<text>
 </text>
 		</todo>

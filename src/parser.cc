@@ -259,6 +259,7 @@ void Writer::save()
 	i->sort((char*)"");
 	while(--(*i));
 	_save();
+	delete i;
 	file << "</todo>" << endl;
 	file.close();
 }

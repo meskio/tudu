@@ -815,8 +815,8 @@ void Interface::help()
 	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
 	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
 	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
-	str[i++] = "  " + list["search_next"] + "\tgo to next search result\n";
-	str[i++] = "  " + list["search_prev"] + "\tgo to previous search result\n";
+	str[i++] = "  " + list["searchNext"] + "\tgo to next search result\n";
+	str[i++] = "  " + list["searchPrev"] + "\tgo to previous search result\n";
 	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
 	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
 	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";

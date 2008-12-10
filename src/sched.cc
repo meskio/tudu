@@ -19,6 +19,11 @@
 
 #include "sched.h"
 
+/*
+ * when del don't update the position of the neighbours
+ * because when paste it use the last position
+ */
+
 void Sched::add_recursive(pToDo todo)
 {
 	for (iToDo j(*todo) ; !j.end(); ++j)
@@ -60,8 +65,9 @@ void Sched::up(pToDo todo)
 	/* if there is a task before swap them */
 	if ((i != sched.begin()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
 	{
-		(*j)->schedPosition()++;
-		todo->schedPosition()--;
+		int aux = (*j)->schedPosition();
+		(*j)->schedPosition() = todo->schedPosition();
+		todo->schedPosition() = aux;
 		sched.insert(j, todo);
 		j = i; i++;
 		sched.erase(j,i);
@@ -79,8 +85,9 @@ void Sched::down(pToDo todo)
 	if ((j != sched.end()) && ((*i) == todo) && ((*j)->sched() == todo->sched()))
 	{
 		sched.erase(i,j);
-		(*j)->schedPosition()--;
-		todo->schedPosition()++;
+		int aux = (*j)->schedPosition();
+		(*j)->schedPosition() = todo->schedPosition();
+		todo->schedPosition() = aux;
 		j++;
 		sched.insert(j, todo);
 	}

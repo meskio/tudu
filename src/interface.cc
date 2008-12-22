@@ -518,7 +518,6 @@ void Interface::editText()
 		char path[L_tmpnam];
 		char s[86];
 		char* argv[32];
-		\
 		int argc;
 		char* res;
 		string str;
@@ -536,7 +535,6 @@ void Interface::editText()
 		ofs.close();
 		sprintf(s, editor, path);
 
-		screen.infoMsg(s);
 		argc=0;
 		argv[argc] = strtok(s, " \t");
 		while ((res = strtok(NULL, " \t")) != NULL)
@@ -546,6 +544,7 @@ void Interface::editText()
 		}
 		argv[argc+1] = NULL;
 		
+		endwin();
 		switch (fork())
 		{
 			case 0:
@@ -558,6 +557,7 @@ void Interface::editText()
 				wait(NULL);
 				break;
 		}
+		doupdate();
 		
 		ifstream ifs(path);
 		char c;
@@ -572,9 +572,6 @@ void Interface::editText()
 		screen.drawText(cursor->getText());
 		noecho();
 		curs_set(0);
-		
-		/* force redraw screen, because it don't recover well sometimes */
-		resizeTerm();
 	}
 	else
 	{

@@ -1,13 +1,13 @@
-This package was debianized by Ruben Pollan Bella <meskio@amedias.org> on
+This package was debianized by Ruben Pollan Bella <meskio@sindominio.net> on
 Sat, 28 Jun 2008 19:24:55 +0200.
 
 It was downloaded from <http://cauterized.net/~meskio/tudu/>
 
 Upstream Author: 
-  Ruben Pollan Bella <meskio@amedias.org>
+  Ruben Pollan Bella <meskio@sindominio.net>
 
 Copyright:
-  Copyright (C) 2007-2008  Ruben Pollan Bella <meskio@amedias.org>
+  Copyright (C) 2007-2008  Ruben Pollan Bella <meskio@sindominio.net>
 
 Licence:
   TuDu is free software; you can redistribute it and/or modify
@@ -25,5 +25,5 @@ Licence:
 On Debian systems, the complete text of the GNU General Public License 
 can be found in '/usr/share/common-licenses/GPL-3'.
 
-The Debian packaging is (C) 2008, Ruben Pollan Bella <meskio@amedias.org>
+The Debian packaging is (C) 2008, Ruben Pollan Bella <meskio@sindominio.net>
 and is licensed under the GPL, see `/usr/share/common-licenses/GPL-3'.

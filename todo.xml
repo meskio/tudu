@@ -16,6 +16,11 @@
 		<text>
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>document in manpage</title>
+		<text>
+</text>
+	</todo>
 	<todo done="no" collapse="yes">
 		<title>document</title>
 		<text>

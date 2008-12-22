@@ -1,7 +1,7 @@
 Source: tudu
 Section: utils
 Priority: optional
-Maintainer: Ruben Pollan Bella <meskio@amedias.org>
+Maintainer: Ruben Pollan Bella <meskio@sindominio.net>
 Build-Depends: debhelper (>= 5.0.0), cdbs, libncurses5-dev, libstdc++-dev
 Standards-Version: 3.8.0
 Homepage: http://cauterized.net/~meskio/tudu/

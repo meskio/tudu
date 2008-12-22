@@ -37,7 +37,7 @@ using namespace std;
 #define ETC_DIR "/usr/local/etc"
 #endif
 
-#define VERSION "TuDu 0.4.1 (2008)"
+#define VERSION "TuDu 0.5pre1 (2008)"
 #define WELCOME_FILE SHARE_DIR"/welcome.xml"
 #define CONFIG_FILE ETC_DIR"/tudurc"
 
@@ -51,14 +51,14 @@ using namespace std;
 
 #define version() \
 	cout << VERSION << endl; \
-	cout << "TuDu Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software, and you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions; type `tudu -vv' for details." << endl;
 
 #define copyright() \
 	cout << VERSION << endl; \
-	cout << "Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>" << endl << endl; \
+	cout << "Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
  	cout << "TuDu is free software; you can redistribute it and/or modify" << endl; \
  	cout << "it under the terms of the GNU General Public License as published by" << endl; \
  	cout << "the Free Software Foundation; either version 3 of the License." << endl << endl; \

@@ -1,3 +1,9 @@
+0.5
+	* Added search on titles
+	* Added home and end keys on the editor
+	* Editing the title if is empty left arrow destroy the task
+	* Fixed reorder tasks
+
 0.4.1
 	* Added reorder tasks on the scheluder
 	* Fixed paste as child when task is collapsed

@@ -35,4 +35,6 @@ shells the bold characters are indistinguishable of the normal ones. For that
 cases (or others) there is the posibility of show "(+)", for the collapsed 
 tasks, and "(-)", for the expanded tasks, at the left of them. This option is
 activated on the config file by the option:
+
+[ general ]
 visual_tree  = yes

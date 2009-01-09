@@ -842,6 +842,7 @@ void Screen::helpPopUp(string str[], int len)
 	if (resized) ungetch(KEY_RESIZE);
 	h._erase();
 
+	/* redraw everything, removing the help window */
 	redrawwin(stdscr);
 	refresh();
 	wtree->_redraw();

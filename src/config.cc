@@ -289,7 +289,7 @@ void Config::getThemeRow(string& value)
 
 	if (row_index == MAX_THEME_ROWS)
 	{
-		fprintf(stderr, "Error: too much rows in theme\n");
+		fprintf(stderr, "Error: too many rows in theme\n");
 		exit(1);
 	}
 
@@ -325,7 +325,7 @@ void Config::getThemeRow(string& value)
 		i=value.find(",", j);
 		if (win == MAX_THEME_WINDOWS)
 		{
-			fprintf(stderr, "Error: too much windows in a row for theme\n");
+			fprintf(stderr, "Error: too many windows in a row for theme\n");
 			exit(1);
 		}
 
@@ -400,7 +400,7 @@ void Config::getThemeTree(string& value)
 	{
 		if (tree_index>MAX_THEME_TREECOLS)
 		{
-			fprintf(stderr, "Error: too much cols in a tree for theme\n");
+			fprintf(stderr, "Error: too many cols in a tree for theme\n");
 			exit(1);
 		}
 		i=value.find(",", j);

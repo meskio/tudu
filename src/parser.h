@@ -58,6 +58,7 @@ public:
 	~Writer();
 
 	void save();
+	void path(const char* path);
 private:
 	ofstream file;
 	ToDo& todo;

@@ -449,7 +449,7 @@ bool Interface::editLine(string& str)
 	bool save;
 
 	str = cursor->getTitle();
-	screen.infoMsg("Editing todo. Press enter for save it or esc for not save");
+	screen.infoMsg("Editing todo. Press ENTER to save or ESC to abort edit");
 	save = screen.editTitle(cursor_line(), cursor.depth(), 
 			cursor->haveChild(), str);
 	screen.infoClear();
@@ -458,7 +458,7 @@ bool Interface::editLine(string& str)
 
 void Interface::editDeadline()
 {
-	screen.infoMsg("Editing deadline. Press enter for save it or esc for not save");
+	screen.infoMsg("Editing deadline. Press ENTER to save or ESC to abort edit");
 	screen.editDeadline(cursor_line(), cursor->deadline(), cursor->done());
 	screen.infoClear();
 	drawTodo();
@@ -466,7 +466,7 @@ void Interface::editDeadline()
 
 void Interface::setPriority()
 {
-	screen.infoMsg("Editing priority. Press enter for save it or esc for not save");
+	screen.infoMsg("Editing priority. Press ENTER to save or ESC to abort edit");
 	screen.setPriority(cursor_line(), cursor->priority());
 	screen.infoClear();
 	drawTodo();
@@ -474,7 +474,7 @@ void Interface::setPriority()
 
 void Interface::setCategory()
 {
-	screen.infoMsg("Editing category. Press enter for save it or esc for not save");
+	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
 	screen.setCategory(cursor_line(), cursor->category());
 	screen.infoClear();
 	drawTodo();
@@ -575,7 +575,7 @@ void Interface::editText()
 	}
 	else
 	{
-		screen.infoMsg("Editing text. Press esc for save it");
+		screen.infoMsg("Editing text. Press ESC to save");
 		screen.editText(cursor->getText());
 		screen.infoClear();
 	}
@@ -794,23 +794,23 @@ void Interface::help()
 	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
 	str[i++] = "  " + list["delPriority"] + "\tdelete priority\n";
 	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
-	str[i++] = "  " + list["paste"] + "\tpaste the last deleted\n";
-	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deleted upper than the cursor\n";
-	str[i++] = "  " + list["pasteChild"] + "\tpaste the last deleted as child of the task\n";
+	str[i++] = "  " + list["paste"] + "\tpaste the last deletion\n";
+	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deletion above the cursor\n";
+	str[i++] = "  " + list["pasteChild"] + "\tpaste the last deletion as child of the task\n";
 	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
 	str[i++] = "  " + list["addTodoUp"] + "\tadd line upper than the cursor\n";
 	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";
 	str[i++] = "  " + list["editText"] + "\tedit text\n";
 	str[i++] = "  " + list["editDeadline"] + "\tedit/add deadline\n";
 	str[i++] = "  " + list["editSched"] + "\tedit/add schedule\n";
-	str[i++] = "  " + list["setPriority"] + "\tadd or modify the priority\n";
-	str[i++] = "  " + list["setCategory"] + "\tadd or modify the category\n";
-	str[i++] = "  " + list["downText"] + "\tscroll down the text\n";
-	str[i++] = "  " + list["upText"] + "\tscroll up the text\n";
+	str[i++] = "  " + list["setPriority"] + "\tadd or modify priority\n";
+	str[i++] = "  " + list["setCategory"] + "\tadd or modify category\n";
+	str[i++] = "  " + list["downText"] + "\tscroll text down\n";
+	str[i++] = "  " + list["upText"] + "\tscroll text up\n";
 	str[i++] = "  " + list["schedUp"] + "\tmove up the task on the scheduler\n";
 	str[i++] = "  " + list["schedDown"] +  "\tmove down the task on the scheduler\n";
-	str[i++] = "  " + list["collapse"] + "\tcollapse childs\n";
-	str[i++] = "  " + list["hideDone"] + "\thide done tasks\n";
+	str[i++] = "  " + list["collapse"] + "\tcollapse children\n";
+	str[i++] = "  " + list["hideDone"] + "\thide tasks that are done\n";
 	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
 	str[i++] = "  " + list["searchNext"] + "\tgo to next search result\n";
 	str[i++] = "  " + list["searchPrev"] + "\tgo to previous search result\n";

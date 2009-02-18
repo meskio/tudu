@@ -5,7 +5,7 @@
 <!ELEMENT title (#PCDATA)>
 <!ELEMENT deadline (day, month, year)>
 	<!ELEMENT day (#PCDATA)>
-	<!ELEMENT mont (#PCDATA)>
+	<!ELEMENT month (#PCDATA)>
 	<!ELEMENT year (#PCDATA)>
 <!ELEMENT priority (#PCDATA)>
 <!ELEMENT category (#PCDATA)>

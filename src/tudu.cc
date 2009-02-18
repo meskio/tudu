@@ -53,8 +53,8 @@ using namespace std;
 	cout << VERSION << endl; \
 	cout << "TuDu Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
-	cout << "This is free software, and you are welcome to redistribute it" << endl; \
-	cout << "under certain conditions; type `tudu -vv' for details." << endl;
+	cout << "This is free software; you are welcome to redistribute it" << endl; \
+	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
 
 #define copyright() \
 	cout << VERSION << endl; \
@@ -79,7 +79,7 @@ int main(int argc, char **argv, char *env[])
 	Config config;
 	if (!config.load(CONFIG_FILE))
 	{
-		fprintf(stderr, "Err: Global config don't exist. The config should be %s\n", CONFIG_FILE);
+		fprintf(stderr, "Err: Global config does not exist. The config should be %s\n", CONFIG_FILE);
 		exit(1);
 	}
 	strncpy(file_rc,env[i]+5,119);
@@ -141,7 +141,7 @@ int main(int argc, char **argv, char *env[])
 		/* welcome file don't exist */
 		if (!welcome.parse(node,sched))
 		{
-			fprintf(stderr, "Err: Welcome file don't exist. It should be %s\n", WELCOME_FILE);
+			fprintf(stderr, "Err: Welcome file does not exist. It should be %s\n", WELCOME_FILE);
 			exit(1);
 		}
 	}

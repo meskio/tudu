@@ -104,7 +104,7 @@ void Screen::draw()
 		clear();
 		refresh();
 		endwin();
-		fprintf(stderr, "Err: Theme don't fits\n");
+		fprintf(stderr, "Err: Theme does not fit\n");
 		exit(1);
 	}
 
@@ -171,7 +171,7 @@ void Screen::resizeTerm()
 		clear();
 		refresh();
 		endwin();
-		fprintf(stderr, "Err: Theme don't fits\n");
+		fprintf(stderr, "Err: Theme does not fit\n");
 		exit(1);
 	}
 
@@ -780,7 +780,7 @@ void Screen::helpPopUp(string str[], int len)
         getmaxyx(stdscr, lines, cols); 
 	Window help_box(lines-8, cols-16, 4, 8);
 	help_box._box();
-	string s = "--- Pulse any key for close ---";
+	string s = "--- Press any key to close ---";
 	help_box._move(lines-10, (cols/2)-8-(s.length()/2));
 	help_box._addstr(s);
 	help_box._refresh();

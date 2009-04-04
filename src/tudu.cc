@@ -25,9 +25,12 @@
 #include "config.h"
 
 #include <iostream>
+#include <string>
 #include <cstdio>
 #include <cstring>
+#include <errno.h>
 using namespace std;
+extern int errno;
 
 #ifndef SHARE_DIR
 #define SHARE_DIR "/usr/local/share/tudu"
@@ -69,10 +72,32 @@ using namespace std;
  	cout << "You should have received a copy of the GNU General Public License" << endl; \
 	cout << "along with this program.  If not, see <http://www.gnu.org/licenses/>." << endl;
 
+/* return true for delete lock file and false for close tudu */
+bool lock_ask()
+{
+	cout << endl << "Lock file found" << endl;
+	cout << endl << "or" << endl;
+	cout << "    Another program may be editing the same file." << endl;
+	cout << "    If this is the case, be careful not to end up with two" << endl;
+	cout << "    different instances of the same file when making changes." << endl;
+	cout << "    Quit, or continue with caution." << endl;
+	cout << endl << "or" << endl;
+	cout << "    A tudu session for this file crashed." << endl;
+	cout << "    \"Edit anyway\" will destroy the lock file." << endl;
+	cout << endl << "[E]dit anyway, [Q]uit:";
+	string str;
+       	cin >> str;
+
+	if (str[0] == 'E')
+		return true;
+	else
+		return false;
+}
+
 int main(int argc, char **argv, char *env[])
 {
 	int i;
-	char file_rc[128], file_xml[128];
+	char file_rc[128], file_xml[128], file_lock[133];
 
 	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
 
@@ -89,6 +114,9 @@ int main(int argc, char **argv, char *env[])
 	strncpy(file_xml,env[i]+5,117);
 	strcat(file_xml,"/.tudu.xml");
 
+	/*
+	 * Parse the comand line arguments
+	 */
 	for (i = 1; i < argc; ++i)
 	{
 		if (!strncmp("-f",argv[i],2))
@@ -131,6 +159,42 @@ int main(int argc, char **argv, char *env[])
 		}
 	}
 
+	/*
+	 * Check and create the lock file
+	 */
+	strcpy(file_lock,file_xml);
+	for (i = strlen(file_lock); (file_lock[i] != '/') && (i > 0); i++);
+	if (file_lock[i] == '/') i++;
+	if (file_lock[i] != '.')
+	{
+		file_lock[i] = '.';
+		file_lock[i+1] = '\0';
+		strcat(file_lock, file_xml+i);
+	}
+	strcat(file_lock,"_lock");
+	// FIXME: it wont work with NFS
+	int lock;
+	lock = open(file_lock, O_CREAT|O_EXCL);
+	if (lock == -1)
+	{
+		if (errno = EEXIST)
+		{
+			if (!lock_ask()) exit(1);
+		}
+		else
+		{
+			fprintf(stderr, "Err: I can not create the lock file %s\n", file_lock);
+			exit(1);
+		}
+	}
+	else
+	{
+		close(lock);
+	}
+
+	/*
+	 * Load data
+	 */
 	ToDo node("");
 	iToDo it(node);
 	Sched sched;
@@ -146,9 +210,17 @@ int main(int argc, char **argv, char *env[])
 		}
 	}
 
+	/*
+	 * Load end start interface
+	 */
 	Writer w(file_xml,node);
 	Screen screen(config);
 	Interface in(screen,it,sched,config,w);
 	in.main();
+
+	/*
+	 * Delete lock file
+	 */
+	unlink(file_lock);
 	return 0;
 }

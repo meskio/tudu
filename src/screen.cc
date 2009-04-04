@@ -106,6 +106,7 @@ void Screen::draw()
 		endwin();
 		fprintf(stderr, "Err: Theme does not fit\n");
 		exit(1);
+		//FIXME: delete lock
 	}
 
 	/* create windows */
@@ -173,6 +174,7 @@ void Screen::resizeTerm()
 		endwin();
 		fprintf(stderr, "Err: Theme does not fit\n");
 		exit(1);
+		//FIXME: delete lock
 	}
 
 	/* resize windows */

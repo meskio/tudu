@@ -54,11 +54,10 @@ private:
 class Writer
 {
 public:
-	Writer(const char* path, ToDo& t);
+	Writer(const char* pathToSave, ToDo& t);
 	~Writer();
 
 	void save();
-	void path(const char* path);
 private:
 	ofstream file;
 	ToDo& todo;

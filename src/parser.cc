@@ -264,11 +264,6 @@ void Writer::save()
 	file.close();
 }
 
-int path(const char* path)
-{
-	strncpy(path, pathToSave, 128);
-}
-
 #define putTabs(num) \
 	for (int j = 0; j < num+1; j++) file << "\t"
 

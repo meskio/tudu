@@ -18,6 +18,7 @@
  **************************************************************************/
 
 #include "editor.h"
+#include "interface.h"
 
 Editor::Editor()
 {
@@ -69,6 +70,10 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				break;
 			case KEY_END: end();
 				break;
+			case '\t': tab();
+				break;
+			case KEY_BTAB: back_tab();
+				break;
 			case KEY_BACKSPACE: backspace();
 				break;
 			case KEY_DC: supr();
@@ -107,6 +112,8 @@ void Editor::up() {}
 void Editor::down() {}
 void Editor::home() {}
 void Editor::end() {}
+void Editor::tab() {}
+void Editor::back_tab() {}
 void Editor::backspace() {}
 void Editor::supr() {}
 void Editor::other() {}
@@ -167,14 +174,14 @@ void LineEditor::other()
 	}
 }
 
-void SearchEditor::initialize()
+void HistoryEditor::initialize()
 {
 	shown = history.begin();
 	cursor = 0;
 	text = "";
 }
 
-void SearchEditor::up()
+void HistoryEditor::up()
 {
 	if (shown != history.end())
 	{
@@ -184,7 +191,7 @@ void SearchEditor::up()
 	}
 }
 
-void SearchEditor::down()
+void HistoryEditor::down()
 {
 	if (shown != history.begin())
 	{
@@ -194,10 +201,60 @@ void SearchEditor::down()
 	}
 }
 
-void SearchEditor::enter()
+void HistoryEditor::enter()
 {
 	exit = true;
 	history.push_front(text);
+}
+
+void CmdEditor::initialize()
+{
+	command = -1;
+
+	//FIXME: call the parent method
+	shown = history.begin();
+	cursor = 0;
+	text = "";
+}
+
+#define compare_command() text.compare(0, length, commands[command], length)
+void CmdEditor::tab()
+{
+	string params("");
+	size_t length;
+
+	/* Get the command and params in text */
+	if (string::npos == (length = text.find(' ', 0)))
+		length = text.length();
+	else
+		params = text.substr(length);
+	/* if it's exactly I gess is not the first press on tab */
+	if ((command != -1) && (strlen(commands[command]) == length) && (!compare_command()))
+		length = letters;
+
+	/* Search for a command with the tiped letters */
+	if ((command != -1) && (compare_command() > 0))
+	{
+		for (command--; (command != -1) && (compare_command()  >= 0); command--);
+		command++;
+	}
+	else
+	{
+		for (command++; (command < commands_length) && (compare_command() < 0); command++);
+	}
+
+	/* if exist a command display it */
+	if (!compare_command())
+	{
+		text = commands[command];
+		text += params;
+		letters = length;
+	}
+}
+
+void CmdEditor::back_tab()
+{
+	//TODO
 }
 
 void DateEditor::left()

@@ -21,6 +21,7 @@
 #define EDITOR_H
 
 #include <string>
+#include <string.h>
 #include <list>
 #include "window.h"
 
@@ -46,6 +47,8 @@ protected:
 	virtual void down();
 	virtual void home();
 	virtual void end();
+	virtual void tab();
+	virtual void back_tab();
 	virtual void backspace();
 	virtual void supr();
 	virtual void other();
@@ -65,7 +68,7 @@ protected:
 	void other();
 };
 
-class SearchEditor: public LineEditor
+class HistoryEditor: public LineEditor
 {
 protected:
 	list<string> history;
@@ -75,6 +78,17 @@ protected:
 	void up();
 	void down();
 	void enter();
+};
+
+class CmdEditor: public HistoryEditor
+{
+protected:
+	int command; /* pointer to the last command displayed */
+	int letters; /* number of letter used in the search */
+
+	void initialize();
+	void tab();
+	void back_tab();
 };
 
 class DateEditor: public Editor

@@ -53,6 +53,7 @@ public:
 	void treeClear();
 	int treeLines();
 	bool searchText(string& pattern);
+	bool cmd(string& command);
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);
@@ -70,7 +71,8 @@ private:
 	LineEditor lineEditor;
 	DateEditor dateEditor;
 	PriorityEditor priorityEditor;
-	SearchEditor searchEditor;
+	HistoryEditor searchEditor;
+	CmdEditor cmdEditor;
 	window_coor coor[NUM_WINDOWS];
 
 	void draw();

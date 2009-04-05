@@ -88,7 +88,7 @@ bool lock_ask()
 	string str;
        	cin >> str;
 
-	if (str[0] == 'E')
+	if ((str[0] == 'E') || (str[0] == 'e'))
 		return true;
 	else
 		return false;
@@ -177,7 +177,7 @@ int main(int argc, char **argv, char *env[])
 	lock = open(file_lock, O_CREAT|O_EXCL);
 	if (lock == -1)
 	{
-		if (errno = EEXIST)
+		if (errno == EEXIST)
 		{
 			if (!lock_ask()) exit(1);
 		}

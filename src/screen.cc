@@ -717,8 +717,28 @@ bool Screen::searchText(string& pattern)
 		infoClear();
 		winfo->_addch(0,0,'/');
 		save = searchEditor.edit(*winfo, 0, 1, 
-				coor[WINFO].cols-PERCENT_COL-1);
+				PERCENT_COL-2);
 		pattern = searchEditor.getText();
+		infoClear();
+		return save;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Screen::cmd(string& command)
+{
+	if (coor[WINFO].exist)
+	{
+		bool save;
+
+		infoClear();
+		winfo->_addch(0,0,':');
+		save = cmdEditor.edit(*winfo, 0, 1, 
+				PERCENT_COL-2);
+		command = cmdEditor.getText();
 		infoClear();
 		return save;
 	}

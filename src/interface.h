@@ -40,6 +40,11 @@
 #include "editor.h"
 #include "screen.h"
 
+#ifndef commands_length
+#define commands_length 2
+extern const char *commands[commands_length]; //TODO
+#endif
+
 class Interface
 {
 public:
@@ -99,6 +104,7 @@ private:
 	void search();
 	void search_next();
 	void search_prev();
+	void cmd();
 	void sortByTitle();
 	void sortByDone();
 	void sortByDeadline();

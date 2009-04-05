@@ -19,6 +19,8 @@
 
 #include "interface.h"
 
+const char *commands[commands_length] = {"hide", "show"}; //TODO
+
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
@@ -97,6 +99,7 @@ void Interface::main()
 			if ("search" == action) search();
 			if ("searchNext" == action) search_next();
 			if ("searchPrev" == action) search_prev();
+			if ("cmd" == action) cmd();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -693,6 +696,16 @@ void Interface::search_prev()
 			screen.infoMsg("Not found");
 	else
 		screen.infoMsg("No search pattern");
+}
+
+void Interface::cmd()
+{
+	string command("");
+
+	if (screen.cmd(command))
+	{
+		//TODO
+	}
 }
 
 void Interface::sortByTitle()

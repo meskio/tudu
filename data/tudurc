@@ -55,6 +55,7 @@ hideDone     = M   #hide/show done tasks
 search       = /
 searchNext   = n
 searchPrev   = N
+cmd          = :
 sortByTitle  = bt
 sortRevTitle = bT
 sortByDone   = bd

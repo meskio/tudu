@@ -323,7 +323,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* draw category */
 	if (coor[WCATEGORY].exist)
 	{
-		string& category = t.category();
+		string category = t.getCategory();
 		if (isCursor)
 			wcategory->_attron(COLOR_SELECTED);
 		else
@@ -656,15 +656,17 @@ void Screen::setPriority(int line, int& priority)
 	}
 }
 
-void Screen::setCategory(int line, string& category)
+void Screen::setCategory(int line, ToDo& t)
 {
 	if (coor[WCATEGORY].exist)
 	{
-		lineEditor.getText() = category;
-		lineEditor.cursorPos() = category.length();
-		if (lineEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
+		string category = t.getCategory();
+		categoryEditor.getText() = category;
+		categoryEditor.cursorPos() = category.length();
+		if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
 		{
-			category = lineEditor.getText();
+			category = categoryEditor.getText();
+			t.setCategory(category);
 		}
 
 		wcategory->_move(line, 0);

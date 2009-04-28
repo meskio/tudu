@@ -49,7 +49,7 @@ public:
 	void editDeadline(int line, Date& deadline, bool done);
 	bool editSched(Date& s);
 	void setPriority(int line, int& priority);
-	void setCategory(int line, string& category);
+	void setCategory(int line, ToDo& t);
 	void treeClear();
 	int treeLines();
 	bool searchText(string& pattern);
@@ -69,6 +69,7 @@ private:
 	Window *wschedule;
 	Config &config;
 	LineEditor lineEditor;
+	CategoryEditor categoryEditor;
 	DateEditor dateEditor;
 	PriorityEditor priorityEditor;
 	HistoryEditor searchEditor;

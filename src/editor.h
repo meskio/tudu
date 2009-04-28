@@ -23,6 +23,7 @@
 #include <string>
 #include <string.h>
 #include <list>
+#include <set>
 #include "window.h"
 
 class Editor
@@ -47,8 +48,6 @@ protected:
 	virtual void down();
 	virtual void home();
 	virtual void end();
-	virtual void tab();
-	virtual void back_tab();
 	virtual void backspace();
 	virtual void supr();
 	virtual void other();
@@ -66,6 +65,18 @@ protected:
 	void backspace();
 	void supr();
 	void other();
+};
+
+class CategoryEditor: public LineEditor
+{
+protected:
+	set<string>::iterator search;
+	set<string>::iterator first;
+	int length;
+
+	void initialize();
+	void other();
+	void completion();
 };
 
 class HistoryEditor: public LineEditor

@@ -19,6 +19,8 @@
 
 #include "data.h"
 
+set<string> categories;
+
 ToDo::ToDo(string t, bool isDone, string txt) 
 		: title(t), _done(isDone)
 {
@@ -74,9 +76,15 @@ int& ToDo::priority()
 	return _priority;
 }
 
-string& ToDo::category()
+string ToDo::getCategory()
 {
 	return _category;
+}
+
+void ToDo::setCategory(string c)
+{
+	_category = c;
+	categories.insert(c);
 }
 
 bool ToDo::haveChild()

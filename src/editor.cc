@@ -70,10 +70,6 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 				break;
 			case KEY_END: end();
 				break;
-			case '\t': tab();
-				break;
-			case KEY_BTAB: back_tab();
-				break;
 			case KEY_BACKSPACE: backspace();
 				break;
 			case KEY_DC: supr();
@@ -112,8 +108,6 @@ void Editor::up() {}
 void Editor::down() {}
 void Editor::home() {}
 void Editor::end() {}
-void Editor::tab() {}
-void Editor::back_tab() {}
 void Editor::backspace() {}
 void Editor::supr() {}
 void Editor::other() {}
@@ -174,6 +168,66 @@ void LineEditor::other()
 	}
 }
 
+void CategoryEditor::initialize()
+{
+	search = categories.end();
+}
+
+void CategoryEditor::other()
+{
+	if (key == '\t')
+	{
+		completion();
+	}
+	else if (key < 256)
+	{
+		text.insert(cursor,1,key);
+		++cursor;
+	}
+}
+
+void CategoryEditor::completion()
+{
+	/* if it is no the first time */
+	if ((cursor == (int)text.length()) &&
+	    (search != categories.end()) &&
+	    (text == *search))
+	{
+		if (search != categories.end())
+		{
+			search++;
+			if ((search != categories.end()) && 
+			   (!text.compare(0, length, *search, 0, length)))
+			{
+				text = *search;
+				cursor = text.length();
+			}
+			else
+			{
+				text = text.substr(0, length);
+				search = first;
+				cursor = length;
+			}
+		}
+	}
+	/* if it is the first time */
+	else
+	{
+		length = text.length();
+		for (search = categories.begin(); 
+		    (search != categories.end()) && 
+		    (text.compare(0, length, *search, 0, length)); 
+		    search++);
+		if ((search != categories.end()) && 
+		    (!text.compare(0, length, *search, 0, length)))
+		{
+			text = *search;
+			first = search;
+			cursor = text.length();
+		}
+	}
+}
+
 void HistoryEditor::initialize()
 {
 	shown = history.begin();
@@ -220,6 +274,7 @@ void CmdEditor::initialize()
 #define compare_command() text.compare(0, length, commands[command], length)
 void CmdEditor::tab()
 {
+	//TODO: rewrite it
 	string params("");
 	size_t length;
 
@@ -235,12 +290,13 @@ void CmdEditor::tab()
 	/* Search for a command with the tiped letters */
 	if ((command != -1) && (compare_command() > 0))
 	{
-		for (command--; (command != -1) && (compare_command()  >= 0); command--);
-		command++;
+		//for (command--; (command != -1) && (compare_command() <= 0); command--);
+		//if (command < commands_length) command++;
 	}
-	else
+	else if (command < commands_length-1)
 	{
-		for (command++; (command < commands_length) && (compare_command() < 0); command++);
+		
+		for (command++; (command < commands_length) && (compare_command() > 0); command++);
 	}
 
 	/* if exist a command display it */

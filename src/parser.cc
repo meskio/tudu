@@ -198,7 +198,7 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 	}
 	if ("/category" == str)
 	{
-		iterator->category() = txt;
+		iterator->setCategory(txt);
 	}
 	if ("text" == str)
 	{
@@ -309,10 +309,10 @@ void Writer::_save()
 			file << "<priority>" << (*i)->priority() << 
 					"</priority>" << endl;
 		}
-		if (!(*i)->category().empty())
+		if (!(*i)->getCategory().empty())
 		{
 			putTabs((*i).depth()+1);
-			file << "<category>" << (*i)->category() << 
+			file << "<category>" << (*i)->getCategory() << 
 					"</category>" << endl;
 		}
 		if ((*i)->getText() != "")

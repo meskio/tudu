@@ -25,9 +25,12 @@
 #include <stack>
 #include <string>
 #include <algorithm>
+#include <set>
 #include "text.h"
 #include "date.h"
 using namespace std;
+
+extern set<string> categories; //TODO
 
 struct child_info {
 	int percent;
@@ -58,7 +61,8 @@ public:
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	string& category();
+	string getCategory();
+	void setCategory(string c);
 	bool haveChild();
 	child_info getChildInfo();
 	int line;

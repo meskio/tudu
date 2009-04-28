@@ -478,7 +478,7 @@ void Interface::setPriority()
 void Interface::setCategory()
 {
 	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
-	screen.setCategory(cursor_line(), cursor->category());
+	screen.setCategory(cursor_line(), *cursor);
 	screen.infoClear();
 	drawTodo();
 }

@@ -60,7 +60,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>category box or something predefined</title>
 			<text>
 </text>
@@ -90,7 +90,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>save lock problems with two concurrent tudus</title>
 			<text>
 </text>

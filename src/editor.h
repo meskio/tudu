@@ -94,8 +94,9 @@ protected:
 class CmdEditor: public HistoryEditor
 {
 protected:
-	int command; /* pointer to the last command displayed */
-	int letters; /* number of letter used in the search */
+	set<string>::iterator search;
+	set<string>::iterator first;
+	int length;
 
 	void initialize();
 	void tab();

@@ -20,6 +20,8 @@
 #include "editor.h"
 #include "interface.h"
 
+#define cmp(str) text.compare(0, length, str, 0, length)
+
 Editor::Editor()
 {
 	text = "";
@@ -181,6 +183,7 @@ void CategoryEditor::other()
 	}
 	else if (key < 256)
 	{
+		//FIXME: call the parent method
 		text.insert(cursor,1,key);
 		++cursor;
 	}
@@ -197,7 +200,7 @@ void CategoryEditor::completion()
 		{
 			search++;
 			if ((search != categories.end()) && 
-			   (!text.compare(0, length, *search, 0, length)))
+			   (!cmp(*search)))
 			{
 				text = *search;
 				cursor = text.length();
@@ -216,10 +219,10 @@ void CategoryEditor::completion()
 		length = text.length();
 		for (search = categories.begin(); 
 		    (search != categories.end()) && 
-		    (text.compare(0, length, *search, 0, length)); 
+		    (cmp(*search)); 
 		    search++);
 		if ((search != categories.end()) && 
-		    (!text.compare(0, length, *search, 0, length)))
+		    (!cmp(*search)))
 		{
 			text = *search;
 			first = search;
@@ -263,7 +266,6 @@ void HistoryEditor::enter()
 
 void CmdEditor::initialize()
 {
-	command = -1;
 
 	//FIXME: call the parent method
 	shown = history.begin();
@@ -272,22 +274,22 @@ void CmdEditor::initialize()
 }
 
 #define compare_command() text.compare(0, length, commands[command], length)
-void CmdEditor::tab()
+/*void CmdEditor::tab()
 {
 	//TODO: rewrite it
 	string params("");
 	size_t length;
 
-	/* Get the command and params in text */
+	/* Get the command and params in text 
 	if (string::npos == (length = text.find(' ', 0)))
 		length = text.length();
 	else
 		params = text.substr(length);
-	/* if it's exactly I gess is not the first press on tab */
+	/* if it's exactly I gess is not the first press on tab 
 	if ((command != -1) && (strlen(commands[command]) == length) && (!compare_command()))
 		length = letters;
 
-	/* Search for a command with the tiped letters */
+	/* Search for a command with the tiped letters 
 	if ((command != -1) && (compare_command() > 0))
 	{
 		//for (command--; (command != -1) && (compare_command() <= 0); command--);
@@ -299,19 +301,14 @@ void CmdEditor::tab()
 		for (command++; (command < commands_length) && (compare_command() > 0); command++);
 	}
 
-	/* if exist a command display it */
+	/* if exist a command display it 
 	if (!compare_command())
 	{
 		text = commands[command];
 		text += params;
 		letters = length;
 	}
-}
-
-void CmdEditor::back_tab()
-{
-	//TODO
-}
+}*/
 
 void DateEditor::left()
 {

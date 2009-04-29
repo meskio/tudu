@@ -19,6 +19,7 @@
 
 #include "editor.h"
 #include "interface.h"
+#include "data.h"
 
 #define cmp(str) text.compare(0, length, str, 0, length)
 
@@ -196,21 +197,18 @@ void CategoryEditor::completion()
 	    (search != categories.end()) &&
 	    (text == *search))
 	{
-		if (search != categories.end())
+		search++;
+		if ((search != categories.end()) && 
+		   (!cmp(*search)))
 		{
-			search++;
-			if ((search != categories.end()) && 
-			   (!cmp(*search)))
-			{
-				text = *search;
-				cursor = text.length();
-			}
-			else
-			{
-				text = text.substr(0, length);
-				search = first;
-				cursor = length;
-			}
+			text = *search;
+			cursor = text.length();
+		}
+		else
+		{
+			text = text.substr(0, length);
+			search = first;
+			cursor = length;
 		}
 	}
 	/* if it is the first time */
@@ -266,11 +264,156 @@ void HistoryEditor::enter()
 
 void CmdEditor::initialize()
 {
+	search = categories.end();
+	com_search = commands.end();
+	param = 0;
 
 	//FIXME: call the parent method
 	shown = history.begin();
 	cursor = 0;
 	text = "";
+}
+
+void CmdEditor::other()
+{
+	if (key == '\t')
+	{
+		completion();
+	}
+	else if (key < 256)
+	{
+		//FIXME: call the parent method
+		text.insert(cursor,1,key);
+		++cursor;
+	}
+}
+
+void CmdEditor::completion()
+{
+	vector<string> params;
+	size_t begin, end;
+	string rest_params = "";
+
+	/* Get the command and params in text */
+	for (begin = 0, end = text.find(' ', 0); (string::npos != end) && (cursor > (int)end);
+		       	begin = end+1, end = text.find(' ', begin))
+	{
+		params.push_back(text.substr(begin, end-begin));
+	}
+	if (string::npos != end) 
+	{
+		params.push_back(text.substr(begin, end-begin));
+		rest_params = text.substr(end+1);
+	}
+	else
+	{
+		params.push_back(text.substr(begin));
+	}
+
+	/* if is completing the command */
+	if (params.size() == 1)
+	{
+		//TODO
+		//command_completion(params[0]);
+	}
+	/* if is completing the param */
+	else
+	{
+		//TODO
+		//if (commands[params[0]] == "category")
+		//	category_completion();
+	}
+
+	text = "";
+	for (vector<string>::iterator param = params.begin(); param != params.end(); param++)
+	{
+		text += *param + " ";
+	}
+	if (rest_params.empty())
+		text.erase(text.length()-1, 1);
+	else
+		text += rest_params;
+}
+
+void CmdEditor::command_completion(string& com)
+{
+	/* if it is no the first time */
+	if ((param == 0) &&
+	    (com_search != commands.end()) &&
+	    (com == com_search->first))
+	{
+		com_search++;
+		if ((com_search != commands.end()) && 
+		   (!cmp(com_search->first)))
+		{
+			com = com_search->first;
+			cursor = com.length();
+		}
+		else
+		{
+			com = com.substr(0, length);
+			com_search = com_first;
+			cursor = length;
+		}
+	}
+	/* if it is the first time */
+	else
+	{
+		length = com.length();
+		//TODO: try upper_bound
+		for (com_search = commands.begin(); 
+		    (com_search != commands.end()) && 
+		    (cmp(com_search->first)); 
+		    com_search++);
+		if ((com_search != commands.end()) && 
+		    (!cmp(com_search->first)))
+		{
+			com = com_search->first;
+			com_first = com_search;
+			cursor = com.length();
+		}
+	}
+	com = (commands.begin())->first;
+}
+
+void CmdEditor::category_completion()
+{
+
+	/* if it is no the first time */
+	if ((cursor == (int)text.length()) &&
+	    (search != categories.end()) &&
+	    (text == *search))
+	{
+			search++;
+			if ((search != categories.end()) && 
+			   (!cmp(*search)))
+			{
+				text = *search;
+				cursor = text.length();
+			}
+			else
+			{
+				text = text.substr(0, length);
+				search = first;
+				cursor = length;
+			}
+	}
+	/* if it is the first time */
+	else
+	{
+		length = text.length();
+		for (search = categories.begin(); 
+		    (search != categories.end()) && 
+		    (cmp(*search)); 
+		    search++);
+		if ((search != categories.end()) && 
+		    (!cmp(*search)))
+		{
+			text = *search;
+			first = search;
+			cursor = text.length();
+		}
+	}
 }
 
 #define compare_command() text.compare(0, length, commands[command], length)

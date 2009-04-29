@@ -40,10 +40,9 @@
 #include "editor.h"
 #include "screen.h"
 
-#ifndef commands_length
-#define commands_length 2
-extern const char *commands[commands_length]; //TODO
-#endif
+/* comands definition with it's params types */
+extern map<string,string> commands;
+
 
 class Interface
 {

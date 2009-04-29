@@ -19,7 +19,7 @@
 
 #include "interface.h"
 
-const char *commands[commands_length] = {"hide", "show"}; //TODO
+map<string,string> commands;
 
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
@@ -27,6 +27,10 @@ const char *commands[commands_length] = {"hide", "show"}; //TODO
 Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
 		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
 {
+	/* initialize commands */
+	commands["hide"] = "category";
+	commands["show"] = "category";
+
 	search_pattern = "";
 	tree_begin = 0;
 	tree_end = screen.treeLines();

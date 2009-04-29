@@ -30,7 +30,7 @@
 #include "date.h"
 using namespace std;
 
-extern set<string> categories; //TODO
+extern set<string> categories;
 
 struct child_info {
 	int percent;

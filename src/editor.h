@@ -24,6 +24,8 @@
 #include <string.h>
 #include <list>
 #include <set>
+#include <map>
+#include <vector>
 #include "window.h"
 
 class Editor
@@ -94,13 +96,18 @@ protected:
 class CmdEditor: public HistoryEditor
 {
 protected:
+	map<string,string>::iterator com_search;
+	map<string,string>::iterator com_first;
 	set<string>::iterator search;
 	set<string>::iterator first;
 	int length;
+	int param;
 
 	void initialize();
-	void tab();
-	void back_tab();
+	void other();
+	void completion();
+	void command_completion(string& com);
+	void category_completion();
 };
 
 class DateEditor: public Editor

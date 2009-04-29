@@ -313,26 +313,28 @@ void CmdEditor::completion()
 	/* if is completing the command */
 	if (params.size() == 1)
 	{
-		//TODO
-		//command_completion(params[0]);
+		command_completion(params[0]);
 	}
 	/* if is completing the param */
 	else
 	{
 		//TODO
-		//if (commands[params[0]] == "category")
-		//	category_completion();
+		if (commands[params[0]] == "category")
+			category_completion(params.back(), params.size()-1);
 	}
 
+	/* regenerate the text string */
 	text = "";
-	for (vector<string>::iterator param = params.begin(); param != params.end(); param++)
+	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
 	{
-		text += *param + " ";
+		text += *p + " ";
 	}
+	cursor = text.length()-1;
 	if (rest_params.empty())
 		text.erase(text.length()-1, 1);
 	else
 		text += rest_params;
+	param = params.size()-1;
 }
 
 void CmdEditor::command_completion(string& com)
@@ -373,45 +375,42 @@ void CmdEditor::command_completion(string& com)
 			cursor = com.length();
 		}
 	}
-	com = (commands.begin())->first;
 }
 
-void CmdEditor::category_completion()
+#define param_cmp(str) cat.compare(0, length, str, 0, length)
+void CmdEditor::category_completion(string& cat, int num_param)
 {
 
 	/* if it is no the first time */
-	if ((cursor == (int)text.length()) &&
+	if ((param == num_param) &&
 	    (search != categories.end()) &&
-	    (text == *search))
+	    (cat == *search))
 	{
 			search++;
 			if ((search != categories.end()) && 
-			   (!cmp(*search)))
+			   (!param_cmp(*search)))
 			{
-				text = *search;
-				cursor = text.length();
+				cat = *search;
 			}
 			else
 			{
-				text = text.substr(0, length);
+				cat = cat.substr(0, length);
 				search = first;
-				cursor = length;
 			}
 	}
 	/* if it is the first time */
 	else
 	{
-		length = text.length();
+		length = cat.length();
 		for (search = categories.begin(); 
 		    (search != categories.end()) && 
-		    (cmp(*search)); 
+		    (param_cmp(*search)); 
 		    search++);
 		if ((search != categories.end()) && 
-		    (!cmp(*search)))
+		    (!param_cmp(*search)))
 		{
-			text = *search;
+			cat = *search;
 			first = search;
-			cursor = text.length();
 		}
 	}
 }

@@ -107,7 +107,7 @@ protected:
 	void other();
 	void completion();
 	void command_completion(string& com);
-	void category_completion();
+	void category_completion(string& param, int num_param);
 };
 
 class DateEditor: public Editor

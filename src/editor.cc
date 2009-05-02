@@ -182,12 +182,8 @@ void CategoryEditor::other()
 	{
 		completion();
 	}
-	else if (key < 256)
-	{
-		//FIXME: call the parent method
-		text.insert(cursor,1,key);
-		++cursor;
-	}
+	else 
+		LineEditor::other();
 }
 
 void CategoryEditor::completion()
@@ -268,10 +264,7 @@ void CmdEditor::initialize()
 	com_search = commands.end();
 	param = 0;
 
-	//FIXME: call the parent method
-	shown = history.begin();
-	cursor = 0;
-	text = "";
+	HistoryEditor::initialize();
 }
 
 void CmdEditor::other()
@@ -280,12 +273,8 @@ void CmdEditor::other()
 	{
 		completion();
 	}
-	else if (key < 256)
-	{
-		//FIXME: call the parent method
-		text.insert(cursor,1,key);
-		++cursor;
-	}
+	else
+		HistoryEditor::other();
 }
 
 void CmdEditor::completion()

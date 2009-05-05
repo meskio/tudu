@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
+ * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -18,7 +18,7 @@
  **************************************************************************/
 
 #include "editor.h"
-#include "interface.h"
+#include "cmd.h"
 #include "data.h"
 
 #define cmp(str) text.compare(0, length, str, 0, length)
@@ -403,43 +403,6 @@ void CmdEditor::category_completion(string& cat, int num_param)
 		}
 	}
 }
-
-#define compare_command() text.compare(0, length, commands[command], length)
-/*void CmdEditor::tab()
-{
-	//TODO: rewrite it
-	string params("");
-	size_t length;
-
-	/* Get the command and params in text 
-	if (string::npos == (length = text.find(' ', 0)))
-		length = text.length();
-	else
-		params = text.substr(length);
-	/* if it's exactly I gess is not the first press on tab 
-	if ((command != -1) && (strlen(commands[command]) == length) && (!compare_command()))
-		length = letters;
-
-	/* Search for a command with the tiped letters 
-	if ((command != -1) && (compare_command() > 0))
-	{
-		//for (command--; (command != -1) && (compare_command() <= 0); command--);
-		//if (command < commands_length) command++;
-	}
-	else if (command < commands_length-1)
-	{
-		
-		for (command++; (command < commands_length) && (compare_command() > 0); command++);
-	}
-
-	/* if exist a command display it 
-	if (!compare_command())
-	{
-		text = commands[command];
-		text += params;
-		letters = length;
-	}
-}*/
 
 void DateEditor::left()
 {

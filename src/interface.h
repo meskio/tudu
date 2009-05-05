@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
+ * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -39,9 +39,7 @@
 #include "parser.h"
 #include "editor.h"
 #include "screen.h"
-
-/* comands definition with it's params types */
-extern map<string,string> commands;
+#include "cmd.h"
 
 
 class Interface
@@ -51,6 +49,7 @@ public:
 	~Interface();
 
 	void main();
+	friend class Cmd;
 private:
 	Screen &screen;
 	iToDo &cursor;
@@ -62,6 +61,7 @@ private:
 	pToDo copied;
 	char sortOrder[16];
 	string search_pattern;
+	Cmd &cmd;
 
 	void resizeTerm();
 	void drawTodo();
@@ -99,11 +99,11 @@ private:
 	void downText();
 	void collapse();
 	void hide_done();
+	void command_line();
 	bool _search();
 	void search();
 	void search_next();
 	void search_prev();
-	void cmd();
 	void sortByTitle();
 	void sortByDone();
 	void sortByDeadline();

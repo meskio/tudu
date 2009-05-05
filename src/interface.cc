@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2008 Ruben Pollan Bella <meskio@amedias.org>        *
+ * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@amedias.org>        *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -19,18 +19,12 @@
 
 #include "interface.h"
 
-map<string,string> commands;
-
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
 Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
 		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
 {
-	/* initialize commands */
-	commands["hide"] = "category";
-	commands["show"] = "category";
-
 	search_pattern = "";
 	tree_begin = 0;
 	tree_end = screen.treeLines();
@@ -103,7 +97,7 @@ void Interface::main()
 			if ("search" == action) search();
 			if ("searchNext" == action) search_next();
 			if ("searchPrev" == action) search_prev();
-			if ("cmd" == action) cmd();
+			if ("cmd" == action) command_line();
 			if ("sortByTitle" == action) sortByTitle();
 			if ("sortByDone" == action) sortByDone();
 			if ("sortByDeadline" == action) sortByDeadline();
@@ -666,6 +660,16 @@ bool Interface::_search()
 	return res;
 }
 
+void Interface::command_line()
+{
+	string command("");
+
+	if (screen.cmd(command))
+	{
+		cmd.cmd(command);
+	}
+}
+
 void Interface::search()
 {
 	string pattern("");
@@ -700,16 +704,6 @@ void Interface::search_prev()
 			screen.infoMsg("Not found");
 	else
 		screen.infoMsg("No search pattern");
-}
-
-void Interface::cmd()
-{
-	string command("");
-
-	if (screen.cmd(command))
-	{
-		//TODO
-	}
 }
 
 void Interface::sortByTitle()
@@ -849,3 +843,4 @@ void Interface::help()
 	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
 	screen.helpPopUp(str, i);
 }
+

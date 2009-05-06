@@ -215,7 +215,8 @@ int main(int argc, char **argv, char *env[])
 	 */
 	Writer w(file_xml,node);
 	Screen screen(config);
-	Interface in(screen,it,sched,config,w);
+	Cmd cmd;
+	Interface in(screen,it,sched,config,w,cmd);
 	in.main();
 
 	/*

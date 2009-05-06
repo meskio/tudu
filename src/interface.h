@@ -32,7 +32,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <map>
+#include <set>
 #include <fstream>
+
+class Interface;
 #include "data.h"
 #include "sched.h"
 #include "config.h"
@@ -45,7 +48,7 @@
 class Interface
 {
 public:
-	Interface(Screen& s, iToDo &t, Sched& sch, Config &c, Writer &w);
+	Interface(Screen& s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd &com);
 	~Interface();
 
 	void main();
@@ -61,7 +64,8 @@ private:
 	pToDo copied;
 	char sortOrder[16];
 	string search_pattern;
-	Cmd &cmd;
+	Cmd &cmd; /* command interface */
+	set<string> hidden_categories;
 
 	void resizeTerm();
 	void drawTodo();

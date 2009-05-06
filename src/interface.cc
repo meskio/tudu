@@ -22,9 +22,11 @@
 #define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
-Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w) 
-		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL)
+Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd &com) 
+		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL), cmd(com)
 {
+	cmd.get_interface(this);
+
 	search_pattern = "";
 	tree_begin = 0;
 	tree_end = screen.treeLines();
@@ -232,7 +234,15 @@ void Interface::drawCursor()
 
 bool Interface::isHide(iToDo& todo)
 {
-	return (config.getHideDone() && todo->done());
+	bool hide;
+
+	/* if is done */
+	hide = (config.getHideDone() && todo->done());
+	/* if is in hidden category */
+	// TODO
+	//hide = hide || (hidden_categories.find(todo->getCategory()) == hidden_categories.end());
+
+	return hide;
 }
 
 void Interface::left()

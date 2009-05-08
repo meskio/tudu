@@ -31,6 +31,7 @@
 using namespace std;
 
 extern set<string> categories;
+#define NONE_CATEGORY "NONE"
 
 struct child_info {
 	int percent;

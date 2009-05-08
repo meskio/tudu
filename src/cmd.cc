@@ -35,27 +35,40 @@ void Cmd::get_interface(Interface *i)
 	interface = i;
 }
 
-void Cmd::cmd(string command)
+bool Cmd::cmd(string command)
 {
 	vector<string> params;
+	string com;
+	size_t begin, end;
 
 	/* Get the command and params in text */
-	for (size_t begin = 0, end = command.find(' ', 0); string::npos != end;
+	for (begin = 0, end = command.find(' ', 0); string::npos != end;
 				begin = end+1, end = command.find(' ', begin))
 	{
-		params.push_back(command.substr(begin, end-begin));
+		if (begin == 0)
+			com = command.substr(begin, end-begin);
+		else
+			params.push_back(command.substr(begin, end-begin));
 	}
+	if (com == "")
+		com = command.substr(begin);
+	else
+		params.push_back(command.substr(begin));
+
 
 	/* Exec the command */
-	if ("show" == params[0]) show(params);
-	else if ("hide" == params[0]) hide(params);
+	if ("show" == com) { show(params); return true; }
+	else if ("hide" == com) { hide(params); return true; }
+	else if ("showall" == com) { showall(params); return true; }
+	else if ("showonly" == com) { showonly(params); return true; }
+	else return false;
 }
 
 void Cmd::hide(vector<string> &params)
 {
 	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
 	{
-		interface->hidden_categories.insert(*p);
+		if (*p != NONE_CATEGORY) interface->hidden_categories.insert(*p);
 	}
 }
 
@@ -79,11 +92,11 @@ void Cmd::showonly(vector<string> &params)
 	for (set<string>::iterator c = categories.begin(); c != categories.end(); c++)
 	{
 		interface->hidden_categories.insert(*c);
-
 	}
 	/* remove the shown categories */
 	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		interface->hidden_categories.erase(*p);
 	}
+	interface->hidden_categories.erase(NONE_CATEGORY);
 }

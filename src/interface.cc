@@ -239,10 +239,29 @@ bool Interface::isHide(iToDo& todo)
 	/* if is done */
 	hide = (config.getHideDone() && todo->done());
 	/* if is in hidden category */
-	// TODO
-	//hide = hide || (hidden_categories.find(todo->getCategory()) == hidden_categories.end());
+	hide = hide || (hidden_categories.count(todo->getCategory()));
 
 	return hide;
+}
+
+void Interface::newTodo()
+{
+	cursor.addChild(new ToDo());
+
+	/* inherit category */
+	if (cursor.depth())
+	{
+		iToDo father = cursor;
+		father.out();
+		cursor->setCategory(father->getCategory());
+	}
+	else if (hidden_categories.count(""))
+	{
+		set<string>::iterator cat;
+		for (cat = categories.begin(); (cat != categories.end()) && hidden_categories.count(*cat); cat++);
+		if (cat != categories.end()) cursor->setCategory(*cat);
+		else cursor->setCategory(NONE_CATEGORY);
+	}
 }
 
 void Interface::left()
@@ -253,7 +272,7 @@ void Interface::left()
 		up();
 	}
 	else if (isHide(cursor))
-		cursor.addChild(new ToDo());
+		newTodo();
 	cursor->actCollapse() = false;
 	if (cursor->getCollapse())
 	{
@@ -276,7 +295,7 @@ void Interface::right()
 
 	if (cursor.end())
 	{
-		cursor.addChild(new ToDo());
+		newTodo();
 		drawTodo();
 		string title;
 		if ((editLine(title)) && (title != ""))
@@ -493,8 +512,7 @@ void Interface::setCategory()
 
 void Interface::addLine()
 {
-
-	cursor.addChild(new ToDo());
+	newTodo();
 	drawTodo();
 	string title;
 	if ((editLine(title)) && (title != ""))
@@ -505,7 +523,7 @@ void Interface::addLine()
 
 void Interface::addLineUp()
 {
-	cursor.addChildUp(new ToDo());
+	newTodo();
 	drawTodo();
 	string title;
 	if ((editLine(title)) && (title != ""))
@@ -633,7 +651,6 @@ void Interface::hide_done()
 	config.getHideDone() = !config.getHideDone();
 	if (isHide(cursor)) up();
 	if (!config.getHideDone() && cursor->getTitle().empty())
-		//FIXME: if the user have an title empty will be destroy
 		del();
 	drawTodo();
 }
@@ -676,7 +693,14 @@ void Interface::command_line()
 
 	if (screen.cmd(command))
 	{
-		cmd.cmd(command);
+		if (cmd.cmd(command))
+		{
+			if (isHide(cursor)) up();
+			/* destroy empty with NONE category */
+			if ((cursor->getCategory() == NONE_CATEGORY) && cursor->getTitle().empty())
+					del();
+			drawTodo();
+		}
 	}
 }
 

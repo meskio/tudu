@@ -35,7 +35,7 @@ public:
 	Cmd();
 
 	void get_interface(Interface *i);
-	void cmd(string command);
+	bool cmd(string command); /* return if should be redraw the screen */
 private:
 	Interface *interface;
 

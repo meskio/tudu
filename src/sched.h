@@ -38,7 +38,7 @@ public:
 	int get(Date& from, Date& to, sched_l& list);
 	int get(Date& from, sched_l& list);
 private:
-	list<pToDo> sched;
+	sched_l sched;
 };
 
 #endif

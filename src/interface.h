@@ -74,6 +74,7 @@ private:
 	void eraseCursor();
 	void drawCursor();
 	bool isHide(iToDo& todo);
+	void newTodo();
 	void left();
 	void right();
 	void up();

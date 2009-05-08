@@ -84,7 +84,8 @@ string ToDo::getCategory()
 void ToDo::setCategory(string c)
 {
 	_category = c;
-	categories.insert(c);
+
+	if (c != NONE_CATEGORY) categories.insert(c);
 }
 
 bool ToDo::haveChild()

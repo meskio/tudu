@@ -819,7 +819,7 @@ void Interface::save()
 	screen.infoMsg("File saved");
 }
 
-#define LINES_HELP 47
+#define LINES_HELP 34
 void Interface::help()
 {
 	action_list list;
@@ -858,21 +858,8 @@ void Interface::help()
 	str[i++] = "  " + list["hideDone"] + "\thide tasks that are done\n";
 	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
 	str[i++] = "  " + list["searchNext"] + "\tgo to next search result\n";
-	str[i++] = "  " + list["searchPrev"] + "\tgo to previous search result\n";
-	str[i++] = "  " + list["sortByTitle"] + "\tsort todo by title\n";
-	str[i++] = "  " + list["sortByDone"] + "\tsort todo by done\n";
-	str[i++] = "  " + list["sortByDeadline"] + "\tsort todo by deadline\n";
-	str[i++] = "  " + list["sortByPriority"] + "\tsort todo by priority\n";
-	str[i++] = "  " + list["sortByCategory"] + "\tsort todo by category\n";
-	str[i++] = "  " + list["sortByUser"] + "\tsort todo by user order\n";
-	str[i++] = "  " + list["sortRevTitle"] + "\tsort todo by title in inverse order\n";
-	str[i++] = "  " + list["sortRevDone"] + "\tsort todo by done in inverse order\n";
-	str[i++] = "  " + list["sortRevDeadline"] + "\tsort todo by deadline in inverse order\n";
-	str[i++] = "  " + list["sortRevPriority"] + "\tsort todo by priority in inverse order\n";
-	str[i++] = "  " + list["sortRevCategory"] + "\tsort todo by category in inverse order\n";
-	str[i++] = "  " + list["sortRevUser"] + "\tsort todo by user in inverse order\n";
+	str[i++] = "  " + list["cmd"] + "\topen command input\n";
 	str[i++] = "  " + list["save"] + "\tsave todo\n";
-	str[i++] = "  " + list["help"] + "\tshow help\n";
 	str[i++] = "  " + list["quit"] + "\tquit\n";
 	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
 	screen.helpPopUp(str, i);

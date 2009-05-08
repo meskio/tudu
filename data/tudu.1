@@ -1,4 +1,4 @@
-.\"  Copyright (C) 2007 Ruben Pollan Bella <meskio@amedias.org>            
+.\"  Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@amedias.org>            
 .\"                                                                        
 .\"   This file is part of TuDu.                                           
 .\"                                                                        
@@ -14,7 +14,7 @@
 .\"   You should have received a copy of the GNU General Public License    
 .\"   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .\"
-.TH TuDu 1 "December 2007" Unix "User Manuals"
+.TH TuDu 1 "May 2009" Unix "User Manuals"
 .SH NAME
 TuDu \- Tool for control your to do lists.
 .SH SYNOPSIS
@@ -34,6 +34,204 @@ Display the TuDu version number.
 Display license and copyright information.
 .IP "-h" 10
 Display help.
+.SH INTERFACE
+All the keybindings described here are the default in tudu, you can change them in the config file.
+.IP h
+Move the cursor one level out in the tree depth.
+.IP l
+Move the cursor one level in in the tree depth.
+.IP j
+Move the cursor to the next task.
+.IP k
+Move the cursor to the previous task.
+.IP J
+Move a task one position down.
+.IP K
+Move a task one position up.
+.IP m
+Mark a task as done.
+.IP dd
+Delete one task.
+.IP dt
+Remove the deadline of the task.
+.IP df
+Remove the priority of the task.
+.IP dS
+Remove the schedule of the task.
+.IP p
+Paste the previous deleted task.
+.IP P
+Paste the previous deleted task upper than the cursor.
+.IP V
+Paste the previous deleted task as a child.
+.IP o
+Add new task.
+.IP O
+Add new task upper than the cursor.
+.IP a
+Edit the title of the task.
+.IP t
+Edit the deadline.
+.IP f
+Set the priority of the task.
+.IP C
+Add or modify the category of the task.
+.IP e
+Edit the text of the task.
+.IP x
+Scroll the text window up.
+.IP z
+Scroll the text window down.
+.IP S
+Edit the schedule of the task.
+.IP X
+Scroll the schedule window up.
+.IP Z
+Scroll the schedule window down.
+.IP c
+Collapse or expand the children of the task.
+.IP M
+Hide or show done tasks.
+.IP /
+Search for a pattern in tasks titles.
+.IP n
+Search the next ocurrence of last search.
+.IP N
+Search the previous ocurrence of the last searche tasks.
+.IP /
+Search for a pattern in tasks titles.
+.IP n
+Search the next ocurrence of last search.
+.IP N
+Search the previous ocurrence of the last search.
+.IP :
+Open the command input. See the COMMANDS section.
+.IP bt
+Sort by title.
+.IP bT
+Sort by title in reverse direction.
+.IP bd
+Sort by done.
+.IP bD
+Sort by done in reverse direction.
+.IP bl
+Sort by deadline.
+.IP bL
+Sort by deadline in reverse direction.
+.IP bp
+Sort by priority.
+.IP bP
+Sort by priority in reverse direction.
+.IP bc
+Sort by category.
+.IP bC
+Sort by category in reverse direction.
+.IP bu
+Sort by user.
+.IP bU
+Sort by user in reverse direction.
+.IP bd
+Sort by done.
+.IP bD
+Sort by done in reverse direction.
+.IP bl
+Sort by deadline.
+.IP bL
+Sort by deadline in reverse direction.
+.IP bp
+Sort by priority.
+.IP bP
+Sort by priority in reverse direction.
+.IP bc
+Sort by category.
+.IP bC
+Sort by category in reverse direction.
+.IP bu
+Sort by user.
+.IP bU
+Sort by user in reverse direction.
+.IP s
+Save all the editings.
+.IP ?
+Display the help.
+.IP q
+Quit tudu saving the last editings.
+.IP Q
+Quit tudu without save.
+.SH COMMANDS
+.IP "hide category1 category2 ... categoryN"
+Hide one or more categories.
+.IP "show category1 category2 ... categoryN"
+Display one or more categories.
+.IP showall
+Display all the categories.
+.IP "showonly category1 category2 ... categoryN"
+Hide all the categories except the ones given.
+.SH CONFIG
+The config file have several sections started with the name between brackets, like \fB[ general ]\fR. Can be included other config files with the option:
+.IP "@include = 'path'"
+
+.PP
+The options of each section are:
+
+.SS general
+.IP "collapse = yes|no"
+Collapse the tasks by default.
+.IP "hide_done = yes|no"
+Hide or not the done tasks.
+.IP "visual_tree = yes|no"
+Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks. It is necesary in shome shells that can not display bold characters.
+.IP "days_warn = number"
+Days before the deadline that the warn should be display.
+.IP "sort_order = string"
+Sort the todo by the string order. Each character on the string means an order, when two tasks are equal in the first letter it is sort by the second an so on. The letters mean:
+.RS
+.IP t
+title
+.IP T
+reverse title
+.IP d
+done
+.IP D
+reverse done
+.IP l
+deadline
+.IP L
+reverse deadline
+.IP c
+category
+.IP C
+reverse category
+.IP e
+percent done
+.IP E
+reverse percent done
+.IP u
+user order
+.IP U
+reverse user order
+.RE
+.IP "editor = 'path_bin %s'"
+.SS keys
+This section defines any keybinding on the program. See the example in the default config file.
+.SS theme
+Window positions are described by rows each row with the sintax:
+.RS
+row = [height]([width|]window[, [width|]window, ...])
+.RE
+The height and width can be the number of characters or a precentage followed by \fB%\fR. The possible windows are: help, tree, info, blank, text and schedule. The windows help and info don't need to have height, because is predefined as 1. TuDu will try to gess the non given information.
+
+Other options for the theme are:
+.IP "columns = colm1,...,colmN"
+Columns in tree window. The posible columns are: title, priority, category and deadline.
+.IP "color = color_text, color_background"
+The default colors for the text and background. The colors can be defined as \fB(r, g, b)\fR, with numbers from 0 to 1000, or with the words: black, red, green, yellow, blue, magenta, cyan, white, transparent.
+.IP "window = color_text, color_background"
+For each window can be defined it's own colors.
+.IP "selected = color_text, color_background"
+Color for the items under the cursor.
+.IP "deadlineMark = color_text, color_background"
+Color for the mark of deadline soon.
 .SH FILES
 .PP
 .IP "~/.tudurc"
@@ -50,4 +248,4 @@ GNU General Public License for more details.
 TuDu Home Page: http://www.cauterized.net/~meskio/tudu/
 .SH AUTHOR
 .PP
-Ruben Pollan <meskio@noblezabaturra.org>
+Ruben Pollan <meskio@sindominio.net>

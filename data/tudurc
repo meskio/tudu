@@ -76,7 +76,7 @@ quitNoSave   = Q
 [ theme ]
 # windows in screen by rows and columns
 # sintax: row = height(width|win, width|win, ...)
-# win can be empty or: help, tree, info, blank, 
+# win can be empty or: help, tree, info, blank, text, schedule
 # height can be empty, absolute or percent with % at the end
 # width can be like height
 row = (help)

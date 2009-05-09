@@ -1,8 +1,11 @@
 0.5
 	* Added search on titles
+	* Added command interface
+	* Added commands for hide categories
 	* Added autocompletion on category editor
 	* Added home and end keys on the editor
 	* Added lock files for avoid concurrent tudus
+	* Added documentation about all the features in the man page
 	* Editing the title if is empty left arrow destroy the task
 	* Fixed reorder tasks
 	* Fixed english messages (thanks to Michael Leslie)

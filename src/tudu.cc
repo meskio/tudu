@@ -163,7 +163,7 @@ int main(int argc, char **argv, char *env[])
 	 * Check and create the lock file
 	 */
 	strcpy(file_lock,file_xml);
-	for (i = strlen(file_lock); (file_lock[i] != '/') && (i > 0); i++);
+	for (i = strlen(file_lock); (file_lock[i] != '/') && (i > 0); i--);
 	if (file_lock[i] == '/') i++;
 	if (file_lock[i] != '.')
 	{

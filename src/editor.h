@@ -52,6 +52,7 @@ protected:
 	virtual void end();
 	virtual void backspace();
 	virtual void supr();
+	virtual void tab();
 	virtual void other();
 	virtual void enter();
 	virtual void esc();
@@ -66,6 +67,7 @@ protected:
 	void end();
 	void backspace();
 	void supr();
+	void tab();
 	void other();
 };
 
@@ -77,8 +79,7 @@ protected:
 	int length;
 
 	void initialize();
-	void other();
-	void completion();
+	void tab();
 };
 
 class HistoryEditor: public LineEditor
@@ -104,8 +105,7 @@ protected:
 	int param;
 
 	void initialize();
-	void other();
-	void completion();
+	void tab();
 	void command_completion(string& com);
 	void category_completion(string& cat, int num_param);
 };

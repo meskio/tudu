@@ -82,6 +82,8 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 			case '\n':
 			case KEY_ENTER: enter();
 				break;
+			case '\t': tab();
+				break;
 			default: other();
 				break;
 		}
@@ -113,6 +115,7 @@ void Editor::home() {}
 void Editor::end() {}
 void Editor::backspace() {}
 void Editor::supr() {}
+void Editor::tab() {}
 void Editor::other() {}
 
 void Editor::esc()
@@ -162,6 +165,12 @@ void LineEditor::supr()
 	if (cursor<(int)text.length()) text.erase(cursor, 1);
 }
 
+void LineEditor::tab()
+{
+	text.insert(cursor,1,' ');
+	++cursor;
+}
+
 void LineEditor::other()
 {
 	if (key < 256)
@@ -176,17 +185,7 @@ void CategoryEditor::initialize()
 	search = categories.end();
 }
 
-void CategoryEditor::other()
-{
-	if (key == '\t')
-	{
-		completion();
-	}
-	else 
-		LineEditor::other();
-}
-
-void CategoryEditor::completion()
+void CategoryEditor::tab() /* do completion */
 {
 	/* if it is no the first time */
 	if ((cursor == (int)text.length()) &&
@@ -267,17 +266,7 @@ void CmdEditor::initialize()
 	HistoryEditor::initialize();
 }
 
-void CmdEditor::other()
-{
-	if (key == '\t')
-	{
-		completion();
-	}
-	else
-		HistoryEditor::other();
-}
-
-void CmdEditor::completion()
+void CmdEditor::tab() /* do completion */
 {
 	vector<string> params;
 	size_t begin, end;
@@ -307,7 +296,6 @@ void CmdEditor::completion()
 	/* if is completing the param */
 	else
 	{
-		//TODO
 		if (commands[params[0]] == "category")
 			category_completion(params.back(), params.size()-1);
 	}

@@ -58,6 +58,7 @@ private:
 	void home();
 	void end();
 	void new_line();
+	void tab();
 };
 
 ostream& operator<<(ostream& os, Text& t);

@@ -101,6 +101,8 @@ void Text::edit(Window& win)
 			case '\n':
 			case KEY_ENTER: new_line();
 				break;
+			case '\t': tab();
+				break;
 			default: 
 				if (key < 256)
 				{
@@ -371,6 +373,14 @@ void Text::new_line()
 	++cursor_line;
 	cursor_col = 0;
 	if (cursor_y >= lines) _scroll_down();
+}
+
+#define TAB_SPACES 4
+void Text::tab()
+{
+	cursor_line->insert(cursor_col,TAB_SPACES,' ');
+	cursor_col+=TAB_SPACES;
+	if (TAB_SPACES > cursor_x) ++cursor_y;
 }
 
 ostream& operator<<(ostream& os, Text& t)

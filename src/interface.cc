@@ -814,9 +814,15 @@ void Interface::sortRevUser()
 
 void Interface::save()
 {
-	writer.save();
-	cursor.sort(sortOrder);
-	screen.infoMsg("File saved");
+	if (writer.save())
+	{
+		cursor.sort(sortOrder);
+		screen.infoMsg("File saved");
+	}
+	else
+	{
+		screen.infoMsg("File can not be saved");
+	}
 }
 
 #define LINES_HELP 34

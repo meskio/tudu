@@ -181,6 +181,11 @@ int main(int argc, char **argv, char *env[])
 		{
 			if (!lock_ask()) exit(1);
 		}
+		else if (errno == EACCES)
+		{
+			cout << "Opening in read only. The changes won't be saved." << endl;
+			getchar();
+		}
 		else
 		{
 			fprintf(stderr, "Err: I can not create the lock file %s\n", file_lock);

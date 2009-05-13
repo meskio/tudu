@@ -249,19 +249,25 @@ Writer::Writer(const char* pathToSave, ToDo& t): todo(t)
 
 Writer::~Writer() {}
 
-void Writer::save()
+bool Writer::save()
 {
-	file.open(path);
-	file << "<?xml version=\"1.0\"?>" << endl;
-	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
-	file << "<todo>" << endl;
-	i = new iToDo(todo);
-	i->sort((char*)"");
-	while(--(*i));
-	_save();
-	delete i;
-	file << "</todo>" << endl;
-	file.close();
+	if (true) //file.open(path)) //FIXME: read info
+	{
+		file.open(path);
+		file << "<?xml version=\"1.0\"?>" << endl;
+		file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
+		file << "<todo>" << endl;
+		i = new iToDo(todo);
+		i->sort((char*)"");
+		while(--(*i));
+		_save();
+		delete i;
+		file << "</todo>" << endl;
+		file.close();
+		return true;
+	}
+	else
+		return false;
 }
 
 #define putTabs(num) \

@@ -40,7 +40,7 @@
 </text>
 		</todo>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>text editor problems when resize window and cursor gets out of it</title>
 		<priority>1</priority>
 		<text>

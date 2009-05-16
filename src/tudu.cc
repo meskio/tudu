@@ -122,24 +122,38 @@ int main(int argc, char **argv, char *env[])
 		if (!strncmp("-f",argv[i],2))
 		{
 			++i;
-			strncpy(file_xml, argv[i], 127);
+			if (i < argc)
+				strncpy(file_xml, argv[i], 127);
+			else
+			{
+				usage();
+				return 0;
+			}
 		}
 		else if (!strncmp("-c",argv[i],2))
 		{
 			++i;
-			if (argv[i][0] != '/')
+			if (i < argc)
 			{
-				int j;
-				for (j = 0; strncmp(env[j],"PWD=",4); ++j);
-				strncpy(file_rc,env[j]+4,99);
-				strcat(file_rc,"/");
-				strncat(file_rc,argv[i],27);
+				if (argv[i][0] != '/')
+				{
+					int j;
+					for (j = 0; strncmp(env[j],"PWD=",4); ++j);
+					strncpy(file_rc,env[j]+4,99);
+					strcat(file_rc,"/");
+					strncat(file_rc,argv[i],27);
+				}
+				else
+				{
+					strncpy(file_rc, argv[i], 127);
+				}
+				config.load(file_rc);
 			}
 			else
 			{
-				strncpy(file_rc, argv[i], 127);
+				usage();
+				return 0;
 			}
-			config.load(file_rc);
 		}
 		else if (!strncmp("-vv",argv[i],3))
 		{

@@ -57,7 +57,7 @@ public:
 	Writer(const char* pathToSave, ToDo& t);
 	~Writer();
 
-	void save();
+	bool save(); /* return if was succesfull */
 private:
 	ofstream file;
 	ToDo& todo;

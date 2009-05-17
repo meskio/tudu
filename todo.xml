@@ -76,7 +76,7 @@
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>check lock problems with folders without write permisions</title>
 		<priority>1</priority>
 		<text>
@@ -88,7 +88,7 @@
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>permisions in lock files</title>
 		<priority>1</priority>
 		<text>

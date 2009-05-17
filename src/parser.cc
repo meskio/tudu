@@ -249,10 +249,14 @@ Writer::Writer(const char* pathToSave, ToDo& t): todo(t)
 
 Writer::~Writer() {}
 
-void Writer::save()
+bool Writer::save()
 {
 	file.open(path);
 	file << "<?xml version=\"1.0\"?>" << endl;
+
+	/* there was an error writing */
+	if (file.fail()) return false;
+
 	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
 	file << "<todo>" << endl;
 	i = new iToDo(todo);
@@ -262,6 +266,8 @@ void Writer::save()
 	delete i;
 	file << "</todo>" << endl;
 	file.close();
+
+	return true;
 }
 
 #define putTabs(num) \

@@ -204,7 +204,7 @@ void Text::_scroll_up()
 		if (cursor_y != INT_MIN)
 		{
 			cursor_y += rows_in_line(offset);
-			while(cursor_y >= lines)
+			while (cursor_y >= lines)
 			{
 				cursor_y -= rows_in_line(cursor_line);
 				--cursor_line;
@@ -227,6 +227,7 @@ void Text::_scroll_down()
 	++offset;
 	if (text.end() != offset)
 	{
+		--offset;
 		/* update cursor_y if is editing */
 		if (cursor_y != INT_MIN)
 		{
@@ -257,6 +258,7 @@ void Text::_scroll_down()
 						cursor_col = cursor_line->length();
 				}
 		}
+		++offset;
 	}
 	else
 		--offset;

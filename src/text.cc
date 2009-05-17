@@ -130,6 +130,7 @@ void Text::edit(Window& win)
 	noecho();
 	curs_set(0);
 	print(win);
+	cursor_y = INT_MIN;
 
 	if (resized) ungetch(KEY_RESIZE);
 	return;

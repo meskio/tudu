@@ -100,6 +100,10 @@ void Text::edit(Window& win)
 				break;
 			case KEY_END: end();
 				break;
+			case KEY_NPAGE: next_page();
+				break;
+			case KEY_PPAGE: prev_page();
+				break;
 			case KEY_BACKSPACE: backspace();
 				break;
 			case KEY_DC: supr();
@@ -195,7 +199,7 @@ void Text::scroll_down(Window& win)
 	print(win);
 }
 
-void Text::_scroll_up()
+bool Text::_scroll_up()
 {
 	if (text.begin() != offset)
 	{
@@ -220,10 +224,13 @@ void Text::_scroll_up()
 				if ((int)cursor_line->length() < cursor_col)
 					cursor_col = cursor_line->length();
 		}
+		return true;
 	}
+	else
+		return false;
 }
 
-void Text::_scroll_down()
+bool Text::_scroll_down()
 {
 	++offset;
 	if (text.end() != offset)
@@ -260,9 +267,13 @@ void Text::_scroll_down()
 				}
 		}
 		++offset;
+		return true;
 	}
 	else
+	{
 		--offset;
+		return false;
+	}
 }
 
 void Text::left()
@@ -397,6 +408,26 @@ void Text::end()
 			++cursor_y, ++i);
 	cursor_col = cursor_line->length();
 	if (cursor_y >= lines) _scroll_down();
+}
+
+void Text::next_page()
+{
+	int line_count = rows_in_line(offset);
+
+	while ((line_count < lines) && (_scroll_down()))
+	{
+		line_count += rows_in_line(offset);
+	}
+}
+
+void Text::prev_page()
+{
+	int line_count = rows_in_line(offset);
+
+	while ((line_count < lines) && (_scroll_up()))
+	{
+		line_count += rows_in_line(offset);
+	}
 }
 
 void Text::new_line()

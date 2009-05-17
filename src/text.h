@@ -48,8 +48,8 @@ private:
 
 	/* begin=line for start, length=num of screen lines to fit*/
 	string _getStr(list<string>::iterator begin, int length = 0);
-	void _scroll_up();
-	void _scroll_down();
+	bool _scroll_up();
+	bool _scroll_down();
 	void left();
 	void right();
 	void up();
@@ -58,6 +58,8 @@ private:
 	void supr();
 	void home();
 	void end();
+	void next_page();
+	void prev_page();
 	void new_line();
 	void tab();
 };

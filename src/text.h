@@ -21,6 +21,7 @@
 #define TEXT_H
 
 #include <ncurses.h>
+#include <limits.h>
 #include <list>
 #include <iostream>
 #include <string>
@@ -40,15 +41,15 @@ public:
 private:
 	list<string> text; /* list of lines */
 	int cursor_col;
-	int cursor_y;
+	int cursor_y; /* = INT_MIN when is no editing */
 	list<string>::iterator cursor_line;
-	unsigned int offset;
+	list<string>::iterator offset; /* line for start to display */
 	int lines, cols;
 
 	/* begin=line for start, length=num of screen lines to fit*/
-	string _getStr(unsigned int begin = 0, int length = 0);
-	void _scroll_up();
-	void _scroll_down();
+	string _getStr(list<string>::iterator begin, int length = 0);
+	bool _scroll_up();
+	bool _scroll_down();
 	void left();
 	void right();
 	void up();
@@ -57,6 +58,8 @@ private:
 	void supr();
 	void home();
 	void end();
+	void next_page();
+	void prev_page();
 	void new_line();
 	void tab();
 };

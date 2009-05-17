@@ -38,12 +38,11 @@ Text& Text::operator=(const string& str)
 	}
 	if (text.empty()) /* if is empty it makes a sigfault at edit */
 		text.push_back("");
-	
-	/* set up the cursor */
-	cursor_col = 0; cursor_y = 0;
-	cursor_line = text.begin();
 
-	offset = 0;
+	/* set up the cursor */
+	cursor_col = 0; cursor_y = INT_MIN;
+	cursor_line = text.begin();
+	offset = text.begin();
 
 	return *this;
 }
@@ -68,6 +67,12 @@ void Text::edit(Window& win)
 {
 	bool resized = false;
 
+	/* calculate the cursor_y */
+	cursor_y = 0;
+	for (list<string>::iterator i = offset; i != cursor_line; ++i)
+		cursor_y += rows_in_line(i);
+	cursor_y += cursor_col / cols;
+
 	lines = win._lines();
 	cols = win._cols();
 	win._move(cursor_y, cursor_x);
@@ -75,6 +80,7 @@ void Text::edit(Window& win)
 	curs_set(1);
 	win._refresh();
 	
+	/* editor loop */
 	int key = win._getch();
 	while ('\e' != key) {
 		switch (key)
@@ -93,6 +99,10 @@ void Text::edit(Window& win)
 			case KEY_HOME: home();
 				break;
 			case KEY_END: end();
+				break;
+			case KEY_NPAGE: next_page();
+				break;
+			case KEY_PPAGE: prev_page();
 				break;
 			case KEY_BACKSPACE: backspace();
 				break;
@@ -113,6 +123,7 @@ void Text::edit(Window& win)
 				break;
 		}
 
+		/* print the text, place cursor, ... */
 		string str = _getStr(offset, lines);
 		win._erase();
 		win._addstr(0,0,str);
@@ -123,6 +134,7 @@ void Text::edit(Window& win)
 	noecho();
 	curs_set(0);
 	print(win);
+	cursor_y = INT_MIN;
 
 	if (resized) ungetch(KEY_RESIZE);
 	return;
@@ -140,14 +152,13 @@ string Text::getStr()
 	return s;
 }
 
-string Text::_getStr(unsigned int begin, int length)
+string Text::_getStr(list<string>::iterator begin, int length)
 {
 	int rows = 0;
 	string s = "";
-	list<string>::iterator i = text.begin();
+	list<string>::iterator i = begin;
 
-	if (begin >= text.size()) return s;
-	for (unsigned int line = 0; line < begin; line++) ++i;
+	if (text.end() == begin) return s;
 	for (;i != text.end(); ++i)
 	{
 		if (length)
@@ -188,43 +199,80 @@ void Text::scroll_down(Window& win)
 	print(win);
 }
 
-void Text::_scroll_up()
+bool Text::_scroll_up()
 {
-	if (0<offset)
+	if (text.begin() != offset)
 	{
-		list<string>::iterator i = text.begin();
 		--offset;
-		for (unsigned int line = 0; line < offset; ++line) ++i;
 
-		cursor_y += rows_in_line(i);
-		while(cursor_y >= lines)
+		/* update cursor_y if is editing */
+		if (cursor_y != INT_MIN)
 		{
-			cursor_y -= rows_in_line(cursor_line);
-			--cursor_line;
-			if ((int)cursor_line->length() < cursor_col)
-				cursor_col = cursor_line->length();
+			cursor_y += rows_in_line(offset);
+			while (cursor_y >= lines)
+			{
+				cursor_y -= rows_in_line(cursor_line);
+				--cursor_line;
+				if ((int)cursor_line->length() < cursor_col)
+					cursor_col = cursor_line->length();
+			}
 		}
+		/* if is not in edit mode scroll also the cursor */
+		else
+		{
+				--cursor_line;
+				if ((int)cursor_line->length() < cursor_col)
+					cursor_col = cursor_line->length();
+		}
+		return true;
 	}
+	else
+		return false;
 }
 
-void Text::_scroll_down()
+bool Text::_scroll_down()
 {
-	if (text.size()-1 > offset)
+	++offset;
+	if (text.end() != offset)
 	{
-		list<string>::iterator i = text.begin();
-		for (unsigned int line = 0; line < offset; ++line) ++i;
-
-		++offset;
-		cursor_y -= rows_in_line(i);
-		if (cursor_y < 0)
+		--offset;
+		/* update cursor_y if is editing */
+		if (cursor_y != INT_MIN)
 		{
-			cursor_y = 0;
-			++cursor_line;
-			if (cursor_x < (int)cursor_line->length()) 
-				cursor_col = cursor_x;
-			else
-				cursor_col = cursor_line->length();
+			cursor_y -= rows_in_line(offset);
+			if (cursor_y < 0)
+			{
+				cursor_y = 0;
+				++cursor_line;
+				if (cursor_x < (int)cursor_line->length()) 
+					cursor_col = cursor_x;
+				else
+					cursor_col = cursor_line->length();
+			}
 		}
+		/* if is not in edit mode scroll also the cursor */
+		else
+		{
+				++cursor_line;
+				if (cursor_line == text.end())
+				{
+					--cursor_line;
+				}
+				else
+				{
+					if (cursor_x < (int)cursor_line->length()) 
+						cursor_col = cursor_x;
+					else
+						cursor_col = cursor_line->length();
+				}
+		}
+		++offset;
+		return true;
+	}
+	else
+	{
+		--offset;
+		return false;
 	}
 }
 
@@ -360,6 +408,26 @@ void Text::end()
 			++cursor_y, ++i);
 	cursor_col = cursor_line->length();
 	if (cursor_y >= lines) _scroll_down();
+}
+
+void Text::next_page()
+{
+	int line_count = rows_in_line(offset);
+
+	while ((line_count < lines) && (_scroll_down()))
+	{
+		line_count += rows_in_line(offset);
+	}
+}
+
+void Text::prev_page()
+{
+	int line_count = rows_in_line(offset);
+
+	while ((line_count < lines) && (_scroll_up()))
+	{
+		line_count += rows_in_line(offset);
+	}
 }
 
 void Text::new_line()

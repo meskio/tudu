@@ -174,7 +174,7 @@ int main(int argc, char **argv, char *env[])
 	strcat(file_lock,"_lock");
 	// FIXME: it wont work with NFS
 	int lock;
-	lock = open(file_lock, O_CREAT|O_EXCL);
+	lock = open(file_lock, O_CREAT|O_EXCL, 00666);
 	if (lock == -1)
 	{
 		if (errno == EEXIST)

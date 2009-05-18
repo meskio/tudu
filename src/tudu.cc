@@ -221,6 +221,7 @@ int main(int argc, char **argv, char *env[])
 		if (!welcome.parse(node,sched))
 		{
 			fprintf(stderr, "Err: Welcome file does not exist. It should be %s\n", WELCOME_FILE);
+			unlink(file_lock);
 			exit(1);
 		}
 	}

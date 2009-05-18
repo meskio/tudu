@@ -581,7 +581,23 @@ char* Config::getEditor()
 	return editor;
 }
 
-bool Config::genWindowCoor(int lines, int cols, window_coor coor[])
+void Config::genWindowCoor(int lines, int cols, window_coor coor[])
+{
+	/* if window don't fits will display only the tree */
+	if (!_genWindowCoor(lines, cols, coor))
+	{
+		for (int i = 0; i < NUM_WINDOWS; ++i)
+			coor[i].exist = false;
+
+		coor[WTREE].exist = true;
+		coor[WTREE].x = 0;
+		coor[WTREE].y = 0;
+		coor[WTREE].lines = lines;
+		coor[WTREE].cols = cols;
+	}
+}
+
+bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 {
 	int height[MAX_THEME_ROWS];
 	int undefined_row;

@@ -77,6 +77,12 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
+		<title>check theme colors for each window</title>
+		<priority>2</priority>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>check if welkome works</title>
 		<priority>2</priority>
 		<text>

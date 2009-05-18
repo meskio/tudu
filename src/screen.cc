@@ -98,16 +98,8 @@ void Screen::draw()
 	int lines, cols;
 
 	/* get size of windows */
-        getmaxyx(stdscr, lines, cols); 
-	if (!config.genWindowCoor(lines, cols, coor))
-	{
-		clear();
-		refresh();
-		endwin();
-		fprintf(stderr, "Err: Theme does not fit\n");
-		exit(1);
-		//FIXME: delete lock
-	}
+    getmaxyx(stdscr, lines, cols); 
+	config.genWindowCoor(lines, cols, coor);
 
 	/* create windows */
 	window_coor c = coor[WTREE];
@@ -167,21 +159,18 @@ void Screen::resizeTerm()
 	endwin();
 	refresh();
 	getmaxyx(stdscr, lines, cols);
-	if (!config.genWindowCoor(lines, cols, coor))
-	{
-		clear();
-		refresh();
-		endwin();
-		fprintf(stderr, "Err: Theme does not fit\n");
-		exit(1);
-		//FIXME: delete lock
-	}
+	config.genWindowCoor(lines, cols, coor);
 
-	/* resize windows */
+	/* 
+	 * resize windows
+	 */
+	/* tree */
 	window_coor c = coor[WTREE];
 	wtree->_resize(c.lines, c.cols);
 	wtree->_mv(c.y, c.x);
 	wtree->_erase();
+
+	/* help */
 	c = coor[WHELP];
 	if (c.exist)
 	{
@@ -198,6 +187,8 @@ void Screen::resizeTerm()
 		whelp->_refresh();
 		whelp->_attroff(COLOR_HELP);
 	}
+
+	/* priority */
 	c = coor[WPRIORITY];
 	if (c.exist)
 	{
@@ -205,6 +196,8 @@ void Screen::resizeTerm()
 		wpriority->_mv(c.y, c.x);
 		wpriority->_erase();
 	}
+
+	/* category */
 	c = coor[WCATEGORY];
 	if (c.exist)
 	{
@@ -212,6 +205,8 @@ void Screen::resizeTerm()
 		wcategory->_mv(c.y, c.x);
 		wcategory->_erase();
 	}
+
+	/* deadline */
 	c = coor[WDEADLINE];
 	if (c.exist)
 	{
@@ -219,6 +214,8 @@ void Screen::resizeTerm()
 		wdeadline->_mv(c.y, c.x);
 		wdeadline->_erase();
 	}
+
+	/* deadline */
 	c = coor[WTEXT];
 	if (c.exist)
 	{
@@ -226,6 +223,8 @@ void Screen::resizeTerm()
 		wtext->_mv(c.y, c.x);
 		wtext->_erase();
 	}
+
+	/* info */
 	c = coor[WINFO];
 	if (c.exist)
 	{
@@ -233,6 +232,8 @@ void Screen::resizeTerm()
 		winfo->_mv(c.y, c.x);
 		winfo->_erase();
 	}
+
+	/* schedule */
 	c = coor[WSCHEDULE];
 	if (c.exist)
 	{

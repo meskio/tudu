@@ -109,7 +109,7 @@ public:
 	int getDaysWarn();
 	char* getSortOrder();
 	char* getEditor();
-	bool genWindowCoor(int lines, int cols, window_coor coor[]);
+	void genWindowCoor(int lines, int cols, window_coor coor[]);
 	void getColorList(color_t* color_list[], short int& length);
 	void getColorPair(short int win, short int& foreground, short int& background);
 private:
@@ -141,6 +141,7 @@ private:
 	void getThemeColors(string& option, string& value);
 	short int getThemeColor(string color);
 	int getContext(string& str);
+	bool _genWindowCoor(int lines, int cols, window_coor coor[]);
 };
 
 #endif

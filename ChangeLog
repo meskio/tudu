@@ -1,3 +1,12 @@
+0.5.1
+	* Added a simple theme to show when theme don't fit
+	* Added support for up/re page keys on text editor
+	* Fixed tab problems on editors
+	* Fixed problems with text cursor when resize window
+	* Fixed problems with non writable files
+	* Fixed default permisions on lock files
+	* Fixed segfaults when wrong params in cli
+
 0.5
 	* Added search on titles
 	* Added command interface

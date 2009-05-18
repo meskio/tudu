@@ -7,42 +7,9 @@
 		<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
 </text>
 	</todo>
-	<todo done="yes" collapse="no">
-		<title>tab bug in text editor</title>
-		<priority>1</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>tudu -f -&gt; violacion de segmento</title>
-		<priority>2</priority>
-		<text>
-</text>
-	</todo>
 	<todo done="no" collapse="no">
 		<title>automake</title>
 		<priority>5</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="yes">
-		<title>public stuff</title>
-		<text>
-</text>
-		<todo done="no" collapse="no">
-			<title>screen cast</title>
-			<text>
-</text>
-		</todo>
-		<todo done="no" collapse="no">
-			<title>git</title>
-			<text>
-</text>
-		</todo>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>text editor problems when resize window and cursor gets out of it</title>
-		<priority>1</priority>
 		<text>
 </text>
 	</todo>
@@ -67,35 +34,6 @@
 	<todo done="no" collapse="no">
 		<title>cooerent editor and title</title>
 		<priority>4</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>check if welkome works</title>
-		<priority>2</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>next and re pag in text editor</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>check lock problems with folders without write permisions</title>
-		<priority>1</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>do something when theme don't fit</title>
-		<priority>3</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>permisions in lock files</title>
-		<priority>1</priority>
 		<text>
 </text>
 	</todo>

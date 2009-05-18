@@ -208,7 +208,29 @@ void Interface::eraseCursor()
 
 void Interface::drawCursor()
 {
-	if (cursor->line > tree_end - 4)
+	if (screen.treeLines() < 8)
+	{
+		if (cursor->line >= tree_end)
+		{
+			tree_end = cursor->line;
+			tree_begin = tree_end - screen.treeLines();
+			drawTodo();
+		}
+		else if (cursor->line < tree_begin)
+		{
+			tree_begin = cursor->line;
+			tree_end = tree_begin + screen.treeLines();
+			drawTodo();
+		}
+		else
+		{
+			screen.drawTask(cursor_line(), cursor.depth(), *cursor, 
+					true);
+			screen.drawText(cursor->getText());
+			screen.drawSched(sched, &(*cursor));
+		}
+	}
+	else if (cursor->line > tree_end - 4)
 	{
 		tree_end = cursor->line + 4;
 		tree_begin = tree_end - screen.treeLines();

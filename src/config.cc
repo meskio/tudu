@@ -605,6 +605,9 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 	int y = 0,x = 0;
 	bool undefined_height = false;
 
+	/* check if there is enought rows */
+	if (lines < row_index + 8) return false;
+
 	/* initialice the windows as not present */
 	for (int i=0; i<NUM_WINDOWS; ++i) coor[i].exist = false;
 

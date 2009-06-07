@@ -274,7 +274,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	{
 		wtree->_addstr("[X] ");
 	}
-	else if (!t.haveChild())
+	else if (!t.haveChild() || config.getHidePercent())
 	{
 		wtree->_addstr("[ ] ");
 	}

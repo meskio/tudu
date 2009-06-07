@@ -105,6 +105,7 @@ public:
 	void getActionList(action_list& list);
 	bool getCollapse();
 	bool& getHideDone();
+	bool getHidePercent();
 	bool getVisualTree();
 	int getDaysWarn();
 	char* getSortOrder();
@@ -116,6 +117,7 @@ private:
 	key_map tree_keys;
 	bool collapse;
 	bool hide_done;
+	bool hide_percent;
 	bool visual_tree;
 	int  days_warn_deadline;
 	char sort_order[16];

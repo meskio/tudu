@@ -137,6 +137,17 @@ void Config::getGeneralOption(string& option, string& value)
 			hide_done = false;
 		}
 	}
+	if ("hide_percent" == option)
+	{
+		if ("yes" == value)
+		{
+			hide_percent = true;
+		}
+		if ("no" == value)
+		{
+			hide_percent = false;
+		}
+	}
 	if ("visual_tree" == option)
 	{
 		if ("yes" == value)
@@ -559,6 +570,11 @@ bool Config::getCollapse()
 bool& Config::getHideDone()
 {
 	return hide_done;
+}
+
+bool Config::getHidePercent()
+{
+	return hide_percent;
 }
 
 bool Config::getVisualTree()

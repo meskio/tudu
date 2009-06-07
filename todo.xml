@@ -55,7 +55,7 @@ category or saving new todo the program is freezing for a second.
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>hide percent</title>
 		<text>3. Any chances to have an option in future for hiding percentages?
 </text>

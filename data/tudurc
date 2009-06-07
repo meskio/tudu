@@ -4,6 +4,7 @@
 [ general ]
 collapse     = no  #collapse by default
 hide_done    = no  #hide done tasks
+hide_percent = no  #hide percent on tasks
 visual_tree  = no  #toggle graphical tree, it shows (+) on the fathers
 days_warn    = 2   #days before the deadline for warn
 #sort all the todo with given order

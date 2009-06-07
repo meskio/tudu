@@ -26,15 +26,38 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
+		<title>XFCE terminal</title>
+		<text>1. Under XFCE terminal program ("Terminal") there was a strange behavior
+of backspace button in your program - it generated some strange symbols,
+but don't do the symbol deleting. I checked it under urxvt and
+everything was fine. So I'd to config XFCE terminal in that way, that
+pressing backspace was generating "Control-H" (before that it was set to
+automatic) I'm not really sure this is a problem of your program, but
+I'd never met such problem with this terminal.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>title editor multi-linear</title>
 		<priority>4</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
+		<title>freezing</title>
+		<text>2. I really appreciate the present functionality of the program, but I
+met with some slowdowns while operating with my todos - when I'm setting
+category or saving new todo the program is freezing for a second.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>cooerent editor and title</title>
 		<priority>4</priority>
 		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>hide percent</title>
+		<text>3. Any chances to have an option in future for hiding percentages?
 </text>
 	</todo>
 </todo>

@@ -19,9 +19,9 @@
 
 #include "data.h"
 
-set<string> categories;
+set<wstring> categories;
 
-ToDo::ToDo(string t, bool isDone, string txt) 
+ToDo::ToDo(wstring t, bool isDone, string txt) 
 		: title(t), _done(isDone)
 {
 	collapse = false;
@@ -41,7 +41,7 @@ ToDo::~ToDo()
 }
 
 
-string& ToDo::getTitle()
+wstring& ToDo::getTitle()
 {
 	return title;
 }
@@ -76,12 +76,12 @@ int& ToDo::priority()
 	return _priority;
 }
 
-string ToDo::getCategory()
+wstring ToDo::getCategory()
 {
 	return _category;
 }
 
-void ToDo::setCategory(string c)
+void ToDo::setCategory(wstring c)
 {
 	_category = c;
 
@@ -537,7 +537,7 @@ void iToDo::sort(char order[])
 	root->_sort();
 }
 
-bool iToDo::search(string& str)
+bool iToDo::search(wstring& str)
 {
 	pToDo begin = *cursor;
 
@@ -553,7 +553,7 @@ bool iToDo::search(string& str)
 	}
 }
 
-bool iToDo::searchUp(string& str)
+bool iToDo::searchUp(wstring& str)
 {
 	pToDo begin = *cursor;
 

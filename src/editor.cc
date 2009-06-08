@@ -25,12 +25,12 @@
 
 Editor::Editor()
 {
-	text = "";
+	text = L"";
 	cursor = 0;
 	key = '\0';
 }
 
-string& Editor::getText()
+wstring& Editor::getText()
 {
 	return text;
 }
@@ -228,7 +228,7 @@ void HistoryEditor::initialize()
 {
 	shown = history.begin();
 	cursor = 0;
-	text = "";
+	text = L"";
 }
 
 void HistoryEditor::up()
@@ -268,9 +268,9 @@ void CmdEditor::initialize()
 
 void CmdEditor::tab() /* do completion */
 {
-	vector<string> params;
+	vector<wstring> params;
 	size_t begin, end;
-	string rest_params = "";
+	wstring rest_params = L"";
 
 	/* Get the command and params in text */
 	for (begin = 0, end = text.find(' ', 0); (string::npos != end) && (cursor > (int)end);
@@ -296,15 +296,15 @@ void CmdEditor::tab() /* do completion */
 	/* if is completing the param */
 	else
 	{
-		if (commands[params[0]] == "category")
+		if (commands[params[0]] == L"category")
 			category_completion(params.back(), params.size()-1);
 	}
 
 	/* regenerate the text string */
-	text = "";
-	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
+	text = L"";
+	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
 	{
-		text += *p + " ";
+		text += *p + L" ";
 	}
 	cursor = text.length()-1;
 	if (rest_params.empty())
@@ -314,7 +314,7 @@ void CmdEditor::tab() /* do completion */
 	param = params.size()-1;
 }
 
-void CmdEditor::command_completion(string& com)
+void CmdEditor::command_completion(wstring& com)
 {
 	/* if it is no the first time */
 	if ((param == 0) &&
@@ -355,7 +355,7 @@ void CmdEditor::command_completion(string& com)
 }
 
 #define param_cmp(str) cat.compare(0, length, str, 0, length)
-void CmdEditor::category_completion(string& cat, int num_param)
+void CmdEditor::category_completion(wstring& cat, int num_param)
 {
 
 	/* if it is no the first time */
@@ -428,36 +428,36 @@ void DateEditor::other()
 
 void PriorityEditor::up()
 {
-	if ((text != "N") && (text[cursor] > 49))
+	if ((text != L"N") && (text[cursor] > 49))
 	{
 		text[cursor]--;
 	}
 	else
 	{
-		text = "1";
+		text = L"1";
 	}
 }
 
 void PriorityEditor::down()
 {
-	if ((text != "N") && (text[cursor] < 53))
+	if ((text != L"N") && (text[cursor] < 53))
 	{
 		text[cursor]++;
 	}
 	else
 	{
-		text = "5";
+		text = L"5";
 	}
 }
 
 void PriorityEditor::backspace()
 {
-	text = "N";
+	text = L"N";
 }
 
 void PriorityEditor::supr()
 {
-	text = "N";
+	text = L"N";
 }
 
 void PriorityEditor::other()

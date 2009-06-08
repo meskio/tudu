@@ -27,7 +27,7 @@ class Cmd;
 #include "interface.h"
 
 /* comands definition with it's params types */
-extern map<string,string> commands;
+extern map<wstring,wstring> commands;
 
 class Cmd
 {
@@ -35,14 +35,14 @@ public:
 	Cmd();
 
 	void get_interface(Interface *i);
-	bool cmd(string command); /* return if should be redraw the screen */
+	bool cmd(wstring command); /* return if should be redraw the screen */
 private:
 	Interface *interface;
 
-	void hide(vector<string> &params);
-	void show(vector<string> &params);
-	void showall(vector<string> &params);
-	void showonly(vector<string> &params);
+	void hide(vector<wstring> &params);
+	void show(vector<wstring> &params);
+	void showall(vector<wstring> &params);
+	void showonly(vector<wstring> &params);
 };
 #endif
 

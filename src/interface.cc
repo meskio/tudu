@@ -27,7 +27,7 @@ Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd 
 {
 	cmd.get_interface(this);
 
-	search_pattern = "";
+	search_pattern = L"";
 	tree_begin = 0;
 	tree_end = screen.treeLines();
 
@@ -277,9 +277,9 @@ void Interface::newTodo()
 		father.out();
 		cursor->setCategory(father->getCategory());
 	}
-	else if (hidden_categories.count(""))
+	else if (hidden_categories.count(L""))
 	{
-		set<string>::iterator cat;
+		set<wstring>::iterator cat;
 		for (cat = categories.begin(); (cat != categories.end()) && hidden_categories.count(*cat); cat++);
 		if (cat != categories.end()) cursor->setCategory(*cat);
 		else cursor->setCategory(NONE_CATEGORY);
@@ -319,8 +319,8 @@ void Interface::right()
 	{
 		newTodo();
 		drawTodo();
-		string title;
-		if ((editLine(title)) && (title != ""))
+		wstring title;
+		if ((editLine(title)) && (title != L""))
 		{
 			cursor->getTitle() = title;
 
@@ -496,7 +496,7 @@ void Interface::pasteChild()
 
 #define startTitle (cursor.depth() * 4 + 7)
 
-bool Interface::editLine(string& str)
+bool Interface::editLine(wstring& str)
 {
 	bool save;
 
@@ -536,8 +536,8 @@ void Interface::addLine()
 {
 	newTodo();
 	drawTodo();
-	string title;
-	if ((editLine(title)) && (title != ""))
+	wstring title;
+	if ((editLine(title)) && (title != L""))
 		cursor->getTitle() = title;
 	else
 		del();
@@ -547,8 +547,8 @@ void Interface::addLineUp()
 {
 	newTodo();
 	drawTodo();
-	string title;
-	if ((editLine(title)) && (title != ""))
+	wstring title;
+	if ((editLine(title)) && (title != L""))
 		cursor->getTitle() = title;
 	else
 		del();
@@ -556,7 +556,7 @@ void Interface::addLineUp()
 
 void Interface::modifyLine()
 {
-	string title;
+	wstring title;
 	if (editLine(title))
 		cursor->getTitle() = title;
 }
@@ -711,7 +711,7 @@ bool Interface::_search()
 
 void Interface::command_line()
 {
-	string command("");
+	wstring command(L"");
 
 	if (screen.cmd(command))
 	{
@@ -728,7 +728,7 @@ void Interface::command_line()
 
 void Interface::search()
 {
-	string pattern("");
+	wstring pattern(L"");
 
 	if (screen.searchText(pattern))
 	{
@@ -742,7 +742,7 @@ void Interface::search()
 
 void Interface::search_next()
 {
-	if (search_pattern != "")
+	if (search_pattern != L"")
 		if (_search())
 			drawTodo();
 		else
@@ -753,7 +753,7 @@ void Interface::search_next()
 
 void Interface::search_prev()
 {
-	if (search_pattern != "")
+	if (search_pattern != L"")
 		if (_search())
 			drawTodo();
 		else

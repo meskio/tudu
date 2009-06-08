@@ -39,16 +39,16 @@ public:
 	bool parse(ToDo& todo, Sched& sched);
 private:
 	Sched *sched;
-	ifstream file;
-	string str;
-	string txt;
+	wifstream file;
+	wstring str;
+	wstring txt;
 	bool collect_text;
 	bool deadline;
 	bool scheduled;
 
 	void ptag(iToDo& iterator, Sched& sched);
 	void patt(iToDo& iterator);
-	char amp();
+	wchar_t amp();
 };
 
 class Writer
@@ -59,13 +59,13 @@ public:
 
 	bool save(); /* return if was succesfull */
 private:
-	ofstream file;
+	wofstream file;
 	ToDo& todo;
 	iToDo* i;
 	char path[128];
 
 	void _save();
-	void amp(string& str);
+	void amp(wstring& str);
 };
 
 #endif

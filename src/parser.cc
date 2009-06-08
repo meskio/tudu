@@ -31,13 +31,13 @@ Parser::~Parser()
 
 bool Parser::parse(ToDo& todo, Sched& sched)
 {
-	char ch;
+	wchar_t ch;
 	bool tag = false, att = false;
 	iToDo iterator(todo);
 
 	if (!file) return false; //if the file is not open
 
-	str = "";
+	str = L"";
 	collect_text = false;
 	deadline = false;
 	scheduled = false;
@@ -45,17 +45,17 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 	{
 		switch (ch)
 		{
-			case '<':
+			case L'<':
 				if (tag) return false;
 				tag = true;
 				if (collect_text)
 				{
 					txt = str;
-					str = "";
+					str = L"";
 				}
 				else collect_text = true;
 				break;
-			case '>':
+			case L'>':
 				if (!tag) return false;
 				tag = false;
 				collect_text = false;
@@ -64,25 +64,25 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 					patt(iterator);
 					att = false;
 				}
-				str = "";
+				str = L"";
 				break;
-			case '\t':
-			case ' ':
+			case L'\t':
+			case L' ':
 				if (tag)
 				{
 					if (!att)
 					{
 						ptag(iterator,sched);
 						att = true;
-						str = "";
+						str = L"";
 					} else if (str.length()) {
 						patt(iterator);
-						str = "";
+						str = L"";
 					}
 				} else
 					if (collect_text) str += ch;
 				break;
-			case '&':
+			case L'&':
 				if (collect_text) str += amp();
 				break;
 			default:
@@ -93,28 +93,28 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 	return true;
 }
 
-char Parser::amp()
+wchar_t Parser::amp()
 {
-	char ch;
-	string str = "";
+	wchar_t ch;
+	wstring str = L"";
 
 	file.get(ch);
-	while (';' != ch)
+	while (L';' != ch)
 	{
 		str += ch;
 		file.get(ch);
 	}
-	if ("amp" == str) return '&';
-	if ("lt" == str) return '<';
-	if ("gt" == str) return '>';
-	else return ' ';
+	if (L"amp" == str) return L'&';
+	if (L"lt" == str) return L'<';
+	if (L"gt" == str) return L'>';
+	else return L' ';
 }
 
 void Parser::ptag(iToDo& iterator, Sched& sched)
 {
 	static bool first_todo = true;
 
-	if ("todo" == str)
+	if (L"todo" == str)
 	{
 		if (first_todo) first_todo = false;
 		else {
@@ -122,98 +122,117 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 			iterator.in();
 		}
 	}
-	if ("/todo" == str)
+	if (L"/todo" == str)
 	{
 		iterator.out();
 	}
-	if ("title" == str)
+	if (L"title" == str)
 	{
 		collect_text = true;
 	}
-	if ("/title" == str)
+	if (L"/title" == str)
 	{
 		iterator->getTitle() = txt;
 	}
-	if ("deadline" == str)
+	if (L"deadline" == str)
 	{
 		deadline = true;
 	}
-	if ("/deadline" == str)
+	if (L"/deadline" == str)
 	{
 		deadline = false;
 	}
-	if ("day" == str)
+	if (L"day" == str)
 	{
 		collect_text = true;
 	}
-	if ("/day" == str)
+	if (L"/day" == str)
 	{
+		char num[3];
+		wcstombs(num, txt.c_str(), 3);
+		int day = atoi(num);
 		if (deadline)
-			iterator->deadline().day() = atoi(txt.c_str());
+		{
+			iterator->deadline().day() = day;
+		}
 		else if (scheduled)
-			iterator->sched().day() = atoi(txt.c_str());
+			iterator->sched().day() = day;
 	}
-	if ("month" == str)
+	if (L"month" == str)
 	{
 		collect_text = true;
 	}
-	if ("/month" == str)
+	if (L"/month" == str)
 	{
+		char num[3];
+		wcstombs(num, txt.c_str(), 3);
+		int month = atoi(num);
 		if (deadline)
-			iterator->deadline().month() = atoi(txt.c_str());
+		{
+			iterator->deadline().month() = month;
+		}
 		else if (scheduled)
-			iterator->sched().month() = atoi(txt.c_str());
+			iterator->sched().month() = month;
 	}
-	if ("year" == str)
+	if (L"year" == str)
 	{
 		collect_text = true;
 	}
-	if ("/year" == str)
+	if (L"/year" == str)
 	{
+		char num[5];
+		wcstombs(num, txt.c_str(), 5);
+		int year = atoi(num);
 		if (deadline)
-			iterator->deadline().year() = atoi(txt.c_str());
+		{
+			iterator->deadline().year() = year;
+		}
 		else if (scheduled)
-			iterator->sched().year() = atoi(txt.c_str());
+			iterator->sched().year() = year;
 	}
-	if ("position" == str)
+	if (L"position" == str)
 	{
 		collect_text = true;
 	}
-	if ("/position" == str)
+	if (L"/position" == str)
 	{
-		if (scheduled)
-			iterator->schedPosition() = atoi(txt.c_str());
+		char num[8];
+		wcstombs(num, txt.c_str(), 8);
+		iterator->schedPosition() = atoi(num);
 	}
-	if ("priority" == str)
-	{
-		collect_text = true;
-	}
-	if ("/priority" == str)
-	{
-		iterator->priority() = atoi(txt.c_str());
-	}
-	if ("category" == str)
+	if (L"priority" == str)
 	{
 		collect_text = true;
 	}
-	if ("/category" == str)
+	if (L"/priority" == str)
+	{
+		char num[2];
+		wcstombs(num, txt.c_str(), 2);
+		iterator->priority() = atoi(num);
+	}
+	if (L"category" == str)
+	{
+		collect_text = true;
+	}
+	if (L"/category" == str)
 	{
 		iterator->setCategory(txt);
 	}
-	if ("text" == str)
+	if (L"text" == str)
 	{
 		collect_text = true;
 	}
-	if ("/text" == str)
+	if (L"/text" == str)
 	{
-		if ('\n' == txt[0]) txt.erase(0,1);
-		iterator->getText() = txt;
+		if (L'\n' == txt[0]) txt.erase(0,1);
+		//TODO
+		//iterator->getText() = txt;
 	}
-	if ("scheduled" == str)
+	if (L"scheduled" == str)
 	{
 		scheduled = true;
 	}
-	if ("/scheduled" == str)
+	if (L"/scheduled" == str)
 	{
 		if (iterator->sched().valid())
 			sched.add(&(*iterator));
@@ -223,20 +242,20 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 
 void Parser::patt(iToDo& iterator)
 {
-	string name, data;
-	int eq_pos = str.find("=");
+	wstring name, data;
+	int eq_pos = str.find(L"=");
 
 	name = str.substr(0, eq_pos);
 	eq_pos++;
 	data = str.substr(eq_pos, str.length()-eq_pos);
-	if ("done" == name)
+	if (L"done" == name)
 	{
-		if ("\"yes\"" == data) iterator->done() = true;
+		if (L"\"yes\"" == data) iterator->done() = true;
 		else iterator->done() = false;
 	}
-	else if ("collapse" == name)
+	else if (L"collapse" == name)
 	{
-		if ("\"yes\"" == data) iterator->getCollapse() = true;
+		if (L"\"yes\"" == data) iterator->getCollapse() = true;
 		else iterator->getCollapse() = false;
 	}
 }
@@ -285,9 +304,9 @@ void Writer::_save()
 		if ((*i)->getCollapse()) file << "yes";
 		else file << "no";
 		file << "\">" << endl;
-		if ("" != (*i)->getTitle())
+		if (L"" != (*i)->getTitle())
 		{
-			string str = (*i)->getTitle();
+			wstring str = (*i)->getTitle();
 
 			putTabs((*i).depth()+1);
 			amp(str);
@@ -323,12 +342,13 @@ void Writer::_save()
 		}
 		if ((*i)->getText() != "")
 		{
-			string str = (*i)->getText().getStr();
+			/* TODO
+			wstring str = (*i)->getText().getStr();
 
 			putTabs((*i).depth()+1);
 			amp(str);
 			file << "<text>" << str;
-			file << "</text>" << endl;
+			file << "</text>" << endl; */
 		}
 		if ((*i)->sched().valid())
 		{
@@ -358,7 +378,7 @@ void Writer::_save()
 #define replace(orig, alt) \
 	{ \
 	index = 0; \
-	while ((index = str.find(orig,index)) != string::npos) \
+	while ((index = str.find(orig,index)) != wstring::npos) \
 	{ \
 		str.erase(index,1); \
 		str.insert(index, alt); \
@@ -366,10 +386,10 @@ void Writer::_save()
 	} \
 	} while (0)
 
-void Writer::amp(string& str)
+void Writer::amp(wstring& str)
 {
-	string::size_type index;
-	replace('&', "&amp;");
-	replace('<', "&lt;");
-	replace('>', "&gt;");
+	wstring::size_type index;
+	replace(L'&', L"&amp;");
+	replace(L'<', L"&lt;");
+	replace(L'>', L"&gt;");
 }

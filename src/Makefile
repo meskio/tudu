@@ -10,7 +10,7 @@ all: $(PROG)
 
 $(PROG): $(OBJS)
 	echo $(SRCS)
-	$(CXX) $(CFLAGS) -lncurses -o $@ $(OBJS)
+	$(CXX) $(CFLAGS) -lncursesw -o $@ $(OBJS)
 
 .cc.o:
 	$(CXX) $(CFLAGS) -c $<

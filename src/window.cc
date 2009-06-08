@@ -49,9 +49,19 @@ int Window::_addstr(const char *str)
 	return waddstr(win, str);
 }
 
+int Window::_addstr(const wchar_t *str)
+{
+	return waddwstr(win, str);
+}
+
 int Window::_addstr(int y, int x, const char *str)
 {
 	return mvwaddstr(win, y, x, str);
+}
+
+int Window::_addstr(int y, int x, const wchar_t *str)
+{
+	return mvwaddwstr(win, y, x, str);
 }
 
 int Window::_addstr(string &str)
@@ -59,9 +69,19 @@ int Window::_addstr(string &str)
 	return waddstr(win, str.c_str());
 }
 
+int Window::_addstr(wstring &str)
+{
+	return waddwstr(win, str.c_str());
+}
+
 int Window::_addstr(int y, int x, string &str)
 {
 	return mvwaddstr(win, y, x,  str.c_str());
+}
+
+int Window::_addstr(int y, int x, wstring &str)
+{
+	return mvwaddwstr(win, y, x,  str.c_str());
 }
 
 int Window::_addch(const char ch)

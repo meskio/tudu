@@ -33,11 +33,11 @@ class Editor
 public:
 	Editor();
 
-	string& getText();
+	wstring& getText();
 	int& cursorPos();
 	bool edit(Window& win, int y, int x, unsigned int max_length);
 protected:
-	string text;
+	wstring text;
 	int cursor;
 	int key;
 	bool exit;
@@ -74,8 +74,8 @@ protected:
 class CategoryEditor: public LineEditor
 {
 protected:
-	set<string>::iterator search;
-	set<string>::iterator first;
+	set<wstring>::iterator search;
+	set<wstring>::iterator first;
 	int length;
 
 	void initialize();
@@ -85,8 +85,8 @@ protected:
 class HistoryEditor: public LineEditor
 {
 protected:
-	list<string> history;
-	list<string>::iterator shown;
+	list<wstring> history;
+	list<wstring>::iterator shown;
 
 	void initialize();
 	void up();
@@ -97,17 +97,17 @@ protected:
 class CmdEditor: public HistoryEditor
 {
 protected:
-	map<string,string>::iterator com_search;
-	map<string,string>::iterator com_first;
-	set<string>::iterator search;
-	set<string>::iterator first;
+	map<wstring,wstring>::iterator com_search;
+	map<wstring,wstring>::iterator com_first;
+	set<wstring>::iterator search;
+	set<wstring>::iterator first;
 	int length;
 	int param;
 
 	void initialize();
 	void tab();
-	void command_completion(string& com);
-	void category_completion(string& cat, int num_param);
+	void command_completion(wstring& com);
+	void category_completion(wstring& cat, int num_param);
 };
 
 class DateEditor: public Editor

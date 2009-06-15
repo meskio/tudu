@@ -48,6 +48,7 @@ public:
 	int _attroff(int attrs);
 	int _erase();
 	int _getch();
+	int _getch(wint_t *ch);
 	void _getmaxyx(int& y, int& x);
 	int _box();
 	int _lines();

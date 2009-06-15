@@ -20,7 +20,7 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <signal.h>
 #include <string.h>
 #include <form.h>

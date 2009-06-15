@@ -55,7 +55,7 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 	win._refresh();
 	while (!exit)
 	{
-		key = win._getch();
+		win._getch(&key);
 		switch (key)
 		{
 			case KEY_RESIZE:
@@ -173,11 +173,8 @@ void LineEditor::tab()
 
 void LineEditor::other()
 {
-	if (key < 256)
-	{
-		text.insert(cursor,1,key);
-		++cursor;
-	}
+	text.insert(cursor,1,key);
+	++cursor;
 }
 
 void CategoryEditor::initialize()

@@ -39,7 +39,7 @@ public:
 protected:
 	wstring text;
 	int cursor;
-	int key;
+	wint_t key;
 	bool exit;
 	bool result;
 

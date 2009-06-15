@@ -38,6 +38,7 @@ Screen::Screen(Config &c): config(c)
 	/*
 	 * Initialize ncurses
 	 */
+	setlocale(LC_ALL, "");
 	initscr ();
 	if (has_colors())
 	{
@@ -823,8 +824,15 @@ void Screen::helpPopUp(string str[], int len)
 	bool close = false;
 	bool resized = false;
 	int cursor = 0;
+	wint_t ch;
 	draw_help();
 	while (!close) {
+		if (ERR == h._getch(&ch))
+		{
+			//TODO
+		}
+		else
+		{
 		switch (h._getch())
 		{
 			case KEY_RESIZE:
@@ -867,6 +875,7 @@ void Screen::helpPopUp(string str[], int len)
 			default: 
 				close = true;
 				break;
+		}
 		}
 	}
 

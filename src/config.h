@@ -21,7 +21,7 @@
 #define CONFIG_H
 
 #include <string.h>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <fstream>
 #include <map>
 #include <string>

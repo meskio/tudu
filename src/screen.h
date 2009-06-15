@@ -20,10 +20,11 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <string>
 #include <ctime>
 #include <cwchar>
+#include <clocale>
 #include "window.h"
 #include "text.h"
 #include "data.h"

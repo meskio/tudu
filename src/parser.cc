@@ -271,19 +271,19 @@ Writer::~Writer() {}
 bool Writer::save()
 {
 	file.open(path);
-	file << "<?xml version=\"1.0\"?>" << endl;
+	file << L"<?xml version=\"1.0\"?>" << endl;
 
 	/* there was an error writing */
 	if (file.fail()) return false;
 
-	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
-	file << "<todo>" << endl;
+	file << L"<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
+	file << L"<todo>" << endl;
 	i = new iToDo(todo);
 	i->sort((char*)"");
 	while(--(*i));
 	_save();
 	delete i;
-	file << "</todo>" << endl;
+	file << L"</todo>" << endl;
 	file.close();
 
 	return true;
@@ -297,48 +297,48 @@ void Writer::_save()
 	for (; !((*i).end()); ++(*i))
 	{
 		putTabs((*i).depth());
-		file << "<todo done=\"";
-		if ((*i)->done()) file << "yes";
-		else file << "no";
-		file << "\" collapse=\"";
-		if ((*i)->getCollapse()) file << "yes";
-		else file << "no";
-		file << "\">" << endl;
+		file << L"<todo done=\"";
+		if ((*i)->done()) file << L"yes";
+		else file << L"no";
+		file << L"\" collapse=\"";
+		if ((*i)->getCollapse()) file << L"yes";
+		else file << L"no";
+		file << L"\">" << endl;
 		if (L"" != (*i)->getTitle())
 		{
 			wstring str = (*i)->getTitle();
 
 			putTabs((*i).depth()+1);
 			amp(str);
-			file << "<title>" <<  str
-					<< "</title>" << endl;
+			file << L"<title>" <<  str
+					<< L"</title>" << endl;
 		}
 		if ((*i)->deadline().valid())
 		{
 			Date &date = (*i)->deadline();
 
 			putTabs((*i).depth()+1);
-			file << "<deadline>" << endl;
+			file << L"<deadline>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<day>" << date.day() << "</day>" << endl;
+			file << L"<day>" << date.day() << L"</day>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<month>" << date.month() << "</month>" << endl;
+			file << L"<month>" << date.month() << L"</month>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<year>" << date.year() << "</year>" << endl;
+			file << L"<year>" << date.year() << L"</year>" << endl;
 			putTabs((*i).depth()+1);
-			file << "</deadline>" << endl;
+			file << L"</deadline>" << endl;
 		}
 		if ((*i)->priority())
 		{
 			putTabs((*i).depth()+1);
-			file << "<priority>" << (*i)->priority() << 
-					"</priority>" << endl;
+			file << L"<priority>" << (*i)->priority() << 
+					L"</priority>" << endl;
 		}
 		if (!(*i)->getCategory().empty())
 		{
 			putTabs((*i).depth()+1);
-			file << "<category>" << (*i)->getCategory() << 
-					"</category>" << endl;
+			file << L"<category>" << (*i)->getCategory() << 
+					L"</category>" << endl;
 		}
 		if ((*i)->getText() != "")
 		{
@@ -355,23 +355,23 @@ void Writer::_save()
 			Date &date = (*i)->sched();
 
 			putTabs((*i).depth()+1);
-			file << "<scheduled>" << endl;
+			file << L"<scheduled>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<day>" << date.day() << "</day>" << endl;
+			file << L"<day>" << date.day() << L"</day>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<month>" << date.month() << "</month>" << endl;
+			file << L"<month>" << date.month() << L"</month>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<year>" << date.year() << "</year>" << endl;
+			file << L"<year>" << date.year() << L"</year>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<position>" << (*i)->schedPosition() << "</position>" << endl;
+			file << L"<position>" << (*i)->schedPosition() << L"</position>" << endl;
 			putTabs((*i).depth()+1);
-			file << "</scheduled>" << endl;
+			file << L"</scheduled>" << endl;
 		}
 		(*i).in();
 		_save();
 		(*i).out();
 		putTabs((*i).depth());
-		file << "</todo>" << endl;
+		file << L"</todo>" << endl;
 	}
 }
 

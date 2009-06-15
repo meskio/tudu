@@ -129,6 +129,11 @@ int Window::_getch()
 	return wgetch(win);
 }
 
+int Window::_getch(wint_t *ch)
+{
+	return wget_wch(win, ch);
+}
+
 void Window::_getmaxyx(int& y, int& x)
 {
 	getmaxyx(win, y, x);

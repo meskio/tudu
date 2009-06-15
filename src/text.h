@@ -20,7 +20,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <limits.h>
 #include <list>
 #include <iostream>

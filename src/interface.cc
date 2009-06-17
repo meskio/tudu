@@ -266,10 +266,8 @@ bool Interface::isHide(iToDo& todo)
 	return hide;
 }
 
-void Interface::newTodo()
+void Interface::inherit()
 {
-	cursor.addChild(new ToDo());
-
 	/* inherit category */
 	if (cursor.depth())
 	{
@@ -294,7 +292,10 @@ void Interface::left()
 		up();
 	}
 	else if (isHide(cursor))
-		newTodo();
+	{
+		cursor.addChild(new ToDo());
+		inherit();
+	}
 	cursor->actCollapse() = false;
 	if (cursor->getCollapse())
 	{
@@ -317,7 +318,8 @@ void Interface::right()
 
 	if (cursor.end())
 	{
-		newTodo();
+		cursor.addChild(new ToDo());
+		inherit();
 		drawTodo();
 		string title;
 		if ((editLine(title)) && (title != ""))
@@ -534,7 +536,8 @@ void Interface::setCategory()
 
 void Interface::addLine()
 {
-	newTodo();
+	cursor.addChild(new ToDo());
+	inherit();
 	drawTodo();
 	string title;
 	if ((editLine(title)) && (title != ""))
@@ -545,7 +548,8 @@ void Interface::addLine()
 
 void Interface::addLineUp()
 {
-	newTodo();
+	cursor.addChildUp(new ToDo());
+	inherit();
 	drawTodo();
 	string title;
 	if ((editLine(title)) && (title != ""))

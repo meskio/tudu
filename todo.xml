@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
+<!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
 		<title>support for international chars (UTF-8)</title>
@@ -58,6 +58,11 @@ category or saving new todo the program is freezing for a second.
 	<todo done="yes" collapse="no">
 		<title>hide percent</title>
 		<text>3. Any chances to have an option in future for hiding percentages?
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>O is not working</title>
+		<text>
 </text>
 	</todo>
 </todo>

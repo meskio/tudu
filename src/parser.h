@@ -21,6 +21,7 @@
 #define PARSER_H
 
 #include <fstream>
+#include <locale>
 #include "data.h"
 #include "sched.h"
 #include "text.h"

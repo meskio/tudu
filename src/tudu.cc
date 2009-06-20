@@ -210,7 +210,7 @@ int main(int argc, char **argv, char *env[])
 	/*
 	 * Load data
 	 */
-	ToDo node(L"");
+	ToDo node;
 	iToDo it(node);
 	Sched sched;
 	Parser p(file_xml);

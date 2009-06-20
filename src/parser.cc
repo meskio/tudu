@@ -21,6 +21,7 @@
 
 Parser::Parser(const char* path)
 {
+	file.imbue(locale(""));
 	file.open(path);
 }
 
@@ -41,7 +42,7 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 	collect_text = false;
 	deadline = false;
 	scheduled = false;
-	while (file.get(ch))
+	while (file.get(ch)) //TODO: get breaks on non-ASCII char
 	{
 		switch (ch)
 		{
@@ -225,8 +226,7 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 	if (L"/text" == str)
 	{
 		if (L'\n' == txt[0]) txt.erase(0,1);
-		//TODO
-		//iterator->getText() = txt;
+		iterator->getText() = txt;
 	}
 	if (L"scheduled" == str)
 	{
@@ -264,6 +264,7 @@ void Parser::patt(iToDo& iterator)
 Writer::Writer(const char* pathToSave, ToDo& t): todo(t) 
 {
 	strncpy(path, pathToSave, 128);
+	file.imbue(locale(""));
 }
 
 Writer::~Writer() {}
@@ -340,15 +341,14 @@ void Writer::_save()
 			file << L"<category>" << (*i)->getCategory() << 
 					L"</category>" << endl;
 		}
-		if ((*i)->getText() != "")
+		if ((*i)->getText() != L"")
 		{
-			/* TODO
 			wstring str = (*i)->getText().getStr();
 
 			putTabs((*i).depth()+1);
 			amp(str);
 			file << "<text>" << str;
-			file << "</text>" << endl; */
+			file << "</text>" << endl;
 		}
 		if ((*i)->sched().valid())
 		{

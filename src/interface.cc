@@ -570,12 +570,12 @@ void Interface::editText()
 	char* editor = config.getEditor();
 	if (strlen(editor) != 0)
 	{
-		char path[L_tmpnam];
+		char path[L_tmpnam]; //FIXME: is it working on utf?
 		char s[86];
 		char* argv[32];
 		int argc;
 		char* res;
-		string str;
+		wstring str;
 		Text& text = cursor->getText();
 
 		/* create a temporal file */
@@ -585,7 +585,7 @@ void Interface::editText()
                         tmpnam(path);                                                                            
                 close(fout);
 
-		ofstream ofs(path);
+		wofstream ofs(path);
 		ofs << text;
 		ofs.close();
 		sprintf(s, editor, path);

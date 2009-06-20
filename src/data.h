@@ -52,7 +52,7 @@ bool cmp(pToDo t1, pToDo t2);
 class ToDo
 {
 public:
-	ToDo(wstring t = L"", bool isDone = false, string txt = "");
+	ToDo();
 	~ToDo();
 
 	wstring& getTitle();

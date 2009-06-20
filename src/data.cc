@@ -21,12 +21,10 @@
 
 set<wstring> categories;
 
-ToDo::ToDo(wstring t, bool isDone, string txt) 
-		: title(t), _done(isDone)
+ToDo::ToDo() 
 {
 	collapse = false;
 	cursor_in = false;
-	text = txt;
 	_priority = 0;
 	sched_position = 0;
 }

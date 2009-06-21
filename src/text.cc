@@ -156,7 +156,6 @@ wstring Text::getStr()
 wstring Text::_getStr(list<wstring>::iterator begin, int length)
 {
 	//FIXME: needs to take in acount the utf length
-	//FIXME: segfault
 	int rows = 0;
 	wstring s = L"";
 	list<wstring>::iterator i = begin;

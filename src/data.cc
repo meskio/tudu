@@ -25,6 +25,9 @@ ToDo::ToDo()
 {
 	collapse = false;
 	cursor_in = false;
+	title = L"";
+	text = L"";
+	_done = false;
 	_priority = 0;
 	sched_position = 0;
 }

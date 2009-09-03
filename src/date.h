@@ -20,7 +20,7 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <ctime>
+#include "defs.h"
 
 class Date
 {

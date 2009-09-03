@@ -291,7 +291,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	}
 	/* add the title split to the length of screen */
 	if (t.haveChild()) wtree->_attron(A_BOLD);
-	wstring title = t.getTitle().substr(0,coor[WTREE].cols-startTitle);
+	STRING title = t.getTitle().substr(0,coor[WTREE].cols-startTitle);
 	wtree->_addstr(title);
 	if (t.haveChild()) wtree->_attroff(A_BOLD);
 	if (isCursor)
@@ -325,7 +325,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* draw category */
 	if (coor[WCATEGORY].exist)
 	{
-		wstring category = t.getCategory();
+		STRING category = t.getCategory();
 		if (isCursor)
 			wcategory->_attron(COLOR_SELECTED);
 		else
@@ -422,7 +422,7 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 			if (cursor == (*i))
 				wschedule->_attron(COLOR_SELECTED);
 			wschedule->_addstr("    ");
-			wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
+			STRING title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
 			wschedule->_addstr(title);
 			wschedule->_addstr("\n");
 			if (cursor == (*i))
@@ -477,7 +477,7 @@ void Screen::priorityClear(int line)
 	}
 }
 
-bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
+bool Screen::editTitle(int line, int depth, bool haveChild, STRING& str)
 {
 	bool save;
 
@@ -517,7 +517,7 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 	{
 		bool save;
 		char date[11];
-		wchar_t wide_date[11];
+		CHAR wide_date[11];
 
 		if (deadline.valid())
 		{
@@ -588,7 +588,7 @@ bool Screen::editSched(Date& s)
 	if (coor[WSCHEDULE].exist)
 	{
 		char date[12];
-		wchar_t wide_date[12];
+		CHAR wide_date[12];
 		bool save;
 
 		wschedule->_attron(A_BOLD);
@@ -638,7 +638,7 @@ void Screen::setPriority(int line, int& priority)
 {
 	if (coor[WPRIORITY].exist)
 	{
-		wchar_t p[2] = L"N";
+		CHAR p[2] = L"N";
 		char s[2];
 
 		if (priority)
@@ -668,7 +668,7 @@ void Screen::setCategory(int line, ToDo& t)
 {
 	if (coor[WCATEGORY].exist)
 	{
-		wstring category = t.getCategory();
+		STRING category = t.getCategory();
 		categoryEditor.getText() = category;
 		categoryEditor.cursorPos() = category.length();
 		if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
@@ -718,7 +718,7 @@ int Screen::treeLines()
 	return wtree->_lines();
 }
 
-bool Screen::searchText(wstring& pattern)
+bool Screen::searchText(STRING& pattern)
 {
 	if (coor[WINFO].exist)
 	{
@@ -738,7 +738,7 @@ bool Screen::searchText(wstring& pattern)
 	}
 }
 
-bool Screen::cmd(wstring& command)
+bool Screen::cmd(STRING& command)
 {
 	if (coor[WINFO].exist)
 	{

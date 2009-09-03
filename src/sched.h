@@ -20,7 +20,7 @@
 #ifndef SCHEDULE_H
 #define SCHEDULE_H
 
-#include <list>
+#include "defs.h"
 #include "data.h"
 #include "date.h"
 

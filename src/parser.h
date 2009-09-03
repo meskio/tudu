@@ -20,8 +20,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <fstream>
-#include <locale>
+#include "defs.h"
 #include "data.h"
 #include "sched.h"
 #include "text.h"
@@ -40,16 +39,16 @@ public:
 	bool parse(ToDo& todo, Sched& sched);
 private:
 	Sched *sched;
-	wifstream file;
-	wstring str;
-	wstring txt;
+	IFSTREAM file;
+	STRING str;
+	STRING txt;
 	bool collect_text;
 	bool deadline;
 	bool scheduled;
 
 	void ptag(iToDo& iterator, Sched& sched);
 	void patt(iToDo& iterator);
-	wchar_t amp();
+	CHAR amp();
 };
 
 class Writer
@@ -60,13 +59,13 @@ public:
 
 	bool save(); /* return if was succesfull */
 private:
-	wofstream file;
+	OFSTREAM file;
 	ToDo& todo;
 	iToDo* i;
 	char path[128];
 
 	void _save();
-	void amp(wstring& str);
+	void amp(STRING& str);
 };
 
 #endif

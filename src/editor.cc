@@ -19,7 +19,6 @@
 
 #include "editor.h"
 #include "cmd.h"
-#include "data.h"
 
 #define cmp(str) text.compare(0, length, str, 0, length)
 
@@ -30,7 +29,7 @@ Editor::Editor()
 	key = '\0';
 }
 
-wstring& Editor::getText()
+STRING& Editor::getText()
 {
 	return text;
 }
@@ -265,9 +264,9 @@ void CmdEditor::initialize()
 
 void CmdEditor::tab() /* do completion */
 {
-	vector<wstring> params;
+	vector<STRING> params;
 	size_t begin, end;
-	wstring rest_params = L"";
+	STRING rest_params = L"";
 
 	/* Get the command and params in text */
 	for (begin = 0, end = text.find(' ', 0); (string::npos != end) && (cursor > (int)end);
@@ -299,7 +298,7 @@ void CmdEditor::tab() /* do completion */
 
 	/* regenerate the text string */
 	text = L"";
-	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
+	for (vector<STRING>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		text += *p + L" ";
 	}
@@ -311,7 +310,7 @@ void CmdEditor::tab() /* do completion */
 	param = params.size()-1;
 }
 
-void CmdEditor::command_completion(wstring& com)
+void CmdEditor::command_completion(STRING& com)
 {
 	/* if it is no the first time */
 	if ((param == 0) &&
@@ -352,7 +351,7 @@ void CmdEditor::command_completion(wstring& com)
 }
 
 #define param_cmp(str) cat.compare(0, length, str, 0, length)
-void CmdEditor::category_completion(wstring& cat, int num_param)
+void CmdEditor::category_completion(STRING& cat, int num_param)
 {
 
 	/* if it is no the first time */

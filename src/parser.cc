@@ -32,7 +32,7 @@ Parser::~Parser()
 
 bool Parser::parse(ToDo& todo, Sched& sched)
 {
-	wchar_t ch;
+	CHAR ch;
 	bool tag = false, att = false;
 	iToDo iterator(todo);
 
@@ -94,10 +94,10 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 	return true;
 }
 
-wchar_t Parser::amp()
+CHAR Parser::amp()
 {
-	wchar_t ch;
-	wstring str = L"";
+	CHAR ch;
+	STRING str = L"";
 
 	file.get(ch);
 	while (L';' != ch)
@@ -242,7 +242,7 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 
 void Parser::patt(iToDo& iterator)
 {
-	wstring name, data;
+	STRING name, data;
 	int eq_pos = str.find(L"=");
 
 	name = str.substr(0, eq_pos);
@@ -307,7 +307,7 @@ void Writer::_save()
 		file << "\">" << endl;
 		if (L"" != (*i)->getTitle())
 		{
-			wstring str = (*i)->getTitle();
+			STRING str = (*i)->getTitle();
 
 			putTabs((*i).depth()+1);
 			amp(str);
@@ -343,7 +343,7 @@ void Writer::_save()
 		}
 		if ((*i)->getText() != L"")
 		{
-			wstring str = (*i)->getText().getStr();
+			STRING str = (*i)->getText().getStr();
 
 			putTabs((*i).depth()+1);
 			amp(str);
@@ -378,7 +378,7 @@ void Writer::_save()
 #define replace(orig, alt) \
 	{ \
 	index = 0; \
-	while ((index = str.find(orig,index)) != wstring::npos) \
+	while ((index = str.find(orig,index)) != STRING::npos) \
 	{ \
 		str.erase(index,1); \
 		str.insert(index, alt); \
@@ -386,9 +386,9 @@ void Writer::_save()
 	} \
 	} while (0)
 
-void Writer::amp(wstring& str)
+void Writer::amp(STRING& str)
 {
-	wstring::size_type index;
+	STRING::size_type index;
 	replace(L'&', L"&amp;");
 	replace(L'<', L"&lt;");
 	replace(L'>', L"&gt;");

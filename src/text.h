@@ -20,34 +20,30 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include <ncursesw/ncurses.h>
-#include <limits.h>
-#include <list>
-#include <iostream>
-#include <string>
+#include "defs.h"
 #include "window.h"
 
 class Text
 {
 public:
-	Text& operator=(const wstring& str);
-	bool operator!=(const wstring& str);
-	friend wostream& operator<<(wostream& os, Text& t);
+	Text& operator=(const STRING& str);
+	bool operator!=(const STRING& str);
+	friend OSTREAM& operator<<(OSTREAM& os, Text& t);
 	void print(Window& win);
 	void edit(Window& win);
-	wstring getStr();
+	STRING getStr();
 	void scroll_up(Window& win);
 	void scroll_down(Window& win);
 private:
-	list<wstring> text; /* list of lines */
+	list<STRING> text; /* list of lines */
 	int cursor_col;
 	int cursor_y; /* = INT_MIN when is no editing */
-	list<wstring>::iterator cursor_line;
-	list<wstring>::iterator offset; /* line for start to display */
+	list<STRING>::iterator cursor_line;
+	list<STRING>::iterator offset; /* line for start to display */
 	int lines, cols;
 
 	/* begin=line for start, length=num of screen lines to fit*/
-	wstring _getStr(list<wstring>::iterator begin, int length = 0);
+	STRING _getStr(list<STRING>::iterator begin, int length = 0);
 	bool _scroll_up();
 	bool _scroll_down();
 	void left();
@@ -64,6 +60,6 @@ private:
 	void tab();
 };
 
-wostream& operator<<(wostream& os, Text& t);
+OSTREAM& operator<<(OSTREAM& os, Text& t);
 
 #endif

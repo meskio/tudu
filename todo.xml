@@ -8,6 +8,11 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
+		<title>resize</title>
+		<text>when back from "don't fit" don't cleans screen well.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>automake</title>
 		<priority>5</priority>
 		<text>

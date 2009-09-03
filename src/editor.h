@@ -20,12 +20,8 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <string>
-#include <string.h>
-#include <list>
-#include <set>
-#include <map>
-#include <vector>
+#include "defs.h"
+#include "data.h"
 #include "window.h"
 
 class Editor
@@ -33,11 +29,11 @@ class Editor
 public:
 	Editor();
 
-	wstring& getText();
+	STRING& getText();
 	int& cursorPos();
 	bool edit(Window& win, int y, int x, unsigned int max_length);
 protected:
-	wstring text;
+	STRING text;
 	int cursor;
 	wint_t key;
 	bool exit;
@@ -74,8 +70,8 @@ protected:
 class CategoryEditor: public LineEditor
 {
 protected:
-	set<wstring>::iterator search;
-	set<wstring>::iterator first;
+	set<STRING>::iterator search;
+	set<STRING>::iterator first;
 	int length;
 
 	void initialize();
@@ -85,8 +81,8 @@ protected:
 class HistoryEditor: public LineEditor
 {
 protected:
-	list<wstring> history;
-	list<wstring>::iterator shown;
+	list<STRING> history;
+	list<STRING>::iterator shown;
 
 	void initialize();
 	void up();
@@ -97,17 +93,17 @@ protected:
 class CmdEditor: public HistoryEditor
 {
 protected:
-	map<wstring,wstring>::iterator com_search;
-	map<wstring,wstring>::iterator com_first;
-	set<wstring>::iterator search;
-	set<wstring>::iterator first;
+	map<STRING,STRING>::iterator com_search;
+	map<STRING,STRING>::iterator com_first;
+	set<STRING>::iterator search;
+	set<STRING>::iterator first;
 	int length;
 	int param;
 
 	void initialize();
 	void tab();
-	void command_completion(wstring& com);
-	void category_completion(wstring& cat, int num_param);
+	void command_completion(STRING& com);
+	void category_completion(STRING& cat, int num_param);
 };
 
 class DateEditor: public Editor

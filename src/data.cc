@@ -19,7 +19,7 @@
 
 #include "data.h"
 
-set<wstring> categories;
+set<STRING> categories;
 
 ToDo::ToDo() 
 {
@@ -42,7 +42,7 @@ ToDo::~ToDo()
 }
 
 
-wstring& ToDo::getTitle()
+STRING& ToDo::getTitle()
 {
 	return title;
 }
@@ -77,12 +77,12 @@ int& ToDo::priority()
 	return _priority;
 }
 
-wstring ToDo::getCategory()
+STRING ToDo::getCategory()
 {
 	return _category;
 }
 
-void ToDo::setCategory(wstring c)
+void ToDo::setCategory(STRING c)
 {
 	_category = c;
 
@@ -538,7 +538,7 @@ void iToDo::sort(char order[])
 	root->_sort();
 }
 
-bool iToDo::search(wstring& str)
+bool iToDo::search(STRING& str)
 {
 	pToDo begin = *cursor;
 
@@ -554,7 +554,7 @@ bool iToDo::search(wstring& str)
 	}
 }
 
-bool iToDo::searchUp(wstring& str)
+bool iToDo::searchUp(STRING& str)
 {
 	pToDo begin = *cursor;
 

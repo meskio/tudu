@@ -18,12 +18,11 @@
  *************************************************************************/
 
 #include "text.h"
-#include "interface.h"
 
 #define cursor_x (cursor_col % cols)
 #define rows_in_line(line) ((line->length() / cols) + 1)
 
-Text& Text::operator=(const wstring& str)
+Text& Text::operator=(const STRING& str)
 {
 	unsigned int i = 0, size;
 	
@@ -47,7 +46,7 @@ Text& Text::operator=(const wstring& str)
 	return *this;
 }
 
-bool Text::operator!=(const wstring& str)
+bool Text::operator!=(const STRING& str)
 {
 	return (str != getStr());
 }
@@ -56,7 +55,7 @@ void Text::print(Window& win)
 {
 	lines = win._lines();
 	cols = win._cols();
-	wstring str = _getStr(offset, lines);
+	STRING str = _getStr(offset, lines);
 
 	win._erase();
 	win._addstr(0,0,str);
@@ -69,7 +68,7 @@ void Text::edit(Window& win)
 
 	/* calculate the cursor_y */
 	cursor_y = 0;
-	for (list<wstring>::iterator i = offset; i != cursor_line; ++i)
+	for (list<STRING>::iterator i = offset; i != cursor_line; ++i)
 		cursor_y += rows_in_line(i);
 	cursor_y += cursor_col / cols;
 
@@ -125,7 +124,7 @@ void Text::edit(Window& win)
 		}
 
 		/* print the text, place cursor, ... */
-		wstring str = _getStr(offset, lines);
+		STRING str = _getStr(offset, lines);
 		win._erase();
 		win._addstr(0,0,str);
 		win._move(cursor_y, cursor_x);
@@ -141,11 +140,11 @@ void Text::edit(Window& win)
 	return;
 }
 
-wstring Text::getStr()
+STRING Text::getStr()
 {
-	wstring s = L"";
+	STRING s = L"";
 
-	for (list<wstring>::iterator i = text.begin(); i != text.end(); ++i)
+	for (list<STRING>::iterator i = text.begin(); i != text.end(); ++i)
 	{
 		s += *i;
 		s += L'\n';
@@ -153,12 +152,12 @@ wstring Text::getStr()
 	return s;
 }
 
-wstring Text::_getStr(list<wstring>::iterator begin, int length)
+STRING Text::_getStr(list<STRING>::iterator begin, int length)
 {
 	//FIXME: needs to take in acount the utf length
 	int rows = 0;
-	wstring s = L"";
-	list<wstring>::iterator i = begin;
+	STRING s = L"";
+	list<STRING>::iterator i = begin;
 
 	if (text.end() == begin) return s;
 	for (;i != text.end(); ++i)
@@ -369,7 +368,7 @@ void Text::backspace()
 	}
 	else if (cursor_line != text.begin()) /* delete line break */
 	{
-		list<wstring>::iterator i = cursor_line;
+		list<STRING>::iterator i = cursor_line;
 
 		--cursor_y;
 		--cursor_line;
@@ -384,7 +383,7 @@ void Text::supr()
 {
 	if ((cursor_col == (int)cursor_line->length()) &&  (cursor_line != --text.end()))
 	{
-		list<wstring>::iterator i = cursor_line;
+		list<STRING>::iterator i = cursor_line;
 
 		++i;
 		*cursor_line += *i;
@@ -434,7 +433,7 @@ void Text::prev_page()
 
 void Text::new_line()
 {
-	list<wstring>::iterator i = cursor_line;
+	list<STRING>::iterator i = cursor_line;
 
 	++i;
 	text.insert(i, cursor_line->substr(cursor_col));
@@ -453,7 +452,7 @@ void Text::tab()
 	if (TAB_SPACES > cursor_x) ++cursor_y;
 }
 
-wostream& operator<<(wostream& os, Text& t)
+OSTREAM& operator<<(OSTREAM& os, Text& t)
 {
 	os << t.getStr();
 	return os;

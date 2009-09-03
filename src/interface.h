@@ -20,21 +20,7 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include <ncursesw/ncurses.h>
-#include <signal.h>
-#include <string.h>
-#include <form.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <map>
-#include <set>
-#include <fstream>
-
+#include "defs.h"
 class Interface;
 #include "data.h"
 #include "sched.h"
@@ -43,7 +29,6 @@ class Interface;
 #include "editor.h"
 #include "screen.h"
 #include "cmd.h"
-
 
 class Interface
 {
@@ -63,9 +48,9 @@ private:
 	int tree_begin, tree_end;
 	pToDo copied;
 	char sortOrder[16];
-	wstring search_pattern;
+	STRING search_pattern;
 	Cmd &cmd; /* command interface */
-	set<wstring> hidden_categories;
+	set<STRING> hidden_categories;
 
 	void resizeTerm();
 	void drawTodo();
@@ -89,7 +74,7 @@ private:
 	void paste();
 	void pasteUp();
 	void pasteChild();
-	bool editLine(wstring& str);
+	bool editLine(STRING& str);
 	void editDeadline();
 	void setPriority();
 	void setCategory();

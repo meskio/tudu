@@ -1,21 +1,51 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="no" collapse="no">
-		<title>support for international chars (UTF-8)</title>
-		<priority>4</priority>
-		<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>O on the first line</title>
+	<todo done="no" collapse="yes">
+		<title>0.6</title>
 		<text>
 </text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>resize</title>
-		<text>when back from "don't fit" don't cleans screen well.
+		<todo done="no" collapse="no">
+			<title>support for international chars (UTF-8)</title>
+			<priority>4</priority>
+			<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
 </text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>resize</title>
+			<text>when back from "don't fit" don't cleans screen well.
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>patch from foo</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>command line</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>hide percent</title>
+			<text>3. Any chances to have an option in future for hiding percentages?
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>O is not working</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>O on the first line</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>add up (O) and paste up (P)</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>automake</title>
@@ -47,16 +77,16 @@ I'd never met such problem with this terminal.
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>title editor multi-linear</title>
-		<priority>4</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>freezing</title>
 		<text>2. I really appreciate the present functionality of the program, but I
 met with some slowdowns while operating with my todos - when I'm setting
 category or saving new todo the program is freezing for a second.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>title editor multi-linear</title>
+		<priority>4</priority>
+		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
@@ -85,23 +115,8 @@ category or saving new todo the program is freezing for a second.
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>web page</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>add up (O) and paste up (P)</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>hide percent</title>
-		<text>3. Any chances to have an option in future for hiding percentages?
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>O is not working</title>
 		<text>
 </text>
 	</todo>

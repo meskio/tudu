@@ -277,7 +277,7 @@ void Interface::inherit()
 	}
 	else if (hidden_categories.count(L""))
 	{
-		set<STRING>::iterator cat;
+		set<wstring>::iterator cat;
 		for (cat = categories.begin(); (cat != categories.end()) && hidden_categories.count(*cat); cat++);
 		if (cat != categories.end()) cursor->setCategory(*cat);
 		else cursor->setCategory(NONE_CATEGORY);
@@ -321,7 +321,7 @@ void Interface::right()
 		cursor.addChild(new ToDo());
 		inherit();
 		drawTodo();
-		STRING title;
+		wstring title;
 		if ((editLine(title)) && (title != L""))
 		{
 			cursor->getTitle() = title;
@@ -498,7 +498,7 @@ void Interface::pasteChild()
 
 #define startTitle (cursor.depth() * 4 + 7)
 
-bool Interface::editLine(STRING& str)
+bool Interface::editLine(wstring& str)
 {
 	bool save;
 
@@ -539,7 +539,7 @@ void Interface::addLine()
 	cursor.addChild(new ToDo());
 	inherit();
 	drawTodo();
-	STRING title;
+	wstring title;
 	if ((editLine(title)) && (title != L""))
 		cursor->getTitle() = title;
 	else
@@ -551,7 +551,7 @@ void Interface::addLineUp()
 	cursor.addChildUp(new ToDo());
 	inherit();
 	drawTodo();
-	STRING title;
+	wstring title;
 	if ((editLine(title)) && (title != L""))
 		cursor->getTitle() = title;
 	else
@@ -560,7 +560,7 @@ void Interface::addLineUp()
 
 void Interface::modifyLine()
 {
-	STRING title;
+	wstring title;
 	if (editLine(title))
 		cursor->getTitle() = title;
 }
@@ -575,7 +575,7 @@ void Interface::editText()
 		char* argv[32];
 		int argc;
 		char* res;
-		STRING str;
+		wstring str;
 		Text& text = cursor->getText();
 
 		/* create a temporal file */
@@ -585,7 +585,7 @@ void Interface::editText()
                         tmpnam(path);                                                                            
                 close(fout);
 
-		OFSTREAM ofs(path);
+		wofstream ofs(path);
 		ofs << text;
 		ofs.close();
 		sprintf(s, editor, path);
@@ -715,7 +715,7 @@ bool Interface::_search()
 
 void Interface::command_line()
 {
-	STRING command(L"");
+	wstring command(L"");
 
 	if (screen.cmd(command))
 	{
@@ -732,7 +732,7 @@ void Interface::command_line()
 
 void Interface::search()
 {
-	STRING pattern(L"");
+	wstring pattern(L"");
 
 	if (screen.searchText(pattern))
 	{

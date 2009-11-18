@@ -49,7 +49,7 @@ int Window::_addstr(const char *str)
 	return waddstr(win, str);
 }
 
-int Window::_addstr(const CHAR *str)
+int Window::_addstr(const wchar_t *str)
 {
 	return waddwstr(win, str);
 }
@@ -59,7 +59,7 @@ int Window::_addstr(int y, int x, const char *str)
 	return mvwaddstr(win, y, x, str);
 }
 
-int Window::_addstr(int y, int x, const CHAR *str)
+int Window::_addstr(int y, int x, const wchar_t *str)
 {
 	return mvwaddwstr(win, y, x, str);
 }
@@ -69,7 +69,7 @@ int Window::_addstr(string &str)
 	return waddstr(win, str.c_str());
 }
 
-int Window::_addstr(STRING &str)
+int Window::_addstr(wstring &str)
 {
 	return waddwstr(win, str.c_str());
 }
@@ -79,7 +79,7 @@ int Window::_addstr(int y, int x, string &str)
 	return mvwaddstr(win, y, x,  str.c_str());
 }
 
-int Window::_addstr(int y, int x, STRING &str)
+int Window::_addstr(int y, int x, wstring &str)
 {
 	return mvwaddwstr(win, y, x,  str.c_str());
 }
@@ -124,14 +124,11 @@ int Window::_erase()
 	return werase(win);
 }
 
-int Window::_getch()
+wint_t Window::_getch()
 {
-	return wgetch(win);
-}
-
-int Window::_getch(wint_t *ch)
-{
-	return wget_wch(win, ch);
+	wint_t ch;
+	wget_wch(win, &ch);
+	return ch;
 }
 
 void Window::_getmaxyx(int& y, int& x)

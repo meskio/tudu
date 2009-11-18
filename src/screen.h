@@ -42,7 +42,7 @@ public:
 	void scrollDownText(Text &t);
 	void deadlineClear(int line);
 	void priorityClear(int line);
-	bool editTitle(int line, int depth, bool haveChild, STRING& str);
+	bool editTitle(int line, int depth, bool haveChild, wstring& str);
 	void editText(Text& t);
 	void editDeadline(int line, Date& deadline, bool done);
 	bool editSched(Date& s);
@@ -50,8 +50,8 @@ public:
 	void setCategory(int line, ToDo& t);
 	void treeClear();
 	int treeLines();
-	bool searchText(STRING& pattern);
-	bool cmd(STRING& command);
+	bool searchText(wstring& pattern);
+	bool cmd(wstring& command);
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);

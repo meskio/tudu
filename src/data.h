@@ -28,7 +28,7 @@ typedef list<pToDo>::iterator cursor_t;
 #include "text.h"
 #include "date.h"
 
-extern set<STRING> categories;
+extern set<wstring> categories;
 #define NONE_CATEGORY L"NONE"
 
 struct child_info {
@@ -48,15 +48,15 @@ public:
 	ToDo();
 	~ToDo();
 
-	STRING& getTitle();
+	wstring& getTitle();
 	Text& getText();
 	Date& deadline();
 	Date& sched();
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	STRING getCategory();
-	void setCategory(STRING c);
+	wstring getCategory();
+	void setCategory(wstring c);
 	bool haveChild();
 	child_info getChildInfo();
 	int line;
@@ -64,13 +64,13 @@ public:
 	bool& actCollapse(); // if must be collapse now
 protected:
 	int  _order; // unic number that shows the order of the todo
-	STRING title;
+	wstring title;
 	bool _done;
 	Date _deadline;
 	Date _sched;
 	int sched_position; // position on the sched list, use for sort the list
 	int  _priority;
-	STRING _category;
+	wstring _category;
 	Text text;
 	list<pToDo> childs;
 	bool collapse; //real param
@@ -119,8 +119,8 @@ public:
 	 * the same leters in capital are for inverse order
 	 */
 	void sort(char order[]);
-	bool search(STRING& str);
-	bool searchUp(STRING& str);
+	bool search(wstring& str);
+	bool searchUp(wstring& str);
 protected:
 	pToDo root;
 	stack<list<pToDo>::iterator> path;

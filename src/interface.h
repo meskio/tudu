@@ -48,9 +48,9 @@ private:
 	int tree_begin, tree_end;
 	pToDo copied;
 	char sortOrder[16];
-	STRING search_pattern;
+	wstring search_pattern;
 	Cmd &cmd; /* command interface */
-	set<STRING> hidden_categories;
+	set<wstring> hidden_categories;
 
 	void resizeTerm();
 	void drawTodo();
@@ -74,7 +74,7 @@ private:
 	void paste();
 	void pasteUp();
 	void pasteChild();
-	bool editLine(STRING& str);
+	bool editLine(wstring& str);
 	void editDeadline();
 	void setPriority();
 	void setCategory();

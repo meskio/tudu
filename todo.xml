@@ -8,6 +8,11 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
+		<title>O on the first line</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>resize</title>
 		<text>when back from "don't fit" don't cleans screen well.
 </text>
@@ -57,6 +62,36 @@ category or saving new todo the program is freezing for a second.
 	<todo done="no" collapse="no">
 		<title>cooerent editor and title</title>
 		<priority>4</priority>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>import and export</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>tags</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>more filters (by project, keyword, date)</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>ubuntu 9.10</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>web page</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>add up (O) and paste up (P)</title>
 		<text>
 </text>
 	</todo>

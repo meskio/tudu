@@ -29,7 +29,7 @@ Editor::Editor()
 	key = '\0';
 }
 
-STRING& Editor::getText()
+wstring& Editor::getText()
 {
 	return text;
 }
@@ -54,7 +54,7 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 	win._refresh();
 	while (!exit)
 	{
-		win._getch(&key);
+		key = win._getch();
 		switch (key)
 		{
 			case KEY_RESIZE:
@@ -264,9 +264,9 @@ void CmdEditor::initialize()
 
 void CmdEditor::tab() /* do completion */
 {
-	vector<STRING> params;
+	vector<wstring> params;
 	size_t begin, end;
-	STRING rest_params = L"";
+	wstring rest_params = L"";
 
 	/* Get the command and params in text */
 	for (begin = 0, end = text.find(' ', 0); (string::npos != end) && (cursor > (int)end);
@@ -298,7 +298,7 @@ void CmdEditor::tab() /* do completion */
 
 	/* regenerate the text string */
 	text = L"";
-	for (vector<STRING>::iterator p = params.begin(); p != params.end(); p++)
+	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		text += *p + L" ";
 	}
@@ -310,7 +310,7 @@ void CmdEditor::tab() /* do completion */
 	param = params.size()-1;
 }
 
-void CmdEditor::command_completion(STRING& com)
+void CmdEditor::command_completion(wstring& com)
 {
 	/* if it is no the first time */
 	if ((param == 0) &&
@@ -351,7 +351,7 @@ void CmdEditor::command_completion(STRING& com)
 }
 
 #define param_cmp(str) cat.compare(0, length, str, 0, length)
-void CmdEditor::category_completion(STRING& cat, int num_param)
+void CmdEditor::category_completion(wstring& cat, int num_param)
 {
 
 	/* if it is no the first time */

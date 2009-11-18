@@ -30,13 +30,13 @@ public:
 	~Window();
 
 	int _addstr(const char *str);
-	int _addstr(const CHAR *str);
+	int _addstr(const wchar_t *str);
 	int _addstr(string &str);
-	int _addstr(STRING &str);
+	int _addstr(wstring &str);
 	int _addstr(int y, int x, const char *str);
-	int _addstr(int y, int x, const CHAR *str);
+	int _addstr(int y, int x, const wchar_t *str);
 	int _addstr(int y, int x, string &str);
-	int _addstr(int y, int x, STRING &str);
+	int _addstr(int y, int x, wstring &str);
 	int _addch(const char ch);
 	int _addch(int y, int x, const char ch);
 	int _refresh();
@@ -45,8 +45,7 @@ public:
 	int _attron(int attrs);
 	int _attroff(int attrs);
 	int _erase();
-	int _getch();
-	int _getch(wint_t *ch);
+	wint_t _getch();
 	void _getmaxyx(int& y, int& x);
 	int _box();
 	int _lines();

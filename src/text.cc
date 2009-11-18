@@ -22,7 +22,7 @@
 #define cursor_x (cursor_col % cols)
 #define rows_in_line(line) ((line->length() / cols) + 1)
 
-Text& Text::operator=(const STRING& str)
+Text& Text::operator=(const wstring& str)
 {
 	unsigned int i = 0, size;
 	
@@ -46,7 +46,7 @@ Text& Text::operator=(const STRING& str)
 	return *this;
 }
 
-bool Text::operator!=(const STRING& str)
+bool Text::operator!=(const wstring& str)
 {
 	return (str != getStr());
 }
@@ -55,7 +55,7 @@ void Text::print(Window& win)
 {
 	lines = win._lines();
 	cols = win._cols();
-	STRING str = _getStr(offset, lines);
+	wstring str = _getStr(offset, lines);
 
 	win._erase();
 	win._addstr(0,0,str);
@@ -68,7 +68,7 @@ void Text::edit(Window& win)
 
 	/* calculate the cursor_y */
 	cursor_y = 0;
-	for (list<STRING>::iterator i = offset; i != cursor_line; ++i)
+	for (list<wstring>::iterator i = offset; i != cursor_line; ++i)
 		cursor_y += rows_in_line(i);
 	cursor_y += cursor_col / cols;
 
@@ -81,7 +81,7 @@ void Text::edit(Window& win)
 	
 	/* editor loop */
 	wint_t key;
-   	win._getch(&key);
+   	key = win._getch();
 	while ('\e' != key) {
 		switch (key)
 		{
@@ -124,12 +124,12 @@ void Text::edit(Window& win)
 		}
 
 		/* print the text, place cursor, ... */
-		STRING str = _getStr(offset, lines);
+		wstring str = _getStr(offset, lines);
 		win._erase();
 		win._addstr(0,0,str);
 		win._move(cursor_y, cursor_x);
 		win._refresh();
-		win._getch(&key);
+		key = win._getch();
 	}
 	noecho();
 	curs_set(0);
@@ -140,11 +140,11 @@ void Text::edit(Window& win)
 	return;
 }
 
-STRING Text::getStr()
+wstring Text::getStr()
 {
-	STRING s = L"";
+	wstring s = L"";
 
-	for (list<STRING>::iterator i = text.begin(); i != text.end(); ++i)
+	for (list<wstring>::iterator i = text.begin(); i != text.end(); ++i)
 	{
 		s += *i;
 		s += L'\n';
@@ -152,12 +152,12 @@ STRING Text::getStr()
 	return s;
 }
 
-STRING Text::_getStr(list<STRING>::iterator begin, int length)
+wstring Text::_getStr(list<wstring>::iterator begin, int length)
 {
 	//FIXME: needs to take in acount the utf length
 	int rows = 0;
-	STRING s = L"";
-	list<STRING>::iterator i = begin;
+	wstring s = L"";
+	list<wstring>::iterator i = begin;
 
 	if (text.end() == begin) return s;
 	for (;i != text.end(); ++i)
@@ -368,7 +368,7 @@ void Text::backspace()
 	}
 	else if (cursor_line != text.begin()) /* delete line break */
 	{
-		list<STRING>::iterator i = cursor_line;
+		list<wstring>::iterator i = cursor_line;
 
 		--cursor_y;
 		--cursor_line;
@@ -383,7 +383,7 @@ void Text::supr()
 {
 	if ((cursor_col == (int)cursor_line->length()) &&  (cursor_line != --text.end()))
 	{
-		list<STRING>::iterator i = cursor_line;
+		list<wstring>::iterator i = cursor_line;
 
 		++i;
 		*cursor_line += *i;
@@ -433,7 +433,7 @@ void Text::prev_page()
 
 void Text::new_line()
 {
-	list<STRING>::iterator i = cursor_line;
+	list<wstring>::iterator i = cursor_line;
 
 	++i;
 	text.insert(i, cursor_line->substr(cursor_col));
@@ -452,7 +452,7 @@ void Text::tab()
 	if (TAB_SPACES > cursor_x) ++cursor_y;
 }
 
-OSTREAM& operator<<(OSTREAM& os, Text& t)
+wostream& operator<<(wostream& os, Text& t)
 {
 	os << t.getStr();
 	return os;

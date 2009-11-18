@@ -26,24 +26,24 @@
 class Text
 {
 public:
-	Text& operator=(const STRING& str);
-	bool operator!=(const STRING& str);
-	friend OSTREAM& operator<<(OSTREAM& os, Text& t);
+	Text& operator=(const wstring& str);
+	bool operator!=(const wstring& str);
+	friend wostream& operator<<(wostream& os, Text& t);
 	void print(Window& win);
 	void edit(Window& win);
-	STRING getStr();
+	wstring getStr();
 	void scroll_up(Window& win);
 	void scroll_down(Window& win);
 private:
-	list<STRING> text; /* list of lines */
+	list<wstring> text; /* list of lines */
 	int cursor_col;
 	int cursor_y; /* = INT_MIN when is no editing */
-	list<STRING>::iterator cursor_line;
-	list<STRING>::iterator offset; /* line for start to display */
+	list<wstring>::iterator cursor_line;
+	list<wstring>::iterator offset; /* line for start to display */
 	int lines, cols;
 
 	/* begin=line for start, length=num of screen lines to fit*/
-	STRING _getStr(list<STRING>::iterator begin, int length = 0);
+	wstring _getStr(list<wstring>::iterator begin, int length = 0);
 	bool _scroll_up();
 	bool _scroll_down();
 	void left();
@@ -60,6 +60,6 @@ private:
 	void tab();
 };
 
-OSTREAM& operator<<(OSTREAM& os, Text& t);
+wostream& operator<<(wostream& os, Text& t);
 
 #endif

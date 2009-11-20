@@ -1,3 +1,11 @@
+0.6
+	* Added suppor for international characters
+	* Added help command to display man page
+	* Added hide_percent option in the config file
+	* Added patch from Magnus Müller: scroll to beginning end if end beginning reached
+	* Fixed problems with O and P
+	* Fixed problems at repaint after resize
+
 0.5.1
 	* Added a simple theme to show when theme don't fit
 	* Added support for up/re page keys on text editor

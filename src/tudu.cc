@@ -35,7 +35,7 @@ extern int errno;
 #define ETC_DIR "/usr/local/etc"
 #endif
 
-#define VERSION "TuDu 0.5.1 (2009)"
+#define VERSION "TuDu 0.6 (2009)"
 #define WELCOME_FILE SHARE_DIR"/welcome.xml"
 #define CONFIG_FILE ETC_DIR"/tudurc"
 

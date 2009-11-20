@@ -269,12 +269,12 @@ void CmdEditor::tab() /* do completion */
 	wstring rest_params = L"";
 
 	/* Get the command and params in text */
-	for (begin = 0, end = text.find(' ', 0); (string::npos != end) && (cursor > (int)end);
+	for (begin = 0, end = text.find(' ', 0); (wstring::npos != end) && (cursor > (int)end);
 		       	begin = end+1, end = text.find(' ', begin))
 	{
 		params.push_back(text.substr(begin, end-begin));
 	}
-	if (string::npos != end) 
+	if (wstring::npos != end) 
 	{
 		params.push_back(text.substr(begin, end-begin));
 		rest_params = text.substr(end+1);

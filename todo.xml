@@ -16,8 +16,8 @@
 			<text>when back from "don't fit" don't cleans screen well.
 </text>
 		</todo>
-		<todo done="no" collapse="no">
-			<title>patch from foo</title>
+		<todo done="yes" collapse="no">
+			<title>patch scroll to beginning end if end beginning reached</title>
 			<text>
 </text>
 		</todo>

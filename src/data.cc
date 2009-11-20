@@ -546,7 +546,7 @@ bool iToDo::search(wstring& str)
 	{
 		next();
 		/* if the title contains str */
-		if ((*cursor)->title.find(str, 0) != string::npos)
+		if ((*cursor)->title.find(str, 0) != wstring::npos)
 			return true;
 		/* if is the same as the beginning */
 		if (*cursor == begin)
@@ -562,7 +562,7 @@ bool iToDo::searchUp(wstring& str)
 	{
 		prev();
 		/* if the title contains str */
-		if ((*cursor)->title.find(str, 0) != string::npos)
+		if ((*cursor)->title.find(str, 0) != wstring::npos)
 			return true;
 		/* if is the same as the beginning */
 		if (*cursor == begin)

@@ -41,7 +41,7 @@ bool Cmd::cmd(wstring command)
 	size_t begin, end;
 
 	/* Get the command and params in text */
-	for (begin = 0, end = command.find(' ', 0); string::npos != end;
+	for (begin = 0, end = command.find(' ', 0); wstring::npos != end;
 				begin = end+1, end = command.find(' ', begin))
 	{
 		if (begin == 0)

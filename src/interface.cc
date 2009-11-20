@@ -351,6 +351,11 @@ void Interface::right()
 void Interface::up()
 {
 	eraseCursor();
+	if (cursor.begin())
+	{
+		/* Jump to end if beginning reached */
+		while (++cursor);
+	}
 	--cursor;
 
 	/* Jump hide tasks */
@@ -377,7 +382,11 @@ void Interface::down()
 {
 	eraseCursor();
 	++cursor;
-	if (cursor.end()) --cursor;
+	if (cursor.end())
+	{
+		/* Jump to beginning if end reached */
+		while (--cursor);
+	}
 
 	/* Jump hide tasks */
 	while (isHide(cursor))

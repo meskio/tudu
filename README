@@ -1,7 +1,8 @@
 Compile
 =======
 
- TuDu needs ncurses library for work. You will need to install it for compile it.
+ TuDu needs ncurses library with wide characters (in some systems is call 
+ ncursesw) for work. You will need to install it for compile it.
 
  For compiling the program execute:
  $ make

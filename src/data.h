@@ -20,29 +20,22 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <string.h>
-#include <list>
-#include <stack>
-#include <string>
-#include <algorithm>
-#include <set>
+#include "defs.h"
+class ToDo;
+class iToDo;
+typedef ToDo* pToDo;
+typedef list<pToDo>::iterator cursor_t;
 #include "text.h"
 #include "date.h"
-using namespace std;
 
-extern set<string> categories;
-#define NONE_CATEGORY "NONE"
+extern set<wstring> categories;
+#define NONE_CATEGORY L"NONE"
 
 struct child_info {
 	int percent;
 	Date deadline;
 };
-	
 
-class ToDo;
-class iToDo;
-typedef ToDo* pToDo;
-typedef list<pToDo>::iterator cursor_t;
 
 /*
  * Compare function for sort
@@ -52,18 +45,18 @@ bool cmp(pToDo t1, pToDo t2);
 class ToDo
 {
 public:
-	ToDo(string t = "", bool isDone = false, string txt = "");
+	ToDo();
 	~ToDo();
 
-	string& getTitle();
+	wstring& getTitle();
 	Text& getText();
 	Date& deadline();
 	Date& sched();
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	string getCategory();
-	void setCategory(string c);
+	wstring getCategory();
+	void setCategory(wstring c);
 	bool haveChild();
 	child_info getChildInfo();
 	int line;
@@ -71,13 +64,13 @@ public:
 	bool& actCollapse(); // if must be collapse now
 protected:
 	int  _order; // unic number that shows the order of the todo
-	string title;
+	wstring title;
 	bool _done;
 	Date _deadline;
 	Date _sched;
 	int sched_position; // position on the sched list, use for sort the list
 	int  _priority;
-	string _category;
+	wstring _category;
 	Text text;
 	list<pToDo> childs;
 	bool collapse; //real param
@@ -126,8 +119,8 @@ public:
 	 * the same leters in capital are for inverse order
 	 */
 	void sort(char order[]);
-	bool search(string& str);
-	bool searchUp(string& str);
+	bool search(wstring& str);
+	bool searchUp(wstring& str);
 protected:
 	pToDo root;
 	stack<list<pToDo>::iterator> path;

@@ -20,9 +20,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include <ncurses.h>
-#include <string>
-#include <ctime>
+#include "defs.h"
 #include "window.h"
 #include "text.h"
 #include "data.h"
@@ -44,7 +42,7 @@ public:
 	void scrollDownText(Text &t);
 	void deadlineClear(int line);
 	void priorityClear(int line);
-	bool editTitle(int line, int depth, bool haveChild, string& str);
+	bool editTitle(int line, int depth, bool haveChild, wstring& str);
 	void editText(Text& t);
 	void editDeadline(int line, Date& deadline, bool done);
 	bool editSched(Date& s);
@@ -52,8 +50,8 @@ public:
 	void setCategory(int line, ToDo& t);
 	void treeClear();
 	int treeLines();
-	bool searchText(string& pattern);
-	bool cmd(string& command);
+	bool searchText(wstring& pattern);
+	bool cmd(wstring& command);
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);

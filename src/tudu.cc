@@ -17,20 +17,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
+
+#include "defs.h"
+extern int errno;
 #include "interface.h"
 #include "screen.h"
 #include "data.h"
 #include "sched.h"
 #include "parser.h"
 #include "config.h"
-
-#include <iostream>
-#include <string>
-#include <cstdio>
-#include <cstring>
-#include <errno.h>
-using namespace std;
-extern int errno;
 
 #ifndef SHARE_DIR
 #define SHARE_DIR "/usr/local/share/tudu"
@@ -210,7 +205,7 @@ int main(int argc, char **argv, char *env[])
 	/*
 	 * Load data
 	 */
-	ToDo node("");
+	ToDo node;
 	iToDo it(node);
 	Sched sched;
 	Parser p(file_xml);

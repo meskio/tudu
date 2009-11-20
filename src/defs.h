@@ -17,49 +17,37 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef TEXT_H
-#define TEXT_H
+#ifndef DEFS_H
+#define DEFS_H
 
-#include "defs.h"
-#include "window.h"
+using namespace std;
 
-class Text
-{
-public:
-	Text& operator=(const wstring& str);
-	bool operator!=(const wstring& str);
-	friend wostream& operator<<(wostream& os, Text& t);
-	void print(Window& win);
-	void edit(Window& win);
-	wstring getStr();
-	void scroll_up(Window& win);
-	void scroll_down(Window& win);
-private:
-	list<wstring> text; /* list of lines */
-	int cursor_col;
-	int cursor_y; /* = INT_MIN when is no editing */
-	list<wstring>::iterator cursor_line;
-	list<wstring>::iterator offset; /* line for start to display */
-	int lines, cols;
-
-	/* begin=line for start, length=num of screen lines to fit*/
-	wstring _getStr(list<wstring>::iterator begin, int length = 0);
-	bool _scroll_up();
-	bool _scroll_down();
-	void left();
-	void right();
-	void up();
-	void down();
-	void backspace();
-	void supr();
-	void home();
-	void end();
-	void next_page();
-	void prev_page();
-	void new_line();
-	void tab();
-};
-
-wostream& operator<<(wostream& os, Text& t);
+/* system includes */
+#include <ncursesw/ncurses.h>
+#include <form.h>
+#include <string>
+#include <vector>
+#include <map>
+#include <fstream>
+#include <list>
+#include <stack>
+#include <algorithm>
+#include <set>
+#include <ctime>
+#include <cstring>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <locale>
+#include <cwchar>
+#include <clocale>
+#include <climits>
+#include <iostream>
+#include <cerrno>
 
 #endif

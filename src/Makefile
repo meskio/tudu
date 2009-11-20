@@ -1,6 +1,6 @@
 PROG=tudu
-SRCS=tudu.cc interface.cc window.cc data.cc parser.cc text.cc config.cc date.cc
-SRCS+= editor.cc screen.cc sched.cc cmd.cc
+SRCS=tudu.cc data.cc editor.cc interface.cc window.cc text.cc parser.cc
+SRCS+= config.cc date.cc screen.cc sched.cc cmd.cc
 CXX=g++
 CFLAGS=-Wall -O2 -DSHARE_DIR=\"$(SHARE_DIR)\" -DETC_DIR=\"$(ETC_DIR)\"
 
@@ -10,7 +10,7 @@ all: $(PROG)
 
 $(PROG): $(OBJS)
 	echo $(SRCS)
-	$(CXX) $(CFLAGS) -lncurses -o $@ $(OBJS)
+	$(CXX) $(CFLAGS) -lncursesw -o $@ $(OBJS)
 
 .cc.o:
 	$(CXX) $(CFLAGS) -c $<

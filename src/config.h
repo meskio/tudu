@@ -20,13 +20,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <string.h>
-#include <ncurses.h>
-#include <fstream>
-#include <map>
-#include <string>
-#include <cstdlib>
-using namespace std;
+#include "defs.h"
 
 struct key_action;
 typedef map<char,key_action> key_map;

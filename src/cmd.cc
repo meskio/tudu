@@ -17,17 +17,16 @@
  **************************************************************************/
 
 #include "cmd.h"
-#include "data.h"
 
-map<string,string> commands;
+map<wstring,wstring> commands;
 
 Cmd::Cmd()
 {
 	/* initialize commands */
-	commands["hide"] = "category";
-	commands["show"] = "category";
-	commands["showall"] = "category";
-	commands["showonly"] = "category";
+	commands[L"hide"] = L"category";
+	commands[L"show"] = L"category";
+	commands[L"showall"] = L"category";
+	commands[L"showonly"] = L"category";
 }
 
 void Cmd::get_interface(Interface *i)
@@ -35,10 +34,10 @@ void Cmd::get_interface(Interface *i)
 	interface = i;
 }
 
-bool Cmd::cmd(string command)
+bool Cmd::cmd(wstring command)
 {
-	vector<string> params;
-	string com;
+	vector<wstring> params;
+	wstring com;
 	size_t begin, end;
 
 	/* Get the command and params in text */
@@ -50,51 +49,51 @@ bool Cmd::cmd(string command)
 		else
 			params.push_back(command.substr(begin, end-begin));
 	}
-	if (com == "")
+	if (com == L"")
 		com = command.substr(begin);
 	else
 		params.push_back(command.substr(begin));
 
 
 	/* Exec the command */
-	if ("show" == com) { show(params); return true; }
-	else if ("hide" == com) { hide(params); return true; }
-	else if ("showall" == com) { showall(params); return true; }
-	else if ("showonly" == com) { showonly(params); return true; }
+	if (L"show" == com) { show(params); return true; }
+	else if (L"hide" == com) { hide(params); return true; }
+	else if (L"showall" == com) { showall(params); return true; }
+	else if (L"showonly" == com) { showonly(params); return true; }
 	else return false;
 }
 
-void Cmd::hide(vector<string> &params)
+void Cmd::hide(vector<wstring> &params)
 {
-	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
+	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		if (*p != NONE_CATEGORY) interface->hidden_categories.insert(*p);
 	}
 }
 
-void Cmd::show(vector<string> &params)
+void Cmd::show(vector<wstring> &params)
 {
-	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
+	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		interface->hidden_categories.erase(*p);
 	}
 }
 
-void Cmd::showall(vector<string> &params)
+void Cmd::showall(vector<wstring> &params)
 {
 	interface->hidden_categories.clear();
 }
 
-void Cmd::showonly(vector<string> &params)
+void Cmd::showonly(vector<wstring> &params)
 {
 	/* add all the categories to the hidden list */
-	interface->hidden_categories.insert("");
-	for (set<string>::iterator c = categories.begin(); c != categories.end(); c++)
+	interface->hidden_categories.insert(L"");
+	for (set<wstring>::iterator c = categories.begin(); c != categories.end(); c++)
 	{
 		interface->hidden_categories.insert(*c);
 	}
 	/* remove the shown categories */
-	for (vector<string>::iterator p = params.begin(); p != params.end(); p++)
+	for (vector<wstring>::iterator p = params.begin(); p != params.end(); p++)
 	{
 		interface->hidden_categories.erase(*p);
 	}

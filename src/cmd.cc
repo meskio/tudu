@@ -27,6 +27,7 @@ Cmd::Cmd()
 	commands[L"show"] = L"category";
 	commands[L"showall"] = L"category";
 	commands[L"showonly"] = L"category";
+	commands[L"help"] = L"";
 }
 
 void Cmd::get_interface(Interface *i)
@@ -60,6 +61,7 @@ bool Cmd::cmd(wstring command)
 	else if (L"hide" == com) { hide(params); return true; }
 	else if (L"showall" == com) { showall(params); return true; }
 	else if (L"showonly" == com) { showonly(params); return true; }
+	else if (L"help" == com) { help(params); return true; }
 	else return false;
 }
 
@@ -98,4 +100,29 @@ void Cmd::showonly(vector<wstring> &params)
 		interface->hidden_categories.erase(*p);
 	}
 	interface->hidden_categories.erase(NONE_CATEGORY);
+}
+
+void Cmd::help(vector<wstring> &params)
+{
+	char* argv[3];
+	char argv0[] = "man";
+	char argv1[] = "tudu";
+	argv[0] = argv0;
+	argv[1] = argv1;
+	argv[2] = NULL;
+
+	endwin();
+	switch (fork())
+	{
+		case 0:
+			execvp(argv[0],argv);
+			break;
+		case -1:
+			interface->screen.infoMsg("I can't create a new process.");
+			break;
+		default:
+			wait(NULL);
+			break;
+	}
+	doupdate();
 }

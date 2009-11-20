@@ -579,7 +579,7 @@ void Interface::editText()
 	char* editor = config.getEditor();
 	if (strlen(editor) != 0)
 	{
-		char path[L_tmpnam]; //FIXME: is it working on utf?
+		char path[L_tmpnam];
 		char s[86];
 		char* argv[32];
 		int argc;

@@ -65,7 +65,7 @@
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>XFCE terminal</title>
 		<text>1. Under XFCE terminal program ("Terminal") there was a strange behavior
 of backspace button in your program - it generated some strange symbols,
@@ -76,7 +76,7 @@ automatic) I'm not really sure this is a problem of your program, but
 I'd never met such problem with this terminal.
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>freezing</title>
 		<text>2. I really appreciate the present functionality of the program, but I
 met with some slowdowns while operating with my todos - when I'm setting

@@ -1,7 +1,0 @@
-#!/usr/bin/make -f
-include /usr/share/cdbs/1/class/makefile.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
-
-CFLAGS=-g -Wall -O2 -DSHARE_DIR=\\\"/usr/share/tudu\\\" -DETC_DIR=\\\"/etc\\\"
-DEB_MAKE_BUILD_TARGET := DESTDIR="/usr/" ETC_DIR="/etc/"
-DEB_MAKE_INSTALL_TARGET := install DESTDIR="$(DEB_DESTDIR)usr/" ETC_DIR="$(DEB_DESTDIR)etc/"

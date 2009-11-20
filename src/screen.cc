@@ -165,6 +165,10 @@ void Screen::resizeTerm()
 	/* 
 	 * resize windows
 	 */
+	/* clean stdscr */
+	touchwin(stdscr);
+	refresh();
+
 	/* tree */
 	window_coor c = coor[WTREE];
 	wtree->_resize(c.lines, c.cols);

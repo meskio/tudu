@@ -5,13 +5,13 @@
 		<title>0.6</title>
 		<text>
 </text>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>support for international chars (UTF-8)</title>
 			<priority>4</priority>
 			<text>http://mail.nl.linux.org/linux-utf8/2004-08/msg00001.html
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>resize</title>
 			<text>when back from "don't fit" don't cleans screen well.
 </text>

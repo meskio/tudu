@@ -41,6 +41,7 @@ private:
 	void show(vector<wstring> &params);
 	void showall(vector<wstring> &params);
 	void showonly(vector<wstring> &params);
+	void help(vector<wstring> &params);
 };
 #endif
 

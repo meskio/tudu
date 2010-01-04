@@ -24,7 +24,6 @@ using namespace std;
 
 /* system includes */
 #include <ncursesw/ncurses.h>
-#include <form.h>
 #include <string>
 #include <vector>
 #include <map>

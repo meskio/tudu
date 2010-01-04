@@ -22,7 +22,7 @@ TuDu \- Tool for control your to do lists.
 \fBtudu \fR[\fB-f \fItudu_file\fR] [\fB-c \fIconfig_file\fR] [\fB-v[v]\fR] [\fB-h\fR]
 .SH DESCRIPTION
 .PP
-\fBTuDu\fR is a comand line interface for manage hierarchical todos. Every todo have title, description and deadline (optional). Also it shows the percent that you have done.
+\fBTuDu\fR is a command line interface for manage hierarchical todos. Every todo have title, description and deadline (optional). Also it shows the percent that you have done.
 .SH OPTIONS
 .IP "-f \fItudu_file\fP" 10
 load tudu file
@@ -35,7 +35,7 @@ Display license and copyright information.
 .IP "-h" 10
 Display help.
 .SH INTERFACE
-All the keybindings described here are the default in tudu, you can change them in the config file.
+All the key bindings described here are the default in tudu, you can change them in the config file.
 .IP h
 Move the cursor one level out in the tree depth.
 .IP l
@@ -95,15 +95,15 @@ Hide or show done tasks.
 .IP /
 Search for a pattern in tasks titles.
 .IP n
-Search the next ocurrence of last search.
+Search the next occurrence of last search.
 .IP N
-Search the previous ocurrence of the last searche tasks.
+Search the previous occurrence of the last searched tasks.
 .IP /
 Search for a pattern in tasks titles.
 .IP n
-Search the next ocurrence of last search.
+Search the next occurrence of last search.
 .IP N
-Search the previous ocurrence of the last search.
+Search the previous occurrence of the last search.
 .IP :
 Open the command input. See the COMMANDS section.
 .IP bt
@@ -151,11 +151,11 @@ Sort by user.
 .IP bU
 Sort by user in reverse direction.
 .IP s
-Save all the editings.
+Save all the changes.
 .IP ?
 Display the help.
 .IP q
-Quit tudu saving the last editings.
+Quit tudu saving the last changes.
 .IP Q
 Quit tudu without save.
 .SH COMMANDS
@@ -184,7 +184,7 @@ Hide or not the done tasks.
 .IP "hide_percent = yes|no"
 Hide or not the percent display on each task.
 .IP "visual_tree = yes|no"
-Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks. It is necesary in shome shells that can not display bold characters.
+Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks. It is necessary in some shells that can not display bold characters.
 .IP "days_warn = number"
 Days before the deadline that the warn should be display.
 .IP "sort_order = string"
@@ -217,17 +217,17 @@ reverse user order
 .RE
 .IP "editor = 'path_bin %s'"
 .SS keys
-This section defines any keybinding on the program. See the example in the default config file.
+This section defines any key binding on the program. See the example in the default config file.
 .SS theme
-Window positions are described by rows each row with the sintax:
+Window positions are described by rows each row with the syntax:
 .RS
 row = [height]([width|]window[, [width|]window, ...])
 .RE
-The height and width can be the number of characters or a precentage followed by \fB%\fR. The possible windows are: help, tree, info, blank, text and schedule. The windows help and info don't need to have height, because is predefined as 1. TuDu will try to gess the non given information.
+The height and width can be the number of characters or a percentage followed by \fB%\fR. The possible windows are: help, tree, info, blank, text and schedule. The windows help and info don't need to have height, because is predefined as 1. TuDu will try to guess the non given information.
 
 Other options for the theme are:
 .IP "columns = colm1,...,colmN"
-Columns in tree window. The posible columns are: title, priority, category and deadline.
+Columns in tree window. The possible columns are: title, priority, category and deadline.
 .IP "color = color_text, color_background"
 The default colors for the text and background. The colors can be defined as \fB(r, g, b)\fR, with numbers from 0 to 1000, or with the words: black, red, green, yellow, blue, magenta, cyan, white, transparent.
 .IP "window = color_text, color_background"

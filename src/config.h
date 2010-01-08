@@ -101,6 +101,7 @@ public:
 	bool& getHideDone();
 	bool getHidePercent();
 	bool getVisualTree();
+	bool getLoopMove();
 	int getDaysWarn();
 	char* getSortOrder();
 	char* getEditor();
@@ -114,6 +115,7 @@ private:
 	bool hide_percent;
 	bool visual_tree;
 	int  days_warn_deadline;
+	bool loop_move;
 	char sort_order[16];
 	char editor[64];
 	/* themes */

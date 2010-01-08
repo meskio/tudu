@@ -159,6 +159,17 @@ void Config::getGeneralOption(string& option, string& value)
 			visual_tree = false;
 		}
 	}
+	if ("loop_move" == option)
+	{
+		if ("yes" == value)
+		{
+			loop_move = true;
+		}
+		if ("no" == value)
+		{
+			loop_move = false;
+		}
+	}
 	if ("days_warn" == option)
 	{
 		days_warn_deadline = atoi(value.c_str());
@@ -580,6 +591,11 @@ bool Config::getHidePercent()
 bool Config::getVisualTree()
 {
 	return visual_tree;
+}
+
+bool Config::getLoopMove()
+{
+	return loop_move;
 }
 
 int Config::getDaysWarn()

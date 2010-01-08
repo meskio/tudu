@@ -351,10 +351,13 @@ void Interface::right()
 void Interface::up()
 {
 	eraseCursor();
-	if (cursor.begin())
+	if (config.getLoopMove())
 	{
 		/* Jump to end if beginning reached */
-		while (++cursor);
+		if (cursor.begin())
+		{
+			while (++cursor);
+		}
 	}
 	--cursor;
 
@@ -384,8 +387,15 @@ void Interface::down()
 	++cursor;
 	if (cursor.end())
 	{
-		/* Jump to beginning if end reached */
-		while (--cursor);
+		if (config.getLoopMove())
+		{
+			/* Jump to beginning if end reached */
+			while (--cursor);
+		}
+		else
+		{
+			--cursor;
+		}
 	}
 
 	/* Jump hide tasks */
@@ -394,14 +404,20 @@ void Interface::down()
 		++cursor;
 		if (cursor.end())
 		{
-			--cursor;
-			break;
+			if (config.getLoopMove())
+			{
+				/* Jump to beginning if end reached */
+				while (--cursor);
+			}
+			else
+			{
+				do {
+					--cursor;
+					if (cursor.begin()) break;
+				} while (isHide(cursor));
+				break;
+			}
 		}
-	}
-	while (isHide(cursor))
-	{
-		if (cursor.begin()) break;
-		--cursor;
 	}
 	if (isHide(cursor)) left();
 

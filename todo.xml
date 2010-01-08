@@ -68,11 +68,6 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
-			<title>priority colum atached to the closest column</title>
-			<text>
-</text>
-		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>top bar use config keys</title>

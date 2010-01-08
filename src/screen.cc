@@ -816,7 +816,7 @@ void Screen::helpPopUp(string str[], int len)
         getmaxyx(stdscr, lines, cols); 
 	Window help_box(lines-8, cols-16, 4, 8);
 	help_box._box();
-	string s = "--- Press any key to close ---";
+	string s = "--- Press 'q' key to close, or space bar for next page ---";
 	help_box._move(lines-10, (cols/2)-8-(s.length()/2));
 	help_box._addstr(s);
 	help_box._refresh();
@@ -835,43 +835,45 @@ void Screen::helpPopUp(string str[], int len)
 			case KEY_RESIZE:
 				resized = true;
 				break;
-			case KEY_DOWN:
+			case KEY_DOWN: case 'j':
 				if (cursor <= len-lines)
 				{
 					++cursor;
 					draw_help();
 				}
 				break;
-			case KEY_UP:
+			case KEY_UP: case 'k':
 				if (cursor > 0)
 				{
 					--cursor;
 					draw_help();
 				}
 				break;
-			case  KEY_NPAGE:
+			case KEY_NPAGE: case ' ':
 				cursor += lines;
 				if (cursor > len-lines)
 					cursor = len + 1 - lines;
 				draw_help();
 				break;
-			case  KEY_PPAGE:
+			case KEY_PPAGE: case 'b':
 				cursor -= lines;
 				if (cursor < 0)
 					cursor = 0;
 				draw_help();
 				break;
-			case KEY_HOME:
+			case KEY_HOME: case '<': case 'g':
 				cursor = 0;
 				draw_help();
 				break;
-			case KEY_END:
+			case KEY_END: case '>': case 'G':
 				cursor = len + 1 - lines;
 				draw_help();
 				break;
-			default: 
+			case 'q':
 				close = true;
 				break;
+			default:
+				;
 		}
 	}
 

@@ -110,7 +110,8 @@ void Screen::draw()
 	{
 		whelp = new Window(c.lines, c.cols, c.y, c.x);
 		whelp->_attron(COLOR_HELP);
-		for (int i = 0; i<c.cols; ++i) whelp->_addch(' ');
+		for (int i = 0; i<c.cols; ++i)
+			whelp->_addch(' ');
 		whelp->_move(0,0);
 		whelp->_addstr(" q:quit  k:up  j:down  h:out  l:in  m:done  o:add  a:modify");
 		whelp->_move(0, c.cols-8);

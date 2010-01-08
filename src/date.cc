@@ -73,7 +73,7 @@ bool Date::correct()
 			break;
 		case 2:
 			/* if leap year */
-			if ((_year % 4 == 0) && !((_year % 100 == 0) && (_year % 1000 != 0)))
+			if ((_year % 4 == 0) && !((_year % 100 == 0) && (_year % 400 != 0)))
 			{
 				if ((_day < 1) || (_day > 29))
 					correct = false;
@@ -147,7 +147,7 @@ Date Date::operator-(int days)
 				break;
 			case 2:
 				/* if leap year */
-				if ((d._year % 4 == 0) && !((d._year % 100 == 0) && (d._year % 1000 != 0)))
+				if ((d._year % 4 == 0) && !((d._year % 100 == 0) && (d._year % 400 != 0)))
 				{
 					d._day += 29;
 				}
@@ -190,7 +190,7 @@ Date Date::operator+(int days)
 				break;
 			case 2:
 				/* if leap year */
-				if ((d._year % 4 == 0) && !((d._year % 100 == 0) && (d._year % 1000 != 0)))
+				if ((d._year % 4 == 0) && !((d._year % 100 == 0) && (d._year % 400 != 0)))
 				{
 					if (d._day <= 29) day_valid = true;
 					else d._day -= 29;

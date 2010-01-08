@@ -20,7 +20,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>calculo de bisiestos 2400</title>
 			<text>
 </text>
@@ -58,8 +58,18 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>patches from quique</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>remaping keys don't works</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>priority colum atached to the closest column</title>
 			<text>
 </text>
 		</todo>

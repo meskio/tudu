@@ -1,6 +1,84 @@
 <?xml version="1.0"?>
-<!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
+<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
 <todo>
+	<todo done="no" collapse="yes">
+		<title>0.6.1</title>
+		<text>
+</text>
+		<todo done="no" collapse="no">
+			<title>https://bugs.launchpad.net/ubuntu/+source/tudu/+bug/465039</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>http://lintian.debian.org/maintainer/meskio@sindominio.net.html#tudu</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>from beggining to end configurable</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>calculo de bisiestos 2400</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>problems with the licence</title>
+			<text>"either" in:
+TuDu is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 3 of the License.
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>multiple runs of tudu message</title>
+			<text>por cierto, ese mensaje utiliza un or/or, cuando en correcto inglés creo que debería ser either/or
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>:help should be on the online help</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>confirm on Q</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>color bug on sched</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>some fixes on utf (FIXME)</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>patches from quique</title>
+			<text>
+</text>
+		</todo>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>top bar use config keys</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>separar ventanas con tuberias</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>command line interface for sort order or show info while press b</title>
+		<text>
+</text>
+	</todo>
 	<todo done="no" collapse="no">
 		<title>automake</title>
 		<priority>5</priority>
@@ -37,7 +115,7 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>tags</title>
+		<title>tags or more complex cathegories</title>
 		<text>
 </text>
 	</todo>

@@ -763,6 +763,18 @@ bool Screen::cmd(wstring& command)
 	}
 }
 
+bool Screen::confirmQuit()
+{
+	infoClear();
+	winfo->_addstr(0,0,"Close without save? (y/n) ");
+	wint_t ch = winfo->_getch();
+	infoClear();
+	if (('Y' == ch) || ('y' == ch))
+		return true;
+	else
+		return false;
+}
+
 void Screen::infoMsg(const char str[])
 {
 	if (coor[WINFO].exist)

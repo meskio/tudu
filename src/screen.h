@@ -52,6 +52,7 @@ public:
 	int treeLines();
 	bool searchText(wstring& pattern);
 	bool cmd(wstring& command);
+	bool confirmQuit();
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);

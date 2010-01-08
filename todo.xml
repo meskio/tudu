@@ -10,12 +10,12 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>http://lintian.debian.org/maintainer/meskio@sindominio.net.html#tudu</title>
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>from beggining to end configurable</title>
 			<text>
 </text>
@@ -43,7 +43,7 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>confirm on Q</title>
 			<text>
 </text>
@@ -126,6 +126,11 @@ TuDu is free software; you can redistribute it and/or modify
 	</todo>
 	<todo done="no" collapse="no">
 		<title>more filters (by project, keyword, date)</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>more states for a task (undone, done, waiting, maybe, ...)</title>
 		<text>
 </text>
 	</todo>

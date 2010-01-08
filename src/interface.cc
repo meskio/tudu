@@ -67,7 +67,8 @@ void Interface::main()
 				writer.save();
 				break;
 			}
-			if ("quitNoSave" == action) break;
+			if ("quitNoSave" == action)
+				if (screen.confirmQuit()) break;
 			if ("out" == action) left();
 			if ("in" == action) right();
 			if ("down" == action) down();

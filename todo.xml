@@ -63,7 +63,7 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>remaping keys don't works</title>
 			<text>
 </text>

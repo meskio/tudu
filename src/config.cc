@@ -190,6 +190,7 @@ void Config::insertKeyMap(key_map& k, string action, string keys)
 	{
 		key_action act;
 		act.action = action;
+		k.erase(keys[0]);
 		k.insert(pair<char,key_action>(keys[0],act));
 	}
 	else

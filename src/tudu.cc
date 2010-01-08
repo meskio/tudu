@@ -71,7 +71,7 @@ extern int errno;
 bool lock_ask()
 {
 	cout << endl << "Lock file found" << endl;
-	cout << endl << "or" << endl;
+	cout << endl << "either" << endl;
 	cout << "    Another program may be editing the same file." << endl;
 	cout << "    If this is the case, be careful not to end up with two" << endl;
 	cout << "    different instances of the same file when making changes." << endl;

@@ -25,7 +25,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>problems with the licence</title>
 			<text>"either" in:
 TuDu is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ TuDu is free software; you can redistribute it and/or modify
   the Free Software Foundation; either version 3 of the License.
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>multiple runs of tudu message</title>
 			<text>por cierto, ese mensaje utiliza un or/or, cuando en correcto inglés creo que debería ser either/or
 </text>

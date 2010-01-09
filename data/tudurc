@@ -3,18 +3,20 @@
 
 [ general ]
 collapse     = no  # collapse by default
-hide_done    = no  # hide done tasks
-hide_percent = no  # hide percent on tasks
-visual_tree  = no  # toggle graphical tree; it shows (+) on the parent
+hide_done    = no  # Whether to hide tasks marked as done.
+hide_percent = no  # Whether to hide percentage display on tasks
+visual_tree  = no  # Toggle graphical tree. It shows (+) on parent's left side.
+                   # Necessary in some shells that can not display bold characters.
 loop_move    = no  # whether to jump to the beginning (or end) 
                    # when the end (or beginning) is reached
 days_warn    = 2   # how many days before the task is due
                    # will the deadline sport a warning remark
 
-# The default order in which tasks will be shown
+# The default order in which tasks will be shown.
+# Tasks are ordered by the 1st letter in the string, then by the 2nd, and so on.
 # l = deadline       d = done
 # p = priority       t = title
-# u = user           e = percentage
+# u = user-defined   e = percentage
 # c = category
 # By uppercasing the letters the order will be reversed
 sort_order   = lpu
@@ -86,6 +88,8 @@ columns = title,priority,category,deadline
 # Syntax: row = height(width|win, width|win, ...)
 # 'win' can be empty or be one of these: help, tree, info, blank, text, schedule
 # 'height' and 'width' can be empty, an absolute value, or a percentage.
+# The help and info windows don't need to have a height, because is predefined as 1.
+# TuDu will try to guess the non given information.
 row = (help)
 row = 1(blank)
 row = 70%(tree,30|schedule) # Show the schedule on the right side of screen
@@ -99,6 +103,10 @@ row = (info)
 # where 'r', 'g' and 'b' are numbers from 0 to 1000.
 color = white, transparent # Default colors
 selected = green, transparent
-help = white, blue
 deadlineMark = red, transparent
+help = white, blue
+# tree =
+# info =
+# text =
+# schedule = black, blue
 

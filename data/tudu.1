@@ -1,4 +1,6 @@
-.\"  Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>            
+.\"  Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>         
+.\"  Copyright (C) 2010 Enrique Matías Sánchez <cronopios@gmail.com>
+  
 .\"                                                                        
 .\"   This file is part of TuDu.                                           
 .\"                                                                        
@@ -14,20 +16,41 @@
 .\"   You should have received a copy of the GNU General Public License    
 .\"   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .\"
-.TH TuDu 1 "May 2009" Unix "User Manuals"
+.TH TuDu 1 "January 09, 2010" Unix "User Manuals"
 .SH NAME
-TuDu \- Tool for control your to do lists.
+TuDu \- A command-line tool to manage TODO lists hierarchically.
 .SH SYNOPSIS
 .PP 
-\fBtudu \fR[\fB-f \fItudu_file\fR] [\fB-c \fIconfig_file\fR] [\fB-v[v]\fR] [\fB-h\fR]
+\fBtudu \fR[\fB-f \fItudu_file\fR] [\fB-c \fIconfig_file\fR] [\fB-v[v]\fR]
+[\fB-h\fR]
 .SH DESCRIPTION
 .PP
-\fBTuDu\fR is a command line interface for manage hierarchical todos. Every todo have title, description and deadline (optional). Also it shows the percent that you have done.
+\fBTuDu\fR is a commandline tool to manage hierarchical TODO lists, so that you
+can organize everything you have to do in a simple and efficient way. 
+It does not use any database backend, but plain XML files.
+
+Every TODO is composed by:
+.TS
+tab (>);
+l l.
+Status>Currently only two options: Pending and Done.
+Title>A short sentence summarizing the task.
+Description text>A longer text providing more details. (Optional)
+Priority>The urgency of the task. (Optional)
+Category>A short tag such as @home, @work, @inet. (Optional)
+Deadline>The latest date the task should be done. (Optional)
+Scheduled date>The planned date to do the task. (Optional)
+Subtasks>Every task can have any number of subtasks. (Optional)
+.TE
+
+Tasks can be ordered by any of those fields, and categories can be used to show
+only some certain kinds of tasks. Tudu also warns when a deadline is
+approaching, and shows the percentage of the task done so far.
 .SH OPTIONS
 .IP "-f \fItudu_file\fP" 10
-load tudu file
+Load the given tudu file
 .IP "-c \fIconfig-file\fP" 10
-load specific config file
+Load specific config file
 .IP "-v" 10
 Display the TuDu version number.
 .IP "-vv" 10
@@ -35,7 +58,8 @@ Display license and copyright information.
 .IP "-h" 10
 Display help.
 .SH INTERFACE
-All the key bindings described here are the default in tudu, you can change them in the config file.
+All the key bindings described here are the defaults in tudu. They can be
+changed in the config file.
 .IP h
 Move the cursor one level out in the tree depth.
 .IP l
@@ -51,23 +75,23 @@ Move a task one position up.
 .IP m
 Mark a task as done.
 .IP dd
-Delete one task.
+Delete a task.
 .IP dt
 Remove the deadline of the task.
 .IP df
 Remove the priority of the task.
 .IP dS
-Remove the schedule of the task.
+Remove the scheduled date of the task.
 .IP p
-Paste the previous deleted task.
+Paste the last deleted task under the current cursor line.
 .IP P
-Paste the previous deleted task upper than the cursor.
+Paste the last deleted task over the current cursor line.
 .IP V
-Paste the previous deleted task as a child.
+Paste the last deleted task as a subtask of the currently selected task.
 .IP o
 Add new task.
 .IP O
-Add new task upper than the cursor.
+Add a new task over the current cursor line.
 .IP a
 Edit the title of the task.
 .IP t
@@ -77,21 +101,21 @@ Set the priority of the task.
 .IP C
 Add or modify the category of the task.
 .IP e
-Edit the text of the task.
+Edit the description text of the task.
 .IP x
-Scroll the text window up.
+Scroll the text window upwards.
 .IP z
-Scroll the text window down.
+Scroll the text window downwards.
 .IP S
-Edit the schedule of the task.
+Edit the scheduled date of the task.
 .IP X
-Scroll the schedule window up.
+Scroll the schedule window upwards.
 .IP Z
-Scroll the schedule window down.
+Scroll the schedule window downwards.
 .IP c
-Collapse or expand the children of the task.
+Collapse or expand the children of the current task.
 .IP M
-Hide or show done tasks.
+Hide or show tasks marked as done.
 .IP /
 Search for a pattern in tasks titles.
 .IP n
@@ -109,47 +133,47 @@ Open the command input. See the COMMANDS section.
 .IP bt
 Sort by title.
 .IP bT
-Sort by title in reverse direction.
+Sort by title in reverse order.
 .IP bd
 Sort by done.
 .IP bD
-Sort by done in reverse direction.
+Sort by done in reverse order.
 .IP bl
 Sort by deadline.
 .IP bL
-Sort by deadline in reverse direction.
+Sort by deadline in reverse order.
 .IP bp
 Sort by priority.
 .IP bP
-Sort by priority in reverse direction.
+Sort by priority in reverse order.
 .IP bc
 Sort by category.
 .IP bC
-Sort by category in reverse direction.
+Sort by category in reverse order.
 .IP bu
-Sort by user.
+Sort by user-defined order.
 .IP bU
-Sort by user in reverse direction.
+Sort by reversed user-defined order.
 .IP bd
 Sort by done.
 .IP bD
-Sort by done in reverse direction.
+Sort by done in reverse order.
 .IP bl
 Sort by deadline.
 .IP bL
-Sort by deadline in reverse direction.
+Sort by deadline in reverse order.
 .IP bp
 Sort by priority.
 .IP bP
-Sort by priority in reverse direction.
+Sort by priority in reverse order.
 .IP bc
 Sort by category.
 .IP bC
-Sort by category in reverse direction.
+Sort by category in reverse order.
 .IP bu
 Sort by user.
 .IP bU
-Sort by user in reverse direction.
+Sort by user in reverse order.
 .IP s
 Save all the changes.
 .IP ?
@@ -157,7 +181,7 @@ Display the help.
 .IP q
 Quit tudu saving the last changes.
 .IP Q
-Quit tudu without save.
+Quit tudu without saving anything.
 .SH COMMANDS
 .IP "hide category1 category2 ... categoryN"
 Hide one or more categories.
@@ -170,7 +194,8 @@ Hide all the categories except the ones given.
 .IP "help"
 Display the man page.
 .SH CONFIG
-The config file have several sections started with the name between brackets, like \fB[ general ]\fR. Can be included other config files with the option:
+The config file have several sections which start by a name between brackets,
+like \fB[ general ]\fR. Other config files can be included with the option:
 .IP "@include = 'path'"
 
 .PP
@@ -180,15 +205,21 @@ The options of each section are:
 .IP "collapse = yes|no"
 Collapse the tasks by default.
 .IP "hide_done = yes|no"
-Hide or not the done tasks.
+Whether to hide tasks marked as done.
 .IP "hide_percent = yes|no"
-Hide or not the percent display on each task.
+Whether to hide the percentage display on each task.
 .IP "visual_tree = yes|no"
-Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks. It is necessary in some shells that can not display bold characters.
+Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks.
+It is necessary in some shells that can not display bold characters.
+.IP "loop_move = yes|no"
+Whether to jump to the beginning (or end) when the end (or beginning) is reached.
 .IP "days_warn = number"
-Days before the deadline that the warn should be display.
+How many days before the task is due will the deadline sport a warning remark.
 .IP "sort_order = string"
-Sort the todo by the string order. Each character on the string means an order, when two tasks are equal in the first letter it is sort by the second an so on. The letters mean:
+Default order in which tasks will be shown. Tasks are ordered by the 1st letter
+in the string, then by the 2nd, and so on.
+
+The letters mean:
 .RS
 .IP t
 title
@@ -207,29 +238,36 @@ category
 .IP C
 reverse category
 .IP e
-percent done
+percentage done
 .IP E
-reverse percent done
+reverse percentage done
 .IP u
-user order
+user-defined order
 .IP U
-reverse user order
+reverse user-defined order
 .RE
 .IP "editor = 'path_bin %s'"
 .SS keys
-This section defines any key binding on the program. See the example in the default config file.
+This section defines any key binding on the program. See the example in the
+default config file.
 .SS theme
-Window positions are described by rows each row with the syntax:
+Window positions are described by rows; each row with the syntax:
 .RS
 row = [height]([width|]window[, [width|]window, ...])
 .RE
-The height and width can be the number of characters or a percentage followed by \fB%\fR. The possible windows are: help, tree, info, blank, text and schedule. The windows help and info don't need to have height, because is predefined as 1. TuDu will try to guess the non given information.
+The height and width can be the number of characters or a percentage followed by
+\fB%\fR. The possible windows are: help, tree, info, blank, text and schedule.
+The windows help and info don't need to have height, because is predefined as 1.
+TuDu will try to guess the non given information.
 
 Other options for the theme are:
 .IP "columns = colm1,...,colmN"
-Columns in tree window. The possible columns are: title, priority, category and deadline.
+Columns in tree window. The possible columns are: title, priority, category and
+deadline.
 .IP "color = color_text, color_background"
-The default colors for the text and background. The colors can be defined as \fB(r, g, b)\fR, with numbers from 0 to 1000, or with the words: black, red, green, yellow, blue, magenta, cyan, white, transparent.
+The default colors for the text and background. The colors can be defined as
+\fB(r, g, b)\fR, where r, g and b are numbers from 0 to 1000, or with the words:
+black, red, green, yellow, blue, magenta, cyan, white, transparent.
 .IP "window = color_text, color_background"
 For each window can be defined it's own colors.
 .IP "selected = color_text, color_background"
@@ -240,6 +278,8 @@ Color for the mark of deadline soon.
 .PP
 .IP "~/.tudurc"
 User configuration file.
+.IP "/etc/tudurc"
+Global configuration file.
 .IP "~/.tudu.xml"
 User default tudu.
 .SH NO WARRANTIES
@@ -251,5 +291,7 @@ GNU General Public License for more details.
 .PP
 TuDu Home Page: http://www.cauterized.net/~meskio/tudu/
 .SH AUTHOR
+TuDu was written by Rub\['e]n Poll\['a]n Bella <meskio@sindominio.net>.
 .PP
-Ruben Pollan <meskio@sindominio.net>
+This manual page was written by Rub\['e]n Poll\['a]n Bella and further
+improved by Enrique Mat\['i]as S\['a]nchez.

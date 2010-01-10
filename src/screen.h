@@ -75,6 +75,7 @@ private:
 	CmdEditor cmdEditor;
 	window_coor coor[NUM_WINDOWS];
 
+	void draw_helpbar(window_coor c);
 	void draw();
 };
 

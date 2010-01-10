@@ -94,12 +94,32 @@ Screen::~Screen()
 	endwin ();
 }
 
+void Screen::draw_helpbar(window_coor c)
+{
+	for (int i = 0; i<c.cols; ++i)
+		whelp->_addch(' ');
+	action_list list;
+	config.getActionList(list);
+	string help_bar = " " + list["quit"] + ":quit  " + \
+	  list["up"]   + ":up  "   + list["down"]    + ":down  " + \
+	  list["out"]  + ":out  "  + list["in"]      + ":in  " + \
+	  list["done"] + ":done  " + list["addTodo"] + ":add  " + \
+	  list["editTitle"] + ":modify";
+	whelp->_move(0,0);
+	whelp->_addstr(help_bar);
+	whelp->_move(0, c.cols-8);
+	string more_help = list["help"] + ":help";
+	whelp->_addstr(more_help);
+	whelp->_refresh();
+	whelp->_attroff(COLOR_HELP);
+}
+
 void Screen::draw()
 {
 	int lines, cols;
 
 	/* get size of windows */
-    getmaxyx(stdscr, lines, cols); 
+	getmaxyx(stdscr, lines, cols); 
 	config.genWindowCoor(lines, cols, coor);
 
 	/* create windows */
@@ -110,14 +130,7 @@ void Screen::draw()
 	{
 		whelp = new Window(c.lines, c.cols, c.y, c.x);
 		whelp->_attron(COLOR_HELP);
-		for (int i = 0; i<c.cols; ++i)
-			whelp->_addch(' ');
-		whelp->_move(0,0);
-		whelp->_addstr(" q:quit  k:up  j:down  h:out  l:in  m:done  o:add  a:modify");
-		whelp->_move(0, c.cols-8);
-		whelp->_addstr("?:help");
-		whelp->_refresh();
-		whelp->_attroff(COLOR_HELP);
+		draw_helpbar(c);
 	}
 	else
 		whelp = NULL;
@@ -185,13 +198,7 @@ void Screen::resizeTerm()
 		whelp->_erase();
 		whelp->_attron(COLOR_HELP);
 		whelp->_move(0,0);
-		for (int i = 0; i<c.cols; ++i) whelp->_addch(' ');
-		whelp->_move(0,0);
-		whelp->_addstr(" q:quit  k:up  j:down  h:out  l:in  m:done  o:add  a:modify");
-		whelp->_move(0, c.cols-8);
-		whelp->_addstr("?:help");
-		whelp->_refresh();
-		whelp->_attroff(COLOR_HELP);
+		draw_helpbar(c);
 	}
 
 	/* priority */

@@ -110,6 +110,7 @@ public:
 	void getColorPair(short int win, short int& foreground, short int& background);
 private:
 	key_map tree_keys;
+	action_list action_keys;
 	bool collapse;
 	bool hide_done;
 	bool hide_percent;
@@ -130,7 +131,6 @@ private:
 	void getOutContextOption(string& option, string& value);
 	void getGeneralOption(string& option, string& value);
 	void insertKeyMap(key_map& k, string action, string keys);
-	void _getActionList(action_list& list, key_map& k, string key);
 	void resetTheme();
 	void getThemeOption(string& option, string& value);
 	void getThemeRow(string& value);

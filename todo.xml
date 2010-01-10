@@ -68,14 +68,24 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>top bar use config keys</title>
-		<text>
+		<todo done="yes" collapse="no">
+			<title>the new remaped keys are not shown on inline-help</title>
+			<text>
 </text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>optional bold parents</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>top bar use config keys</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>separar ventanas con tuberias</title>
+		<title>pipes to difference windows</title>
 		<text>
 </text>
 	</todo>

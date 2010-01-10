@@ -94,6 +94,8 @@ bool Config::load(const char* path)
 				break;
 			case C_KEYS:
 				insertKeyMap(tree_keys, option, value);
+				action_keys.erase(option);
+				action_keys.insert(pair<string,string>(option,value));
 				break;
 			case C_THEME:
 				getThemeOption(option, value);
@@ -258,24 +260,7 @@ bool Config::getAction(char key, string& action)
 
 void Config::getActionList(action_list& list)
 {
-	_getActionList(list,tree_keys,"");
-}
-
-void Config::_getActionList(action_list& list, key_map& k, string key)
-{
-	key_map::iterator it;
-
-	for (it  = k.begin(); it != k.end(); ++it)
-	{
-		if (it->second.action != "")
-		{
-			list[it->second.action] = key + it->first;
-		}
-		if (!(it->second.subkeys.empty()))
-		{
-			_getActionList(list, it->second.subkeys, key+it->first);
-		}
-	}
+	list = action_keys;
 }
 
 void Config::resetTheme()

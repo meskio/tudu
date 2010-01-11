@@ -38,7 +38,7 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>por cierto, ese mensaje utiliza un or/or, cuando en correcto inglés creo que debería ser either/or
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>:help should be on the online help</title>
 			<text>
 </text>

@@ -5,7 +5,7 @@
 		<title>0.6.1</title>
 		<text>
 </text>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>https://bugs.launchpad.net/ubuntu/+source/tudu/+bug/465039</title>
 			<text>
 </text>
@@ -86,6 +86,11 @@ TuDu is free software; you can redistribute it and/or modify
 	</todo>
 	<todo done="no" collapse="no">
 		<title>pipes to difference windows</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>sched on the tree</title>
 		<text>
 </text>
 	</todo>

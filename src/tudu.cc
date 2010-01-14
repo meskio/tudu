@@ -94,6 +94,12 @@ int main(int argc, char **argv, char *env[])
 	int i;
 	char file_rc[128], file_xml[128], file_lock[133];
 
+	// Disable Ctrl-C: Otherwise all changes are lost if one slips.
+	struct sigaction ignore_ctrl_c;
+	ignore_ctrl_c.sa_handler = SIG_IGN;
+	ignore_ctrl_c.sa_flags = 0;
+	sigaction(SIGINT, &ignore_ctrl_c, NULL);
+
 	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
 
 	Config config;

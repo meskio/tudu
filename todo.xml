@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
 <todo>
-	<todo done="no" collapse="yes">
+	<todo done="no" collapse="no">
 		<title>0.6.1</title>
 		<text>
 </text>
@@ -73,16 +73,16 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
-			<title>optional bold parents</title>
-			<text>
-</text>
-		</todo>
 		<todo done="yes" collapse="no">
 			<title>top bar use config keys</title>
 			<text>
 </text>
 		</todo>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>optional bold parents</title>
+		<text>
+</text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>pipes to difference windows</title>

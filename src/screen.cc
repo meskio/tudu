@@ -392,89 +392,89 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 
 void Screen::drawText(Text &t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		wtext->_erase();
-		t.print(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	wtext->_erase();
+	t.print(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::drawSched(Sched &sched, pToDo cursor)
 {
-	if (coor[WSCHEDULE].exist)
+	if (!coor[WSCHEDULE].exist)
+		return;
+
+	time_t t = time(NULL);
+	struct tm* pt = localtime(&t);
+	Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+	sched_l sched_list;
+	sched.get(today,sched_list);
+
+	Date last;
+	int line = 0;
+	wschedule->_erase();
+	wschedule->_move(0,0);
+	wschedule->_attron(COLOR_SCHED);
+	for (sched_l::iterator i = sched_list.begin(); 
+			(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
 	{
-		time_t t = time(NULL);
-		struct tm* pt = localtime(&t);
-		Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
-		sched_l sched_list;
-		sched.get(today,sched_list);
-
-		Date last;
-		int line = 0;
-		wschedule->_erase();
-		wschedule->_move(0,0);
-		wschedule->_attron(COLOR_SCHED);
-		for (sched_l::iterator i = sched_list.begin(); 
-				(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
+		if ((*i)->done()) continue;
+		if ((*i)->sched() != last)
 		{
-			if ((*i)->done()) continue;
-			if ((*i)->sched() != last)
-			{
-				last = (*i)->sched();
+			last = (*i)->sched();
 
-				char str[32];
-				sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
-				wschedule->_attron(A_BOLD);
-				wschedule->_addstr(str);
-				wschedule->_attroff(A_BOLD);
-				line++;
-			}
-			if (cursor == (*i))
-				wschedule->_attron(COLOR_SELECTED);
-			wschedule->_addstr("    ");
-			wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
-			wschedule->_addstr(title);
-			wschedule->_addstr("\n");
-			if (cursor == (*i))
-				wschedule->_attroff(COLOR_SELECTED);
+			char str[32];
+			sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
+			wschedule->_attron(A_BOLD);
+			wschedule->_addstr(str);
+			wschedule->_attroff(A_BOLD);
+			line++;
 		}
-		wschedule->_attroff(COLOR_SCHED);
-		wschedule->_refresh();
+		if (cursor == (*i))
+			wschedule->_attron(COLOR_SELECTED);
+		wschedule->_addstr("    ");
+		wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
+		wschedule->_addstr(title);
+		wschedule->_addstr("\n");
+		if (cursor == (*i))
+			wschedule->_attroff(COLOR_SELECTED);
 	}
+	wschedule->_attroff(COLOR_SCHED);
+	wschedule->_refresh();
 }
 
 void Screen::scrollUpText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.scroll_up(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.scroll_up(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::scrollDownText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.scroll_down(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.scroll_down(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::deadlineClear(int line)
 {
-	if (coor[WDEADLINE].exist)
-	{
-		wdeadline->_attron(COLOR_TREE);
-		wdeadline->_move(line, 0);
-		wdeadline->_addstr("            ");
-		wdeadline->_refresh();
-		wdeadline->_attroff(COLOR_TREE);
-	}
+	if (!coor[WDEADLINE].exist)
+		return;
+
+	wdeadline->_attron(COLOR_TREE);
+	wdeadline->_move(line, 0);
+	wdeadline->_addstr("            ");
+	wdeadline->_refresh();
+	wdeadline->_attroff(COLOR_TREE);
 }
 
 void Screen::priorityClear(int line)
@@ -515,132 +515,130 @@ bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
 
 void Screen::editText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.edit(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.edit(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::editDeadline(int line, Date& deadline, bool done)
 {
-	if (coor[WDEADLINE].exist)
-	{
-		bool save;
-		char date[11];
-		wchar_t wide_date[11];
+	if (!coor[WDEADLINE].exist)
+		return;
 
+	bool save;
+	char date[11];
+	wchar_t wide_date[11];
+
+	if (deadline.valid())
+	{
+		sprintf(date, "%02d/%02d/%04d", deadline.day(),
+				deadline.month(), deadline.year());
+	}
+	else
+	{
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		strftime(date, 11, "%02d/%02m/%04Y", pt);
+	}
+
+	wdeadline->_attron(COLOR_SELECTED);
+	mbstowcs(wide_date, date, 11);
+	dateEditor.getText() = wide_date;
+	dateEditor.cursorPos() = 0;
+	save = dateEditor.edit(*wdeadline, line, 0, 11);
+
+	/* store deadline */
+	if (save)
+	{
+		wcstombs(date, dateEditor.getText().c_str(), 10);
+		date[2] = '\0';
+		date[5] = '\0';
+		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		if (d.correct())
+			deadline = d;
+		else
+			save = false;
+	}
+
+	/* if will not save redraw deadline */
+	if (!save)
+	{
 		if (deadline.valid())
 		{
+			wdeadline->_move(line, 0);
 			sprintf(date, "%02d/%02d/%04d", deadline.day(),
 					deadline.month(), deadline.year());
+			wdeadline->_addstr(date);
 		}
 		else
 		{
-			time_t t = time(NULL);
-			struct tm* pt = localtime(&t);
-			strftime(date, 11, "%02d/%02m/%04Y", pt);
+			wdeadline->_move(line, 0);
+			wdeadline->_addstr("          ");
 		}
-
-		wdeadline->_attron(COLOR_SELECTED);
-		mbstowcs(wide_date, date, 11);
-		dateEditor.getText() = wide_date;
-		dateEditor.cursorPos() = 0;
-		save = dateEditor.edit(*wdeadline, line, 0, 11);
-
-		/* store deadline */
-		if (save)
-		{
-			wcstombs(date, dateEditor.getText().c_str(), 10);
-			date[2] = '\0';
-			date[5] = '\0';
-			Date d(atoi(date), atoi(date+3), atoi(date+6));
-			if (d.correct())
-				deadline = d;
-			else
-				save = false;
-		}
-
-		/* if will not save redraw deadline */
-		if (!save)
-		{
-			if (deadline.valid())
-			{
-				wdeadline->_move(line, 0);
-				sprintf(date, "%02d/%02d/%04d", deadline.day(),
-						deadline.month(), deadline.year());
-				wdeadline->_addstr(date);
-			}
-			else
-			{
-				wdeadline->_move(line, 0);
-				wdeadline->_addstr("          ");
-			}
-		}
-		wdeadline->_attroff(COLOR_SELECTED);
-
-		wdeadline->_move(line, 10);
-		if ((!done) && (deadline_close(deadline)))
-		{
-			wdeadline->_attron(COLOR_DEADLINE_MARK);
-			wdeadline->_addstr("<-");
-			wdeadline->_attroff(COLOR_DEADLINE_MARK);
-		}
-		else
-		{
-			wdeadline->_addstr("  ");
-		}
-		wdeadline->_refresh();
 	}
+	wdeadline->_attroff(COLOR_SELECTED);
+
+	wdeadline->_move(line, 10);
+	if ((!done) && (deadline_close(deadline)))
+	{
+		wdeadline->_attron(COLOR_DEADLINE_MARK);
+		wdeadline->_addstr("<-");
+		wdeadline->_attroff(COLOR_DEADLINE_MARK);
+	}
+	else
+	{
+		wdeadline->_addstr("  ");
+	}
+	wdeadline->_refresh();
 }
 
 bool Screen::editSched(Date& s)
 {
-	if (coor[WSCHEDULE].exist)
+	if (!coor[WSCHEDULE].exist)
+		return false;
+
+	char date[12];
+	wchar_t wide_date[12];
+	bool save;
+
+	wschedule->_attron(A_BOLD);
+	wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
+	wschedule->_attroff(A_BOLD);
+	wschedule->_refresh();
+
+	/* if is not valid date use today date */
+	if (s.valid())
 	{
-		char date[12];
-		wchar_t wide_date[12];
-		bool save;
+		sprintf(date, "%02d/%02d/%04d", s.day(),
+				s.month(), s.year());
+	}
+	else
+	{
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		strftime(date, 11, "%02d/%02m/%04Y", pt);
+	}
 
-		wschedule->_attron(A_BOLD);
-		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
-		wschedule->_attroff(A_BOLD);
-		wschedule->_refresh();
-
-		/* if is not valid date use today date */
-		if (s.valid())
+	/* edit and store */
+	mbstowcs(wide_date, date, 11);
+	dateEditor.getText() = wide_date;
+	dateEditor.cursorPos() = 0;
+	save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
+	wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
+	wschedule->_refresh();
+	if (save)
+	{
+		wcstombs(date, dateEditor.getText().c_str(), 10);
+		date[2] = '\0';
+		date[5] = '\0';
+		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		if (d.correct())
 		{
-			sprintf(date, "%02d/%02d/%04d", s.day(),
-					s.month(), s.year());
-		}
-		else
-		{
-			time_t t = time(NULL);
-			struct tm* pt = localtime(&t);
-			strftime(date, 11, "%02d/%02m/%04Y", pt);
-		}
-
-		/* edit and store */
-		mbstowcs(wide_date, date, 11);
-		dateEditor.getText() = wide_date;
-		dateEditor.cursorPos() = 0;
-		save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
-		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
-		wschedule->_refresh();
-		if (save)
-		{
-			wcstombs(date, dateEditor.getText().c_str(), 10);
-			date[2] = '\0';
-			date[5] = '\0';
-			Date d(atoi(date), atoi(date+3), atoi(date+6));
-			if (d.correct())
-			{
-				s = d;
-				return true;
-			}
-			else
-				return false;
+			s = d;
+			return true;
 		}
 	}
 	return false;
@@ -648,56 +646,56 @@ bool Screen::editSched(Date& s)
 
 void Screen::setPriority(int line, int& priority)
 {
-	if (coor[WPRIORITY].exist)
+	if (!coor[WPRIORITY].exist)
+		return;
+
+	wchar_t p[2] = L"N";
+	char s[2];
+
+	if (priority)
+		swprintf(p, 2, L"%01d", priority);
+	priorityEditor.getText() = p;
+	if (priorityEditor.edit(*wpriority, line, 0, 1))
 	{
-		wchar_t p[2] = L"N";
-		char s[2];
-
-		if (priority)
-			swprintf(p, 2, L"%01d", priority);
-		priorityEditor.getText() = p;
-		if (priorityEditor.edit(*wpriority, line, 0, 1))
-		{
-			char num[2];
-			wcstombs(num, priorityEditor.getText().c_str(), 2);
-			priority = atoi(num);
-		}
-
-		wpriority->_move(line, 0);
-		if (priority)
-			sprintf(s, "%01d", priority);
-		else
-			strcpy(s, " ");
-
-		wpriority->_attron(COLOR_SELECTED);
-		wpriority->_addstr(s);
-		wpriority->_attroff(COLOR_SELECTED);
-		wpriority->_refresh();
+		char num[2];
+		wcstombs(num, priorityEditor.getText().c_str(), 2);
+		priority = atoi(num);
 	}
+
+	wpriority->_move(line, 0);
+	if (priority)
+		sprintf(s, "%01d", priority);
+	else
+		strcpy(s, " ");
+
+	wpriority->_attron(COLOR_SELECTED);
+	wpriority->_addstr(s);
+	wpriority->_attroff(COLOR_SELECTED);
+	wpriority->_refresh();
 }
 
 void Screen::setCategory(int line, ToDo& t)
 {
-	if (coor[WCATEGORY].exist)
-	{
-		wstring category = t.getCategory();
-		categoryEditor.getText() = category;
-		categoryEditor.cursorPos() = category.length();
-		if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
-		{
-			category = categoryEditor.getText();
-			t.setCategory(category);
-		}
+	if (!coor[WCATEGORY].exist)
+		return;
 
-		wcategory->_move(line, 0);
-		wcategory->_attron(COLOR_SELECTED);
-		if (category.empty())
-			for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
-		else
-			wcategory->_addstr(category);
-		wcategory->_attroff(COLOR_SELECTED);
-		wcategory->_refresh();
+	wstring category = t.getCategory();
+	categoryEditor.getText() = category;
+	categoryEditor.cursorPos() = category.length();
+	if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
+	{
+		category = categoryEditor.getText();
+		t.setCategory(category);
 	}
+
+	wcategory->_move(line, 0);
+	wcategory->_attron(COLOR_SELECTED);
+	if (category.empty())
+		for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
+	else
+		wcategory->_addstr(category);
+	wcategory->_attroff(COLOR_SELECTED);
+	wcategory->_refresh();
 }
 
 void Screen::treeClear()
@@ -732,42 +730,34 @@ int Screen::treeLines()
 
 bool Screen::searchText(wstring& pattern)
 {
-	if (coor[WINFO].exist)
-	{
-		bool save;
-
-		infoClear();
-		winfo->_addch(0,0,'/');
-		save = searchEditor.edit(*winfo, 0, 1, 
-				PERCENT_COL-2);
-		pattern = searchEditor.getText();
-		infoClear();
-		return save;
-	}
-	else
-	{
+	if (!coor[WINFO].exist)
 		return false;
-	}
+
+	bool save;
+
+	infoClear();
+	winfo->_addch(0,0,'/');
+	save = searchEditor.edit(*winfo, 0, 1, 
+			PERCENT_COL-2);
+	pattern = searchEditor.getText();
+	infoClear();
+	return save;
 }
 
 bool Screen::cmd(wstring& command)
 {
-	if (coor[WINFO].exist)
-	{
-		bool save;
-
-		infoClear();
-		winfo->_addch(0,0,':');
-		save = cmdEditor.edit(*winfo, 0, 1, 
-				PERCENT_COL-2);
-		command = cmdEditor.getText();
-		infoClear();
-		return save;
-	}
-	else
-	{
+	if (!coor[WINFO].exist)
 		return false;
-	}
+
+	bool save;
+
+	infoClear();
+	winfo->_addch(0,0,':');
+	save = cmdEditor.edit(*winfo, 0, 1, 
+			PERCENT_COL-2);
+	command = cmdEditor.getText();
+	infoClear();
+	return save;
 }
 
 bool Screen::confirmQuit()
@@ -784,42 +774,42 @@ bool Screen::confirmQuit()
 
 void Screen::infoMsg(const char str[])
 {
-	if (coor[WINFO].exist)
-	{
-		winfo->_attron(COLOR_INFO);
-		infoClear();
-		winfo->_addstr(0,0,str);
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
-	}
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	infoClear();
+	winfo->_addstr(0,0,str);
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 void Screen::infoClear()
 {
-	if (coor[WINFO].exist)
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	winfo->_move(0,0);
+	for (int i = 0; i < COLS-15; ++i)
 	{
-		winfo->_attron(COLOR_INFO);
-		winfo->_move(0,0);
-		for (int i = 0; i < COLS-15; ++i)
-		{
-			winfo->_addch(' ');
-		}
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
+		winfo->_addch(' ');
 	}
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 void Screen::infoPercent(int percent)
 {
-	if (coor[WINFO].exist)
-	{
-		winfo->_attron(COLOR_INFO);
-		char str[8];
-		sprintf(str, "(%3d%%)", percent);
-		winfo->_addstr(0,PERCENT_COL,str);
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
-	}
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	char str[8];
+	sprintf(str, "(%3d%%)", percent);
+	winfo->_addstr(0,PERCENT_COL,str);
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 #define draw_help() \

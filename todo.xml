@@ -2,89 +2,6 @@
 <!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>0.6.1</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>https://bugs.launchpad.net/ubuntu/+source/tudu/+bug/465039</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>http://lintian.debian.org/maintainer/meskio@sindominio.net.html#tudu</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>from beggining to end configurable</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>calculo de bisiestos 2400</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>problems with the licence</title>
-			<text>"either" in:
-TuDu is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 3 of the License.
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>multiple runs of tudu message</title>
-			<text>por cierto, ese mensaje utiliza un or/or, cuando en correcto inglés creo que debería ser either/or
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>:help should be on the online help</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>confirm on Q</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>color bug on sched</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>patches from quique</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>remaping keys don't works</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>the new remaped keys are not shown on inline-help</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>top bar use config keys</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>bug on text edit up</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>title column without space to cathegory</title>
-			<text>
-</text>
-		</todo>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>optional bold parents</title>
 		<text>
 </text>
@@ -105,32 +22,22 @@ TuDu is free software; you can redistribute it and/or modify
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>automake</title>
-		<priority>5</priority>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>one task two places</title>
-		<priority>5</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>cli interface</title>
-		<priority>5</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>title editor multi-linear</title>
-		<priority>4</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>cooerent editor and title</title>
-		<priority>4</priority>
 		<text>
 </text>
 	</todo>

@@ -48,13 +48,8 @@ TuDu is free software; you can redistribute it and/or modify
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>color bug on sched</title>
-			<text>
-</text>
-		</todo>
-		<todo done="no" collapse="no">
-			<title>some fixes on utf (FIXME)</title>
 			<text>
 </text>
 		</todo>
@@ -75,6 +70,16 @@ TuDu is free software; you can redistribute it and/or modify
 		</todo>
 		<todo done="yes" collapse="no">
 			<title>top bar use config keys</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>bug on text edit up</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>title column without space to cathegory</title>
 			<text>
 </text>
 		</todo>

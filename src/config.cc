@@ -812,7 +812,7 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 					else if (tree_columns[k] == WTREE)
 					{
 						coor[WTREE].x = x_tree;
-						x_tree += coor[WTREE].cols;
+						x_tree += coor[WTREE].cols+1;
 					}
 				}
 				if ((coor[WTREE].cols < 20) || (coor[WTREE].lines < 6))

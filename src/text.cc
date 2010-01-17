@@ -154,7 +154,6 @@ wstring Text::getStr()
 
 wstring Text::_getStr(list<wstring>::iterator begin, int length)
 {
-	//FIXME: needs to take in acount the utf length
 	int rows = 0;
 	wstring s = L"";
 	list<wstring>::iterator i = begin;
@@ -336,7 +335,7 @@ void Text::down()
 
 void Text::up()
 {
-	if ((cursor_col > cols) || (cursor_line != text.begin()))
+	if ((cursor_col >= cols) || (cursor_line != text.begin()))
 	{
 		--cursor_y;
 

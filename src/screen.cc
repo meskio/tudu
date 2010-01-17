@@ -437,7 +437,8 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 		wschedule->_addstr("    ");
 		wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
 		wschedule->_addstr(title);
-		wschedule->_addstr("\n");
+		if (title.length() < coor[WSCHEDULE].cols-4)
+			wschedule->_addstr("\n");
 		if (cursor == (*i))
 			wschedule->_attroff(COLOR_SELECTED);
 	}

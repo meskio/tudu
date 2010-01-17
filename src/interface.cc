@@ -1,12 +1,12 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; either version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.        *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -67,7 +67,8 @@ void Interface::main()
 				writer.save();
 				break;
 			}
-			if ("quitNoSave" == action) break;
+			if ("quitNoSave" == action)
+				if (screen.confirmQuit()) break;
 			if ("out" == action) left();
 			if ("in" == action) right();
 			if ("down" == action) down();
@@ -351,10 +352,13 @@ void Interface::right()
 void Interface::up()
 {
 	eraseCursor();
-	if (cursor.begin())
+	if (config.getLoopMove())
 	{
 		/* Jump to end if beginning reached */
-		while (++cursor);
+		if (cursor.begin())
+		{
+			while (++cursor);
+		}
 	}
 	--cursor;
 
@@ -384,8 +388,15 @@ void Interface::down()
 	++cursor;
 	if (cursor.end())
 	{
-		/* Jump to beginning if end reached */
-		while (--cursor);
+		if (config.getLoopMove())
+		{
+			/* Jump to beginning if end reached */
+			while (--cursor);
+		}
+		else
+		{
+			--cursor;
+		}
 	}
 
 	/* Jump hide tasks */
@@ -394,14 +405,20 @@ void Interface::down()
 		++cursor;
 		if (cursor.end())
 		{
-			--cursor;
-			break;
+			if (config.getLoopMove())
+			{
+				/* Jump to beginning if end reached */
+				while (--cursor);
+			}
+			else
+			{
+				do {
+					--cursor;
+					if (cursor.begin()) break;
+				} while (isHide(cursor));
+				break;
+			}
 		}
-	}
-	while (isHide(cursor))
-	{
-		if (cursor.begin()) break;
-		--cursor;
 	}
 	if (isHide(cursor)) left();
 
@@ -860,7 +877,7 @@ void Interface::save()
 	}
 }
 
-#define LINES_HELP 34
+#define LINES_HELP 44
 void Interface::help()
 {
 	action_list list;
@@ -869,40 +886,50 @@ void Interface::help()
 
 	string str[LINES_HELP];
 	int i = 0;
-	str[i++] = "  " + list["out"] + "\tmove out\n";
-	str[i++] = "  " + list["in"] + "\tmove in\n";
-	str[i++] = "  " + list["down"] + "\tmove down\n";
-	str[i++] = "  " + list["up"] + "\tmove up\n";
-	str[i++] = "  " + list["move_down"] + "\tmove a todo down\n";
-	str[i++] = "  " + list["move_up"] + "\tmove a todo up\n";
-	str[i++] = "  " + list["done"] + "\tmark or unmark as done\n";
-	str[i++] = "  " + list["delete"] + "\tdelete line\n";
-	str[i++] = "  " + list["delDeadline"] + "\tdelete deadline\n";
-	str[i++] = "  " + list["delPriority"] + "\tdelete priority\n";
-	str[i++] = "  " + list["delSched"] + "\tdelete schedule\n";
-	str[i++] = "  " + list["paste"] + "\tpaste the last deletion\n";
-	str[i++] = "  " + list["pasteUp"] + "\tpaste the last deletion above the cursor\n";
-	str[i++] = "  " + list["pasteChild"] + "\tpaste the last deletion as child of the task\n";
-	str[i++] = "  " + list["addTodo"] + "\tadd line\n";
-	str[i++] = "  " + list["addTodoUp"] + "\tadd line upper than the cursor\n";
-	str[i++] = "  " + list["editTitle"] + "\tmodify line\n";
-	str[i++] = "  " + list["editText"] + "\tedit text\n";
-	str[i++] = "  " + list["editDeadline"] + "\tedit/add deadline\n";
-	str[i++] = "  " + list["editSched"] + "\tedit/add schedule\n";
-	str[i++] = "  " + list["setPriority"] + "\tadd or modify priority\n";
-	str[i++] = "  " + list["setCategory"] + "\tadd or modify category\n";
-	str[i++] = "  " + list["downText"] + "\tscroll text down\n";
-	str[i++] = "  " + list["upText"] + "\tscroll text up\n";
+	str[i++] = "  TASK CREATION\n";
+	str[i++] = "  " + list["addTodo"] + "\tadd a new task below the cursor\n";
+	str[i++] = "  " + list["addTodoUp"] + "\tadd a new task above the cursor\n";
+	str[i++] = "  " + list["editTitle"] + "\tedit task's title\n";
+	str[i++] = "  " + list["editText"] + "\tadd/edit task's long description text\n";
+	str[i++] = "  " + list["setPriority"] + "\tadd/edit task's priority\n";
+	str[i++] = "  " + list["setCategory"] + "\tadd/edit task's category\n";
+	str[i++] = "  " + list["editDeadline"] + "\tadd/edit task's deadline\n";
+	str[i++] = "  " + list["editSched"] + "\tadd/edit taks's scheduled date\n";
+	str[i++] = "\n";
+	str[i++] = "  NAVIGATION\n";
+	str[i++] = "  " + list["in"] + "\tgo one level deeper\n";
+	str[i++] = "  " + list["out"] + "\tgo to the outer lever\n";
+	str[i++] = "  " + list["down"] + "\tgo down\n";
+	str[i++] = "  " + list["up"] + "\tgo up\n";
+	str[i++] = "  " + list["collapse"] + "\tcollapse/expand a task\n";
+	str[i++] = "  " + list["hideDone"] + "\thide/unhide tasks marked as done\n";
+	str[i++] = "  " + list["move_down"] + "\tmove a task downwards\n";
+	str[i++] = "  " + list["move_up"] + "\tmove a task upwards\n";
 	str[i++] = "  " + list["schedUp"] + "\tmove up the task on the scheduler\n";
 	str[i++] = "  " + list["schedDown"] +  "\tmove down the task on the scheduler\n";
-	str[i++] = "  " + list["collapse"] + "\tcollapse children\n";
-	str[i++] = "  " + list["hideDone"] + "\thide tasks that are done\n";
+	str[i++] = "  " + list["downText"] + "\tscroll text down\n";
+	str[i++] = "  " + list["upText"] + "\tscroll text up\n";
 	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
 	str[i++] = "  " + list["searchNext"] + "\tgo to next search result\n";
-	str[i++] = "  " + list["cmd"] + "\topen command input\n";
-	str[i++] = "  " + list["save"] + "\tsave todo\n";
+	str[i++] = "  " + list["save"] + "\tsave changes\n";
 	str[i++] = "  " + list["quit"] + "\tquit\n";
-	str[i] = "  " + list["quitNoSave"] + "\tquit without save\n";
+	str[i++] = "  " + list["quitNoSave"] + "\tquit without saving\n";
+	str[i++] = "\n";
+	str[i++] = "  EDITING\n";
+	str[i++] = "  " + list["done"] + "\tmark/unmark a task as done\n";
+	str[i++] = "  " + list["delete"] + "\tdelete a task\n";
+	str[i++] = "  " + list["delPriority"] + "\tdelete task's priority\n";
+	str[i++] = "  " + list["delDeadline"] + "\tdelete task's deadline\n";
+	str[i++] = "  " + list["delSched"] + "\tdelete task's scheduled date\n";
+	str[i++] = "  " + list["paste"] + "\tpaste last deletion below the cursor\n";
+	str[i++] = "  " + list["pasteUp"] + "\tpaste last deletion above the cursor\n";
+	str[i++] = "  " + list["pasteChild"] + "\tpaste last deletion as a subtask\n";
+	str[i++] = "\n";
+	str[i++] = "  COMMANDS\n";
+	str[i++] = "  :help\tshow manual page\n";
+	str[i++] = "\n";
+	str[i++] = "  Please refer to the manual page for more commands, sorting\n";
+	str[i]   = "  by different criteria and category management.\n";
 	screen.helpPopUp(str, i);
 }
 

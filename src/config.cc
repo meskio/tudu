@@ -1,12 +1,12 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
  *  TuDu is free software; you can redistribute it and/or modify         *
  *  it under the terms of the GNU General Public License as published by *
- *  the Free Software Foundation; either version 3 of the License.       *
+ *  the Free Software Foundation; version 3 of the License.       *
  *                                                                       *
  *  TuDu is distributed in the hope that it will be useful,              *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of       *
@@ -94,6 +94,8 @@ bool Config::load(const char* path)
 				break;
 			case C_KEYS:
 				insertKeyMap(tree_keys, option, value);
+				action_keys.erase(option);
+				action_keys.insert(pair<string,string>(option,value));
 				break;
 			case C_THEME:
 				getThemeOption(option, value);
@@ -159,6 +161,17 @@ void Config::getGeneralOption(string& option, string& value)
 			visual_tree = false;
 		}
 	}
+	if ("loop_move" == option)
+	{
+		if ("yes" == value)
+		{
+			loop_move = true;
+		}
+		if ("no" == value)
+		{
+			loop_move = false;
+		}
+	}
 	if ("days_warn" == option)
 	{
 		days_warn_deadline = atoi(value.c_str());
@@ -179,6 +192,7 @@ void Config::insertKeyMap(key_map& k, string action, string keys)
 	{
 		key_action act;
 		act.action = action;
+		k.erase(keys[0]);
 		k.insert(pair<char,key_action>(keys[0],act));
 	}
 	else
@@ -246,24 +260,7 @@ bool Config::getAction(char key, string& action)
 
 void Config::getActionList(action_list& list)
 {
-	_getActionList(list,tree_keys,"");
-}
-
-void Config::_getActionList(action_list& list, key_map& k, string key)
-{
-	key_map::iterator it;
-
-	for (it  = k.begin(); it != k.end(); ++it)
-	{
-		if (it->second.action != "")
-		{
-			list[it->second.action] = key + it->first;
-		}
-		if (!(it->second.subkeys.empty()))
-		{
-			_getActionList(list, it->second.subkeys, key+it->first);
-		}
-	}
+	list = action_keys;
 }
 
 void Config::resetTheme()
@@ -582,6 +579,11 @@ bool Config::getVisualTree()
 	return visual_tree;
 }
 
+bool Config::getLoopMove()
+{
+	return loop_move;
+}
+
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
@@ -810,7 +812,7 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 					else if (tree_columns[k] == WTREE)
 					{
 						coor[WTREE].x = x_tree;
-						x_tree += coor[WTREE].cols;
+						x_tree += coor[WTREE].cols+1;
 					}
 				}
 				if ((coor[WTREE].cols < 20) || (coor[WTREE].lines < 6))

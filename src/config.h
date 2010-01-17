@@ -1,12 +1,12 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; either version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.        *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -101,6 +101,7 @@ public:
 	bool& getHideDone();
 	bool getHidePercent();
 	bool getVisualTree();
+	bool getLoopMove();
 	int getDaysWarn();
 	char* getSortOrder();
 	char* getEditor();
@@ -109,11 +110,13 @@ public:
 	void getColorPair(short int win, short int& foreground, short int& background);
 private:
 	key_map tree_keys;
+	action_list action_keys;
 	bool collapse;
 	bool hide_done;
 	bool hide_percent;
 	bool visual_tree;
 	int  days_warn_deadline;
+	bool loop_move;
 	char sort_order[16];
 	char editor[64];
 	/* themes */
@@ -128,7 +131,6 @@ private:
 	void getOutContextOption(string& option, string& value);
 	void getGeneralOption(string& option, string& value);
 	void insertKeyMap(key_map& k, string action, string keys);
-	void _getActionList(action_list& list, key_map& k, string key);
 	void resetTheme();
 	void getThemeOption(string& option, string& value);
 	void getThemeRow(string& value);

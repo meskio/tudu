@@ -1,12 +1,12 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
  *  TuDu is free software; you can redistribute it and/or modify         *
  *  it under the terms of the GNU General Public License as published by *
- *  the Free Software Foundation; either version 3 of the License.       *
+ *  the Free Software Foundation; version 3 of the License.       *
  *                                                                       *
  *  TuDu is distributed in the hope that it will be useful,              *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of       *
@@ -94,12 +94,32 @@ Screen::~Screen()
 	endwin ();
 }
 
+void Screen::draw_helpbar(window_coor c)
+{
+	for (int i = 0; i<c.cols; ++i)
+		whelp->_addch(' ');
+	action_list list;
+	config.getActionList(list);
+	string help_bar = " " + list["quit"] + ":quit  " + \
+	  list["up"]   + ":up  "   + list["down"]    + ":down  " + \
+	  list["out"]  + ":out  "  + list["in"]      + ":in  " + \
+	  list["done"] + ":done  " + list["addTodo"] + ":add  " + \
+	  list["editTitle"] + ":modify";
+	whelp->_move(0,0);
+	whelp->_addstr(help_bar);
+	whelp->_move(0, c.cols-8);
+	string more_help = list["help"] + ":help";
+	whelp->_addstr(more_help);
+	whelp->_refresh();
+	whelp->_attroff(COLOR_HELP);
+}
+
 void Screen::draw()
 {
 	int lines, cols;
 
 	/* get size of windows */
-    getmaxyx(stdscr, lines, cols); 
+	getmaxyx(stdscr, lines, cols); 
 	config.genWindowCoor(lines, cols, coor);
 
 	/* create windows */
@@ -110,13 +130,7 @@ void Screen::draw()
 	{
 		whelp = new Window(c.lines, c.cols, c.y, c.x);
 		whelp->_attron(COLOR_HELP);
-		for (int i = 0; i<c.cols; ++i) whelp->_addch(' ');
-		whelp->_move(0,0);
-		whelp->_addstr(" q:quit  k:up  j:down  h:out  l:in  m:done  o:add  a:modify");
-		whelp->_move(0, c.cols-8);
-		whelp->_addstr("?:help");
-		whelp->_refresh();
-		whelp->_attroff(COLOR_HELP);
+		draw_helpbar(c);
 	}
 	else
 		whelp = NULL;
@@ -184,13 +198,7 @@ void Screen::resizeTerm()
 		whelp->_erase();
 		whelp->_attron(COLOR_HELP);
 		whelp->_move(0,0);
-		for (int i = 0; i<c.cols; ++i) whelp->_addch(' ');
-		whelp->_move(0,0);
-		whelp->_addstr(" q:quit  k:up  j:down  h:out  l:in  m:done  o:add  a:modify");
-		whelp->_move(0, c.cols-8);
-		whelp->_addstr("?:help");
-		whelp->_refresh();
-		whelp->_attroff(COLOR_HELP);
+		draw_helpbar(c);
 	}
 
 	/* priority */
@@ -384,89 +392,90 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 
 void Screen::drawText(Text &t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		wtext->_erase();
-		t.print(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	wtext->_erase();
+	t.print(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::drawSched(Sched &sched, pToDo cursor)
 {
-	if (coor[WSCHEDULE].exist)
+	if (!coor[WSCHEDULE].exist)
+		return;
+
+	time_t t = time(NULL);
+	struct tm* pt = localtime(&t);
+	Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+	sched_l sched_list;
+	sched.get(today,sched_list);
+
+	Date last;
+	int line = 0;
+	wschedule->_erase();
+	wschedule->_move(0,0);
+	wschedule->_attron(COLOR_SCHED);
+	for (sched_l::iterator i = sched_list.begin(); 
+			(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
 	{
-		time_t t = time(NULL);
-		struct tm* pt = localtime(&t);
-		Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
-		sched_l sched_list;
-		sched.get(today,sched_list);
-
-		Date last;
-		int line = 0;
-		wschedule->_erase();
-		wschedule->_move(0,0);
-		wschedule->_attron(COLOR_SCHED);
-		for (sched_l::iterator i = sched_list.begin(); 
-				(i != sched_list.end()) && (line < coor[WSCHEDULE].lines); i++, line++)
+		if ((*i)->done()) continue;
+		if ((*i)->sched() != last)
 		{
-			if ((*i)->done()) continue;
-			if ((*i)->sched() != last)
-			{
-				last = (*i)->sched();
+			last = (*i)->sched();
 
-				char str[32];
-				sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
-				wschedule->_attron(A_BOLD);
-				wschedule->_addstr(str);
-				wschedule->_attroff(A_BOLD);
-				line++;
-			}
-			if (cursor == (*i))
-				wschedule->_attron(COLOR_SELECTED);
-			wschedule->_addstr("    ");
-			wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
-			wschedule->_addstr(title);
-			wschedule->_addstr("\n");
-			if (cursor == (*i))
-				wschedule->_attroff(COLOR_SELECTED);
+			char str[32];
+			sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
+			wschedule->_attron(A_BOLD);
+			wschedule->_addstr(str);
+			wschedule->_attroff(A_BOLD);
+			line++;
 		}
-		wschedule->_attroff(COLOR_SCHED);
-		wschedule->_refresh();
+		if (cursor == (*i))
+			wschedule->_attron(COLOR_SELECTED);
+		wschedule->_addstr("    ");
+		wstring title = (*i)->getTitle().substr(0,coor[WSCHEDULE].cols-4);
+		wschedule->_addstr(title);
+		if (title.length() < coor[WSCHEDULE].cols-4)
+			wschedule->_addstr("\n");
+		if (cursor == (*i))
+			wschedule->_attroff(COLOR_SELECTED);
 	}
+	wschedule->_attroff(COLOR_SCHED);
+	wschedule->_refresh();
 }
 
 void Screen::scrollUpText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.scroll_up(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.scroll_up(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::scrollDownText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.scroll_down(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.scroll_down(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::deadlineClear(int line)
 {
-	if (coor[WDEADLINE].exist)
-	{
-		wdeadline->_attron(COLOR_TREE);
-		wdeadline->_move(line, 0);
-		wdeadline->_addstr("            ");
-		wdeadline->_refresh();
-		wdeadline->_attroff(COLOR_TREE);
-	}
+	if (!coor[WDEADLINE].exist)
+		return;
+
+	wdeadline->_attron(COLOR_TREE);
+	wdeadline->_move(line, 0);
+	wdeadline->_addstr("            ");
+	wdeadline->_refresh();
+	wdeadline->_attroff(COLOR_TREE);
 }
 
 void Screen::priorityClear(int line)
@@ -507,132 +516,130 @@ bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
 
 void Screen::editText(Text& t)
 {
-	if (coor[WTEXT].exist)
-	{
-		wtree->_attron(COLOR_TEXT);
-		t.edit(*wtext);
-		wtree->_attroff(COLOR_TEXT);
-	}
+	if (!coor[WTEXT].exist)
+		return;
+
+	wtree->_attron(COLOR_TEXT);
+	t.edit(*wtext);
+	wtree->_attroff(COLOR_TEXT);
 }
 
 void Screen::editDeadline(int line, Date& deadline, bool done)
 {
-	if (coor[WDEADLINE].exist)
-	{
-		bool save;
-		char date[11];
-		wchar_t wide_date[11];
+	if (!coor[WDEADLINE].exist)
+		return;
 
+	bool save;
+	char date[11];
+	wchar_t wide_date[11];
+
+	if (deadline.valid())
+	{
+		sprintf(date, "%02d/%02d/%04d", deadline.day(),
+				deadline.month(), deadline.year());
+	}
+	else
+	{
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		strftime(date, 11, "%02d/%02m/%04Y", pt);
+	}
+
+	wdeadline->_attron(COLOR_SELECTED);
+	mbstowcs(wide_date, date, 11);
+	dateEditor.getText() = wide_date;
+	dateEditor.cursorPos() = 0;
+	save = dateEditor.edit(*wdeadline, line, 0, 11);
+
+	/* store deadline */
+	if (save)
+	{
+		wcstombs(date, dateEditor.getText().c_str(), 10);
+		date[2] = '\0';
+		date[5] = '\0';
+		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		if (d.correct())
+			deadline = d;
+		else
+			save = false;
+	}
+
+	/* if will not save redraw deadline */
+	if (!save)
+	{
 		if (deadline.valid())
 		{
+			wdeadline->_move(line, 0);
 			sprintf(date, "%02d/%02d/%04d", deadline.day(),
 					deadline.month(), deadline.year());
+			wdeadline->_addstr(date);
 		}
 		else
 		{
-			time_t t = time(NULL);
-			struct tm* pt = localtime(&t);
-			strftime(date, 11, "%02d/%02m/%04Y", pt);
+			wdeadline->_move(line, 0);
+			wdeadline->_addstr("          ");
 		}
-
-		wdeadline->_attron(COLOR_SELECTED);
-		mbstowcs(wide_date, date, 11);
-		dateEditor.getText() = wide_date;
-		dateEditor.cursorPos() = 0;
-		save = dateEditor.edit(*wdeadline, line, 0, 11);
-
-		/* store deadline */
-		if (save)
-		{
-			wcstombs(date, dateEditor.getText().c_str(), 10);
-			date[2] = '\0';
-			date[5] = '\0';
-			Date d(atoi(date), atoi(date+3), atoi(date+6));
-			if (d.correct())
-				deadline = d;
-			else
-				save = false;
-		}
-
-		/* if will not save redraw deadline */
-		if (!save)
-		{
-			if (deadline.valid())
-			{
-				wdeadline->_move(line, 0);
-				sprintf(date, "%02d/%02d/%04d", deadline.day(),
-						deadline.month(), deadline.year());
-				wdeadline->_addstr(date);
-			}
-			else
-			{
-				wdeadline->_move(line, 0);
-				wdeadline->_addstr("          ");
-			}
-		}
-		wdeadline->_attroff(COLOR_SELECTED);
-
-		wdeadline->_move(line, 10);
-		if ((!done) && (deadline_close(deadline)))
-		{
-			wdeadline->_attron(COLOR_DEADLINE_MARK);
-			wdeadline->_addstr("<-");
-			wdeadline->_attroff(COLOR_DEADLINE_MARK);
-		}
-		else
-		{
-			wdeadline->_addstr("  ");
-		}
-		wdeadline->_refresh();
 	}
+	wdeadline->_attroff(COLOR_SELECTED);
+
+	wdeadline->_move(line, 10);
+	if ((!done) && (deadline_close(deadline)))
+	{
+		wdeadline->_attron(COLOR_DEADLINE_MARK);
+		wdeadline->_addstr("<-");
+		wdeadline->_attroff(COLOR_DEADLINE_MARK);
+	}
+	else
+	{
+		wdeadline->_addstr("  ");
+	}
+	wdeadline->_refresh();
 }
 
 bool Screen::editSched(Date& s)
 {
-	if (coor[WSCHEDULE].exist)
+	if (!coor[WSCHEDULE].exist)
+		return false;
+
+	char date[12];
+	wchar_t wide_date[12];
+	bool save;
+
+	wschedule->_attron(A_BOLD);
+	wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
+	wschedule->_attroff(A_BOLD);
+	wschedule->_refresh();
+
+	/* if is not valid date use today date */
+	if (s.valid())
 	{
-		char date[12];
-		wchar_t wide_date[12];
-		bool save;
+		sprintf(date, "%02d/%02d/%04d", s.day(),
+				s.month(), s.year());
+	}
+	else
+	{
+		time_t t = time(NULL);
+		struct tm* pt = localtime(&t);
+		strftime(date, 11, "%02d/%02m/%04Y", pt);
+	}
 
-		wschedule->_attron(A_BOLD);
-		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
-		wschedule->_attroff(A_BOLD);
-		wschedule->_refresh();
-
-		/* if is not valid date use today date */
-		if (s.valid())
+	/* edit and store */
+	mbstowcs(wide_date, date, 11);
+	dateEditor.getText() = wide_date;
+	dateEditor.cursorPos() = 0;
+	save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
+	wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
+	wschedule->_refresh();
+	if (save)
+	{
+		wcstombs(date, dateEditor.getText().c_str(), 10);
+		date[2] = '\0';
+		date[5] = '\0';
+		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		if (d.correct())
 		{
-			sprintf(date, "%02d/%02d/%04d", s.day(),
-					s.month(), s.year());
-		}
-		else
-		{
-			time_t t = time(NULL);
-			struct tm* pt = localtime(&t);
-			strftime(date, 11, "%02d/%02m/%04Y", pt);
-		}
-
-		/* edit and store */
-		mbstowcs(wide_date, date, 11);
-		dateEditor.getText() = wide_date;
-		dateEditor.cursorPos() = 0;
-		save = dateEditor.edit(*wschedule, coor[WSCHEDULE].lines-1, 18, 11);
-		wschedule->_addstr(coor[WSCHEDULE].lines-1, 0, "                            ");
-		wschedule->_refresh();
-		if (save)
-		{
-			wcstombs(date, dateEditor.getText().c_str(), 10);
-			date[2] = '\0';
-			date[5] = '\0';
-			Date d(atoi(date), atoi(date+3), atoi(date+6));
-			if (d.correct())
-			{
-				s = d;
-				return true;
-			}
-			else
-				return false;
+			s = d;
+			return true;
 		}
 	}
 	return false;
@@ -640,56 +647,56 @@ bool Screen::editSched(Date& s)
 
 void Screen::setPriority(int line, int& priority)
 {
-	if (coor[WPRIORITY].exist)
+	if (!coor[WPRIORITY].exist)
+		return;
+
+	wchar_t p[2] = L"N";
+	char s[2];
+
+	if (priority)
+		swprintf(p, 2, L"%01d", priority);
+	priorityEditor.getText() = p;
+	if (priorityEditor.edit(*wpriority, line, 0, 1))
 	{
-		wchar_t p[2] = L"N";
-		char s[2];
-
-		if (priority)
-			swprintf(p, 2, L"%01d", priority);
-		priorityEditor.getText() = p;
-		if (priorityEditor.edit(*wpriority, line, 0, 1))
-		{
-			char num[2];
-			wcstombs(num, priorityEditor.getText().c_str(), 2);
-			priority = atoi(num);
-		}
-
-		wpriority->_move(line, 0);
-		if (priority)
-			sprintf(s, "%01d", priority);
-		else
-			strcpy(s, " ");
-
-		wpriority->_attron(COLOR_SELECTED);
-		wpriority->_addstr(s);
-		wpriority->_attroff(COLOR_SELECTED);
-		wpriority->_refresh();
+		char num[2];
+		wcstombs(num, priorityEditor.getText().c_str(), 2);
+		priority = atoi(num);
 	}
+
+	wpriority->_move(line, 0);
+	if (priority)
+		sprintf(s, "%01d", priority);
+	else
+		strcpy(s, " ");
+
+	wpriority->_attron(COLOR_SELECTED);
+	wpriority->_addstr(s);
+	wpriority->_attroff(COLOR_SELECTED);
+	wpriority->_refresh();
 }
 
 void Screen::setCategory(int line, ToDo& t)
 {
-	if (coor[WCATEGORY].exist)
-	{
-		wstring category = t.getCategory();
-		categoryEditor.getText() = category;
-		categoryEditor.cursorPos() = category.length();
-		if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
-		{
-			category = categoryEditor.getText();
-			t.setCategory(category);
-		}
+	if (!coor[WCATEGORY].exist)
+		return;
 
-		wcategory->_move(line, 0);
-		wcategory->_attron(COLOR_SELECTED);
-		if (category.empty())
-			for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
-		else
-			wcategory->_addstr(category);
-		wcategory->_attroff(COLOR_SELECTED);
-		wcategory->_refresh();
+	wstring category = t.getCategory();
+	categoryEditor.getText() = category;
+	categoryEditor.cursorPos() = category.length();
+	if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
+	{
+		category = categoryEditor.getText();
+		t.setCategory(category);
 	}
+
+	wcategory->_move(line, 0);
+	wcategory->_attron(COLOR_SELECTED);
+	if (category.empty())
+		for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
+	else
+		wcategory->_addstr(category);
+	wcategory->_attroff(COLOR_SELECTED);
+	wcategory->_refresh();
 }
 
 void Screen::treeClear()
@@ -724,82 +731,86 @@ int Screen::treeLines()
 
 bool Screen::searchText(wstring& pattern)
 {
-	if (coor[WINFO].exist)
-	{
-		bool save;
-
-		infoClear();
-		winfo->_addch(0,0,'/');
-		save = searchEditor.edit(*winfo, 0, 1, 
-				PERCENT_COL-2);
-		pattern = searchEditor.getText();
-		infoClear();
-		return save;
-	}
-	else
-	{
+	if (!coor[WINFO].exist)
 		return false;
-	}
+
+	bool save;
+
+	infoClear();
+	winfo->_addch(0,0,'/');
+	save = searchEditor.edit(*winfo, 0, 1, 
+			PERCENT_COL-2);
+	pattern = searchEditor.getText();
+	infoClear();
+	return save;
 }
 
 bool Screen::cmd(wstring& command)
 {
-	if (coor[WINFO].exist)
-	{
-		bool save;
-
-		infoClear();
-		winfo->_addch(0,0,':');
-		save = cmdEditor.edit(*winfo, 0, 1, 
-				PERCENT_COL-2);
-		command = cmdEditor.getText();
-		infoClear();
-		return save;
-	}
-	else
-	{
+	if (!coor[WINFO].exist)
 		return false;
-	}
+
+	bool save;
+
+	infoClear();
+	winfo->_addch(0,0,':');
+	save = cmdEditor.edit(*winfo, 0, 1, 
+			PERCENT_COL-2);
+	command = cmdEditor.getText();
+	infoClear();
+	return save;
+}
+
+bool Screen::confirmQuit()
+{
+	infoClear();
+	winfo->_addstr(0,0,"Close without save? (y/n) ");
+	wint_t ch = winfo->_getch();
+	infoClear();
+	if (('Y' == ch) || ('y' == ch))
+		return true;
+	else
+		return false;
 }
 
 void Screen::infoMsg(const char str[])
 {
-	if (coor[WINFO].exist)
-	{
-		winfo->_attron(COLOR_INFO);
-		infoClear();
-		winfo->_addstr(0,0,str);
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
-	}
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	infoClear();
+	winfo->_addstr(0,0,str);
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 void Screen::infoClear()
 {
-	if (coor[WINFO].exist)
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	winfo->_move(0,0);
+	for (int i = 0; i < COLS-15; ++i)
 	{
-		winfo->_attron(COLOR_INFO);
-		winfo->_move(0,0);
-		for (int i = 0; i < COLS-15; ++i)
-		{
-			winfo->_addch(' ');
-		}
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
+		winfo->_addch(' ');
 	}
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 void Screen::infoPercent(int percent)
 {
-	if (coor[WINFO].exist)
-	{
-		winfo->_attron(COLOR_INFO);
-		char str[8];
-		sprintf(str, "(%3d%%)", percent);
-		winfo->_addstr(0,PERCENT_COL,str);
-		winfo->_refresh();
-		winfo->_attroff(COLOR_INFO);
-	}
+	if (!coor[WINFO].exist)
+		return;
+
+	winfo->_attron(COLOR_INFO);
+	char str[8];
+	sprintf(str, "(%3d%%)", percent);
+	winfo->_addstr(0,PERCENT_COL,str);
+	winfo->_refresh();
+	winfo->_attroff(COLOR_INFO);
 }
 
 #define draw_help() \
@@ -816,7 +827,7 @@ void Screen::helpPopUp(string str[], int len)
         getmaxyx(stdscr, lines, cols); 
 	Window help_box(lines-8, cols-16, 4, 8);
 	help_box._box();
-	string s = "--- Press any key to close ---";
+	string s = "--- Press 'q' key to close, or space bar for next page ---";
 	help_box._move(lines-10, (cols/2)-8-(s.length()/2));
 	help_box._addstr(s);
 	help_box._refresh();
@@ -835,43 +846,45 @@ void Screen::helpPopUp(string str[], int len)
 			case KEY_RESIZE:
 				resized = true;
 				break;
-			case KEY_DOWN:
+			case KEY_DOWN: case 'j':
 				if (cursor <= len-lines)
 				{
 					++cursor;
 					draw_help();
 				}
 				break;
-			case KEY_UP:
+			case KEY_UP: case 'k':
 				if (cursor > 0)
 				{
 					--cursor;
 					draw_help();
 				}
 				break;
-			case  KEY_NPAGE:
+			case KEY_NPAGE: case ' ':
 				cursor += lines;
 				if (cursor > len-lines)
 					cursor = len + 1 - lines;
 				draw_help();
 				break;
-			case  KEY_PPAGE:
+			case KEY_PPAGE: case 'b':
 				cursor -= lines;
 				if (cursor < 0)
 					cursor = 0;
 				draw_help();
 				break;
-			case KEY_HOME:
+			case KEY_HOME: case '<': case 'g':
 				cursor = 0;
 				draw_help();
 				break;
-			case KEY_END:
+			case KEY_END: case '>': case 'G':
 				cursor = len + 1 - lines;
 				draw_help();
 				break;
-			default: 
+			case 'q':
 				close = true;
 				break;
+			default:
+				;
 		}
 	}
 

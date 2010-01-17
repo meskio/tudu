@@ -1,2 +1,4 @@
 Michael Leslie - fixed up the English
 Magnus Müller - scroll to beginning end if end beginning reached patch
+Enrique Matías - several patches
+Thorbjörn Jemander - Removed the dangerous ctrl-C

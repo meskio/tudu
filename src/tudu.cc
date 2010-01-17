@@ -1,12 +1,12 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; either version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.        *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -35,7 +35,7 @@ extern int errno;
 #define ETC_DIR "/usr/local/etc"
 #endif
 
-#define VERSION "TuDu 0.6 (2009)"
+#define VERSION "TuDu 0.6.1 (2010)"
 #define WELCOME_FILE SHARE_DIR"/welcome.xml"
 #define CONFIG_FILE ETC_DIR"/tudurc"
 
@@ -49,17 +49,17 @@ extern int errno;
 
 #define version() \
 	cout << VERSION << endl; \
-	cout << "TuDu Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
 
 #define copyright() \
 	cout << VERSION << endl; \
-	cout << "Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
+	cout << "Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
  	cout << "TuDu is free software; you can redistribute it and/or modify" << endl; \
  	cout << "it under the terms of the GNU General Public License as published by" << endl; \
- 	cout << "the Free Software Foundation; either version 3 of the License." << endl << endl; \
+ 	cout << "the Free Software Foundation; version 3 of the License." << endl << endl; \
  	cout << "TuDu is distributed in the hope that it will be useful," << endl; \
  	cout << "but WITHOUT ANY WARRANTY; without even the implied warranty of" << endl; \
  	cout << "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the" << endl; \
@@ -71,7 +71,7 @@ extern int errno;
 bool lock_ask()
 {
 	cout << endl << "Lock file found" << endl;
-	cout << endl << "or" << endl;
+	cout << endl << "either" << endl;
 	cout << "    Another program may be editing the same file." << endl;
 	cout << "    If this is the case, be careful not to end up with two" << endl;
 	cout << "    different instances of the same file when making changes." << endl;
@@ -93,6 +93,12 @@ int main(int argc, char **argv, char *env[])
 {
 	int i;
 	char file_rc[128], file_xml[128], file_lock[133];
+
+	// Disable Ctrl-C: Otherwise all changes are lost if one slips.
+	struct sigaction ignore_ctrl_c;
+	ignore_ctrl_c.sa_handler = SIG_IGN;
+	ignore_ctrl_c.sa_flags = 0;
+	sigaction(SIGINT, &ignore_ctrl_c, NULL);
 
 	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
 

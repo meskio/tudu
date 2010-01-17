@@ -1,12 +1,12 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; either version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.        *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -52,6 +52,7 @@ public:
 	int treeLines();
 	bool searchText(wstring& pattern);
 	bool cmd(wstring& command);
+	bool confirmQuit();
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);
@@ -74,6 +75,7 @@ private:
 	CmdEditor cmdEditor;
 	window_coor coor[NUM_WINDOWS];
 
+	void draw_helpbar(window_coor c);
 	void draw();
 };
 

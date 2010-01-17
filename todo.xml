@@ -1,33 +1,43 @@
 <?xml version="1.0"?>
-<!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
+<!DOCTYPE tudu SYSTEM "/usr/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>automake</title>
-		<priority>5</priority>
+		<title>optional bold parents</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>pipes to difference windows</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>sched on the tree</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>command line interface for sort order or show info while press b</title>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>one task two places</title>
-		<priority>5</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>cli interface</title>
-		<priority>5</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>title editor multi-linear</title>
-		<priority>4</priority>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>cooerent editor and title</title>
-		<priority>4</priority>
 		<text>
 </text>
 	</todo>
@@ -37,12 +47,17 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>tags</title>
+		<title>tags or more complex cathegories</title>
 		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>more filters (by project, keyword, date)</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>more states for a task (undone, done, waiting, maybe, ...)</title>
 		<text>
 </text>
 	</todo>

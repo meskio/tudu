@@ -51,7 +51,10 @@ void Sched::add(pToDo todo)
 			todo->schedPosition() = 1;
 	}
 	else
-		for (; ((*i)->sched() == todo->sched()) && ((*i)->schedPosition() < todo->schedPosition()); i++);
+	{
+		for (; (i != sched.end()) && ((*i)->sched() == todo->sched()) &&
+				((*i)->schedPosition() < todo->schedPosition()); i++);
+	}
 	sched.insert(i, todo);
 }
 

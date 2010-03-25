@@ -381,6 +381,8 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 	}
 	else if ("blank" == fmt)
 		w.window = WBLANK;
+	else if ("pipe" == fmt)
+		w.window = WPIPE;
 	else if ("help" == fmt)
 		w.window = WHELP;
 	else if ("tree" == fmt)
@@ -449,6 +451,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_SELECTED;
 	else if ("deadlineMark" == option)
 		color_index = CT_DEADLINE_MARK;
+	else if ("pipe" == option)
+		color_index = CT_PIPE;
 	else if ("help" == option)
 		color_index = CT_HELP;
 	else if ("tree" == option)

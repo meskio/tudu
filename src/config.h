@@ -6,7 +6,7 @@
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.               *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -42,6 +42,7 @@ typedef map<string,string> action_list;
 #define NUM_WINDOWS 8
 #define WNULL 10
 #define WBLANK 11
+#define WPIPE 12
 #define WHELP 0
 #define WTREE 1
 #define WTEXT 2
@@ -68,7 +69,7 @@ typedef struct {
 } window_coor;
 
 /* color theme */
-#define NUM_CT 8
+#define NUM_CT 9
 #define CT_DEFAULT 0
 #define CT_SELECTED 1
 #define CT_DEADLINE_MARK 2
@@ -77,6 +78,7 @@ typedef struct {
 #define CT_TEXT 5
 #define CT_INFO 6
 #define CT_SCHEDULE 7
+#define CT_PIPE 8
 typedef struct {
 	bool exist;
 	short int foreground;

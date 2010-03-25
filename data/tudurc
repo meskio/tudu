@@ -92,8 +92,9 @@ columns = title,priority,category,deadline
 # TuDu will try to guess the non given information.
 row = (help)
 row = 1(blank)
-row = 70%(tree,30|schedule) # Show the schedule on the right side of screen
-# row = 70%(tree)           # or, alternatively, do not show the schedule.
+row = 70%(tree,1|pipe,30|schedule) # Show the schedule on the right side of screen
+# row = 70%(tree)                  # or, alternatively, do not show the schedule.
+row = 1(pipe)
 row = (text)
 row = (info)
 
@@ -104,6 +105,7 @@ row = (info)
 color = white, transparent # Default colors
 selected = green, transparent
 deadlineMark = red, transparent
+pipe = blue, blue
 help = white, blue
 # tree =
 # info =

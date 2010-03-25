@@ -24,8 +24,9 @@
 #define COLOR_HELP     COLOR_PAIR(CT_HELP)
 #define COLOR_TREE     COLOR_PAIR(CT_TREE)
 #define COLOR_TEXT     COLOR_PAIR(CT_TEXT)
-#define COLOR_SCHED    COLOR_PAIR(CT_SCHEDULE)
 #define COLOR_INFO     COLOR_PAIR(CT_INFO)
+#define COLOR_SCHED    COLOR_PAIR(CT_SCHEDULE)
+#define COLOR_PIPE     COLOR_PAIR(CT_PIPE)
 
 #define PERCENT_COL (coor[WINFO].cols-7)
 
@@ -59,7 +60,7 @@ Screen::Screen(Config &c): config(c)
 			short int foreground, background;
 
 			use_default_colors();
-			config.getColorPair(0, foreground, background);
+			config.getColorPair(CT_DEFAULT, foreground, background);
 			assume_default_colors(foreground, background);
 			for (short int i=1; i<NUM_CT; ++i)
 			{
@@ -101,10 +102,10 @@ void Screen::draw_helpbar(window_coor c)
 	action_list list;
 	config.getActionList(list);
 	string help_bar = " " + list["quit"] + ":quit  " + \
-	  list["up"]   + ":up  "   + list["down"]    + ":down  " + \
-	  list["out"]  + ":out  "  + list["in"]      + ":in  " + \
-	  list["done"] + ":done  " + list["addTodo"] + ":add  " + \
-	  list["editTitle"] + ":modify";
+		list["up"]   + ":up  "   + list["down"]    + ":down  " + \
+		list["out"]  + ":out  "  + list["in"]      + ":in  " + \
+		list["done"] + ":done  " + list["addTodo"] + ":add  " + \
+		list["editTitle"] + ":modify";
 	whelp->_move(0,0);
 	whelp->_addstr(help_bar);
 	whelp->_move(0, c.cols-8);

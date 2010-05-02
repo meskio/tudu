@@ -1,0 +1,5 @@
+*.o
+*.swp
+/.vimrc
+/src/tudu
+/_*.xml

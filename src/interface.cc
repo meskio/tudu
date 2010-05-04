@@ -603,17 +603,17 @@ void Interface::editText()
 		char* argv[32];
 		int argc;
 		char* res;
-		wstring str;
 		Text& text = cursor->getText();
 
 		/* create a temporal file */
 		tmpnam(path);
-                int fout;                                                                                        
-                while ((fout = open(path, O_CREAT|O_WRONLY|O_EXCL, S_IRUSR|S_IWUSR)) == -1)                      
-                        tmpnam(path);                                                                            
-                close(fout);
+		int fout;
+		while ((fout = open(path, O_CREAT|O_WRONLY|O_EXCL, S_IRUSR|S_IWUSR)) == -1)
+				tmpnam(path);
+		close(fout);
 
 		wofstream ofs(path);
+		ofs.imbue(locale(""));
 		ofs << text;
 		ofs.close();
 		sprintf(s, editor, path);
@@ -642,11 +642,9 @@ void Interface::editText()
 		}
 		doupdate();
 		
-		ifstream ifs(path);
-		char c;
-		while (ifs.get(c))
-			str += c;
-		text = str;
+		wifstream ifs(path);
+		ifs.imbue(locale(""));
+		ifs >> text;
 		ifs.close();
 		unlink(path);
 

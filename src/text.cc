@@ -453,3 +453,15 @@ wostream& operator<<(wostream& os, Text& t)
 	os << t.getStr();
 	return os;
 }
+
+wistream& operator>>(wistream& is, Text& t)
+{
+	wstring str;
+	wchar_t c;
+
+   	while (is.get(c))
+		str += c;
+
+	t = str;
+	return is;
+}

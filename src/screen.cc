@@ -289,7 +289,7 @@ void Screen::resizeTerm()
 		(*win)->_mv(i->y, i->x);
 		(*win)->_erase();
 		(*win)->_move(0,0);
-		(*win)->_hline('-', i->lines);
+		(*win)->_hline('-', i->cols);
 		(*win)->_refresh();
 
 		win++;

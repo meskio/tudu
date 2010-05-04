@@ -773,6 +773,8 @@ bool Config::_genWindowCoor(int lines, int cols, windows_defs& coor)
 
 	/* initialice the windows as not present */
 	for (int i=0; i<NUM_WINDOWS; ++i) coor.exist[i] = false;
+	coor.vpipe.clear();
+	coor.hpipe.clear();
 
 	/* calculate the height of each row */
 	if (!genWindowHeights(lines, height)) return false;

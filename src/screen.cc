@@ -971,4 +971,10 @@ void Screen::helpPopUp(string str[], int len)
 		wschedule->_redraw();
 		wschedule->_refresh();
 	}
+	for (vector<Window *>::iterator i = pipes.begin();
+		 i != pipes.end(); i++)
+	{
+		(*i)->_redraw();
+		(*i)->_refresh();
+	}
 }

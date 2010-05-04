@@ -91,7 +91,7 @@ columns = title,priority,category,deadline
 # The help and info windows don't need to have a height, because is predefined as 1.
 # TuDu will try to guess the non given information.
 row = (help)
-row = 1(blank)
+row = 1(blank,vpipe,30|blank)
 row = 70%(tree,vpipe,30|schedule) # Show the schedule on the right side of screen
 # row = 70%(tree)                  # or, alternatively, do not show the schedule.
 row = (hpipe)

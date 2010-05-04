@@ -114,12 +114,9 @@ void Text::edit(Window& win)
 			case '\t': tab();
 				break;
 			default: 
-				if (key < 256)
-				{
-					cursor_line->insert(cursor_col,1,key);
-					++cursor_col;
-					if (0 == cursor_x) ++cursor_y;
-				}
+				cursor_line->insert(cursor_col,1,key);
+				++cursor_col;
+				if (0 == cursor_x) ++cursor_y;
 				break;
 		}
 

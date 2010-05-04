@@ -12,11 +12,6 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>sched on the tree</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
 		<text>
 </text>
@@ -101,7 +96,7 @@ warning of the compiler and code strange
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>if disk fool don't warns you and don't save</title>
 		<text>
 </text>

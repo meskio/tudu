@@ -64,8 +64,10 @@ void Interface::main()
 		{
 			if ("quit" == action)
 			{
-				writer.save();
-				break;
+				if (writer.save())
+					break;
+				else
+					screen.infoMsg("File can not be saved");
 			}
 			if ("quitNoSave" == action)
 				if (screen.confirmQuit()) break;

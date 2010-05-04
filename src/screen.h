@@ -66,6 +66,7 @@ private:
 	Window *wtext;
 	Window *winfo;
 	Window *wschedule;
+	vector<Window *> pipes;
 	Config &config;
 	LineEditor lineEditor;
 	CategoryEditor categoryEditor;
@@ -73,7 +74,7 @@ private:
 	PriorityEditor priorityEditor;
 	HistoryEditor searchEditor;
 	CmdEditor cmdEditor;
-	window_coor coor[NUM_WINDOWS];
+	windows_defs coor;
 
 	void draw_helpbar(window_coor c);
 	void draw();

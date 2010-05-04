@@ -19,6 +19,12 @@
 
 #include "window.h"
 
+Window::Window(window_coor coor)
+{
+	win = newwin(coor.lines, coor.cols, coor.y, coor.x);
+	keypad(win, TRUE);
+}
+
 Window::Window(int lines, int cols, int y, int x)
 {
 	win = newwin(lines, cols, y, x);
@@ -163,6 +169,16 @@ int Window::_resize(int lines, int columns)
 int Window::_mv(int y, int x)
 {
 	return mvwin(win, y, x);
+}
+
+int Window::_vline(chtype ch, int n)
+{
+	return wvline(win, ch, n);
+}
+
+int Window::_hline(chtype ch, int n)
+{
+	return whline(win, ch, n);
 }
 
 int Window::_delwin()

@@ -91,6 +91,10 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 		}
 	}
 
+	// in case of empty file create an empty task
+	if (!iterator->haveChild())
+		iterator.addChild(new ToDo());
+
 	return true;
 }
 

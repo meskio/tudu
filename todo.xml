@@ -11,6 +11,11 @@
 </text>
 		</todo>
 		<todo done="yes" collapse="no">
+			<title>loop dead at empty .tudu.xml</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
 			<title>if disk fool don't warns you and don't save</title>
 			<text>
 </text>
@@ -102,11 +107,6 @@ I'll think about it. Could be a nice feature.
 		<text>check how other programs do it
 
 warning of the compiler and code strange
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>loop dead at empty .tudu.xml</title>
-		<text>
 </text>
 	</todo>
 </todo>

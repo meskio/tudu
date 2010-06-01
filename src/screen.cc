@@ -342,10 +342,12 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 		wtree->_addstr(str);
 	}
 	/* add the title split to the length of screen */
-	if (t.haveChild()) wtree->_attron(A_BOLD);
+	if ((t.haveChild()) && (config.getBoldParent()))
+		wtree->_attron(A_BOLD);
 	wstring title = t.getTitle().substr(0,coor.coor[WTREE].cols-startTitle);
 	wtree->_addstr(title);
-	if (t.haveChild()) wtree->_attroff(A_BOLD);
+	if ((t.haveChild()) && (config.getBoldParent()))
+		wtree->_attroff(A_BOLD);
 	if (isCursor)
 		wtree->_attroff(COLOR_SELECTED);
 	else
@@ -535,7 +537,8 @@ bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
 	bool save;
 
 	wtree->_attron(COLOR_SELECTED);
-	if (haveChild) wtree->_attron(A_BOLD);
+	if ((haveChild) && (config.getBoldParent()))
+		wtree->_attron(A_BOLD);
 	lineEditor.getText() = str; 
 	lineEditor.cursorPos() = str.length();
 	save = lineEditor.edit(*wtree, line, startTitle, 
@@ -549,7 +552,8 @@ bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
 		wtree->_refresh();
 	}
 	str = lineEditor.getText(); 
-	if (haveChild) wtree->_attroff(A_BOLD);
+	if ((haveChild) && (config.getBoldParent()))
+		wtree->_attroff(A_BOLD);
 	wtree->_attroff(COLOR_SELECTED);
 	return save;
 }

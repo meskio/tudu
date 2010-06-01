@@ -1,15 +1,35 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="no" collapse="no">
-		<title>optional bold parents</title>
+	<todo done="no" collapse="yes">
+		<title>v0.7</title>
 		<text>
 </text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>pipes to difference windows</title>
-		<text>
+		<todo done="yes" collapse="no">
+			<title>pipes to difference windows</title>
+			<text>
 </text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>if disk fool don't warns you and don't save</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>optional bold parents</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>fixed year bug #568064</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>fixed UTF8 problem on external editor</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
@@ -86,11 +106,6 @@ warning of the compiler and code strange
 	</todo>
 	<todo done="no" collapse="no">
 		<title>loop dead at empty .tudu.xml</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>if disk fool don't warns you and don't save</title>
 		<text>
 </text>
 	</todo>

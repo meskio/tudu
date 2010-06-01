@@ -7,6 +7,7 @@ hide_done    = no  # Whether to hide tasks marked as done.
 hide_percent = no  # Whether to hide percentage display on tasks
 visual_tree  = no  # Toggle graphical tree. It shows (+) on parent's left side.
                    # Necessary in some shells that can not display bold characters.
+bold_parent  = yes # hilight the parents with children with bold letters
 loop_move    = no  # whether to jump to the beginning (or end) 
                    # when the end (or beginning) is reached
 days_warn    = 2   # how many days before the task is due

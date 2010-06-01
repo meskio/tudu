@@ -137,6 +137,9 @@ void Config::getGeneralOption(string& option, string& value)
 	if ("visual_tree" == option)
 		visual_tree = isYes(value);
 
+	if ("bold_parent" == option)
+		bold_parent = isYes(value);
+
 	if ("loop_move" == option)
 		loop_move = isYes(value);
 
@@ -547,6 +550,11 @@ bool Config::getHidePercent()
 bool Config::getVisualTree()
 {
 	return visual_tree;
+}
+
+bool Config::getBoldParent()
+{
+	return bold_parent;
 }
 
 bool Config::getLoopMove()

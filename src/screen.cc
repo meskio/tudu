@@ -586,7 +586,7 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 	{
 		time_t t = time(NULL);
 		struct tm* pt = localtime(&t);
-		strftime(date, 11, "%02d/%02m/%04Y", pt);
+		strftime(date, 11, "%d/%m/%Y", pt);
 	}
 
 	wdeadline->_attron(COLOR_SELECTED);
@@ -664,7 +664,7 @@ bool Screen::editSched(Date& s)
 	{
 		time_t t = time(NULL);
 		struct tm* pt = localtime(&t);
-		strftime(date, 11, "%02d/%02m/%04Y", pt);
+		strftime(date, 11, "%d/%m/%Y", pt);
 	}
 
 	/* edit and store */

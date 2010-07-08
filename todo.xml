@@ -40,6 +40,11 @@
 			<text>
 </text>
 		</todo>
+		<todo done="yes" collapse="no">
+			<title>us dates</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>

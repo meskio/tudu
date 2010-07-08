@@ -146,6 +146,9 @@ void Config::getGeneralOption(string& option, string& value)
 	if ("days_warn" == option)
 		days_warn_deadline = atoi(value.c_str());
 
+	if ("us_dates" == option)
+		us_dates = isYes(value);
+
 	if ("sort_order" == option)
 		strncpy(sort_order, value.c_str(), 16);
 
@@ -565,6 +568,11 @@ bool Config::getLoopMove()
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
+}
+
+bool Config::useUSDates()
+{
+	return us_dates;
 }
 
 char* Config::getSortOrder()

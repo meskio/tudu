@@ -39,6 +39,15 @@ int& Date::year(int y)
 	return _year;
 }
 
+void Date::setToday()
+{
+	time_t t = time(NULL);
+	struct tm* pt = localtime(&t);
+	_day = pt->tm_mday;
+	_month = pt->tm_mon+1;
+	_year = pt->tm_year+1900;
+}
+
 bool Date::valid()
 {
 	return (1900 != _year);

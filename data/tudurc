@@ -12,6 +12,8 @@ loop_move    = no  # whether to jump to the beginning (or end)
                    # when the end (or beginning) is reached
 days_warn    = 2   # how many days before the task is due
                    # will the deadline sport a warning remark
+us_dates     = no  # use US date format (mm/dd/yyyy). 
+                   # by default it uses dd/mm/yyyy
 
 # The default order in which tasks will be shown.
 # Tasks are ordered by the 1st letter in the string, then by the 2nd, and so on.

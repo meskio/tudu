@@ -98,6 +98,7 @@ public:
 	bool getBoldParent();
 	bool getLoopMove();
 	int getDaysWarn();
+	bool useUSDates();
 	char* getSortOrder();
 	char* getEditor();
 	void genWindowCoor(int lines, int cols, windows_defs& coor);
@@ -129,6 +130,7 @@ private:
 	bool visual_tree;
 	bool bold_parent;
 	int  days_warn_deadline;
+	bool us_dates;
 	bool loop_move;
 	char sort_order[16];
 	char editor[64];

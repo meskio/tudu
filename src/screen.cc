@@ -180,6 +180,48 @@ void Screen::draw()
 	}
 }
 
+wstring Screen::date2str(Date& date)
+{
+	wostringstream ss;
+
+	if (config.useUSDates())
+	{
+		ss << setfill ('0') << setw (2) <<  date.month() << "/" 
+		   << setw (2) <<  date.day() << "/"
+		   << setw (4) << date.year();
+	}
+	else 
+	{
+		ss << setfill ('0') << setw (2) <<  date.day() << "/" 
+		   << setw (2) <<  date.month() << "/"
+		   << setw (4) << date.year();
+	}
+	
+	return ss.str();
+}
+
+Date Screen::str2date(wstring str)
+{
+	string date(str.length(), L' ');
+	copy(str.begin(), str.end(), date.begin());
+
+	int day, month;
+	int year = atoi(date.substr(6,4).c_str());
+	if (config.useUSDates())
+	{
+		month = atoi(date.substr(0,2).c_str());
+		day = atoi(date.substr(3,2).c_str());
+	}
+	else
+	{
+		day = atoi(date.substr(0,2).c_str());
+		month = atoi(date.substr(3,2).c_str());
+	}
+	Date d(day, month, year);
+
+	return d;
+}
+
 void Screen::resizeTerm()
 {
 	int lines, cols;
@@ -406,12 +448,9 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 		Date& deadline = t.deadline();
 		if (deadline.valid())
 		{
-			char s[11];
 			wdeadline->_move(line, 0);
-			sprintf(s, "%02d/%02d/%04d", deadline.day(), 
-					deadline.month(), deadline.year());
-			wdeadline->_addstr(s);
-
+			wstring str = date2str(deadline);
+			wdeadline->_addstr(str);
 		}
 		wdeadline->_move(line, 10);
 		if ((!t.done() && deadline_close(deadline)) || (isCollapse(t) && deadline_close(chinf.deadline)))
@@ -448,9 +487,8 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 	if (!coor.exist[WSCHEDULE])
 		return;
 
-	time_t t = time(NULL);
-	struct tm* pt = localtime(&t);
-	Date today(pt->tm_mday, pt->tm_mon+1, pt->tm_year+1900);
+	Date today;
+	today.setToday();
 	sched_l sched_list;
 	sched.get(today,sched_list);
 
@@ -467,8 +505,9 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 		{
 			last = (*i)->sched();
 
-			char str[32];
-			sprintf(str, "  %d/%d/%d\n", last.day(), last.month(), last.year());
+			wostringstream ss;
+			ss  << "  " << date2str(last) << endl;
+			wstring str = ss.str();
 			wschedule->_attron(A_BOLD);
 			wschedule->_addstr(str);
 			wschedule->_attroff(A_BOLD);
@@ -574,34 +613,27 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 		return;
 
 	bool save;
-	char date[11];
-	wchar_t wide_date[11];
+	wstring date;
 
 	if (deadline.valid())
 	{
-		sprintf(date, "%02d/%02d/%04d", deadline.day(),
-				deadline.month(), deadline.year());
+		date = date2str(deadline);
 	}
 	else
 	{
-		time_t t = time(NULL);
-		struct tm* pt = localtime(&t);
-		strftime(date, 11, "%d/%m/%Y", pt);
+		Date d;
+		d.setToday();
+		date = date2str(d);
 	}
-
 	wdeadline->_attron(COLOR_SELECTED);
-	mbstowcs(wide_date, date, 11);
-	dateEditor.getText() = wide_date;
+	dateEditor.getText() = date;
 	dateEditor.cursorPos() = 0;
 	save = dateEditor.edit(*wdeadline, line, 0, 11);
 
 	/* store deadline */
 	if (save)
 	{
-		wcstombs(date, dateEditor.getText().c_str(), 10);
-		date[2] = '\0';
-		date[5] = '\0';
-		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		Date d = str2date(dateEditor.getText());
 		if (d.correct())
 			deadline = d;
 		else
@@ -614,8 +646,7 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 		if (deadline.valid())
 		{
 			wdeadline->_move(line, 0);
-			sprintf(date, "%02d/%02d/%04d", deadline.day(),
-					deadline.month(), deadline.year());
+			date = date2str(deadline);
 			wdeadline->_addstr(date);
 		}
 		else
@@ -645,8 +676,7 @@ bool Screen::editSched(Date& s)
 	if (!coor.exist[WSCHEDULE])
 		return false;
 
-	char date[12];
-	wchar_t wide_date[12];
+	wstring date;
 	bool save;
 
 	wschedule->_attron(A_BOLD);
@@ -657,29 +687,24 @@ bool Screen::editSched(Date& s)
 	/* if is not valid date use today date */
 	if (s.valid())
 	{
-		sprintf(date, "%02d/%02d/%04d", s.day(),
-				s.month(), s.year());
+		date = date2str(s);
 	}
 	else
 	{
-		time_t t = time(NULL);
-		struct tm* pt = localtime(&t);
-		strftime(date, 11, "%d/%m/%Y", pt);
+		Date d;
+		d.setToday();
+		date = date2str(d);
 	}
 
 	/* edit and store */
-	mbstowcs(wide_date, date, 11);
-	dateEditor.getText() = wide_date;
+	dateEditor.getText() = date;
 	dateEditor.cursorPos() = 0;
 	save = dateEditor.edit(*wschedule, coor.coor[WSCHEDULE].lines-1, 18, 11);
 	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "                            ");
 	wschedule->_refresh();
 	if (save)
 	{
-		wcstombs(date, dateEditor.getText().c_str(), 10);
-		date[2] = '\0';
-		date[5] = '\0';
-		Date d(atoi(date), atoi(date+3), atoi(date+6));
+		Date d = str2date(dateEditor.getText());
 		if (d.correct())
 		{
 			s = d;

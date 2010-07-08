@@ -78,6 +78,8 @@ private:
 
 	void draw_helpbar(window_coor c);
 	void draw();
+	wstring date2str(Date& date);
+	Date str2date(wstring str);
 };
 
 #endif

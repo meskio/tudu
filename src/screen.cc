@@ -182,7 +182,7 @@ void Screen::draw()
 
 wstring Screen::date2str(Date& date)
 {
-	wostringstream ss;
+	ostringstream ss;
 
 	if (config.useUSDates())
 	{
@@ -197,7 +197,9 @@ wstring Screen::date2str(Date& date)
 		   << setw (4) << date.year();
 	}
 	
-	return ss.str();
+	wstring str(ss.str().length(), L' ');
+	copy(str.begin(), str.end(), ss.str().begin());
+	return str;
 }
 
 Date Screen::str2date(wstring str)

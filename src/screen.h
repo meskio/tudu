@@ -50,6 +50,8 @@ public:
 	void setCategory(int line, ToDo& t);
 	void treeClear();
 	int treeLines();
+	/* number of lines the task needs on the screen */
+	int taskLines(int depth, ToDo &t);
 	bool searchText(wstring& pattern);
 	bool cmd(wstring& command);
 	bool confirmQuit();

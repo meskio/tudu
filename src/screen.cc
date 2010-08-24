@@ -800,6 +800,12 @@ int Screen::treeLines()
 	return wtree->_lines();
 }
 
+int Screen::taskLines(int depth, ToDo &t)
+{
+	int titleLength = t.getTitle().length();
+	return (titleLength / (coor.coor[WTREE].cols-startTitle)) + 1;
+}
+
 bool Screen::searchText(wstring& pattern)
 {
 	if (!coor.exist[WINFO])

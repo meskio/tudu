@@ -164,7 +164,7 @@ void Interface::drawTodo()
 bool Interface::next()
 {
 	iToDo oldCursor = cursor;
-	++cursor_line;
+	cursor_line += screen.taskLines(cursor.depth(), *cursor);
 	do {
 		if (!cursor.end() && !isCollapse())
 			cursor.in();
@@ -173,7 +173,7 @@ bool Interface::next()
 			if (!cursor.out())
 			{
 				cursor = oldCursor;
-				--cursor_line;
+				cursor_line -= screen.taskLines(cursor.depth(), *cursor);
 				return false;
 			}
 			++cursor;
@@ -186,14 +186,12 @@ bool Interface::next()
 bool Interface::prev()
 {
 	iToDo oldCursor = cursor;
-	--cursor_line;
 	do {
 		if (!--cursor)
 		{
 			if (!cursor.out())
 			{
 				cursor = oldCursor;
-				++cursor_line;
 				return false;
 			}
 		}
@@ -207,6 +205,7 @@ bool Interface::prev()
 			}
 		}
 	} while (isHide(cursor));
+	cursor_line -= screen.taskLines(cursor.depth(), *cursor);
 
 	return true;
 }
@@ -224,7 +223,7 @@ bool Interface::fitCursor()
 	{
 		if (cursor_line >= treeLines)
 		{
-			cursor_line = treeLines-1;
+			cursor_line = treeLines - screen.taskLines(cursor.depth(), *cursor);
 			return true;
 		}
 		else if (cursor_line < 0)
@@ -236,21 +235,21 @@ bool Interface::fitCursor()
 	else if (cursor_line > treeLines - 4)
 	{
 		iToDo aux = cursor;
-		int i, line = cursor_line;
-		for (i = 1; i < 4; i++)
+		int line = cursor_line;
+		while (cursor_line <= line + 4)
 			if (!next()) break;
-		cursor = aux;
-		cursor_line = treeLines - i;
+		cursor_line = treeLines - screen.taskLines(cursor.depth(), *cursor);
+		while (aux != cursor) prev();
 		if (cursor_line != line) return true;
 	}
 	else if (cursor_line < 4)
 	{
 		iToDo aux = cursor;
-		int i, line = cursor_line;
-		for (i = 0; i < 4; i++)
+		int line = cursor_line;
+		while (cursor_line >= line - 4)
 			if (!prev()) break;
-		cursor = aux;
-		cursor_line = i;
+		cursor_line = 0;
+		while (aux != cursor) next();
 		if (cursor_line != line) return true;
 	}
 
@@ -333,8 +332,8 @@ void Interface::right()
 
 	eraseCursor();
 	cursor->actCollapse() = true;
+	cursor_line += screen.taskLines(cursor.depth(), *cursor);
 	cursor.in();
-	cursor_line++;
 	while (isHide(cursor) && ++cursor);
 
 	if (cursor.end())
@@ -376,7 +375,9 @@ void Interface::up()
 	if (!isHide(aux))
 	{
 		eraseCursor();
-		while (aux != cursor) prev();
+		while (aux != cursor)
+			if (!prev()) break;
+		while (aux != cursor) next();
 		drawCursor();
 	}
 	else if (isHide(cursor))
@@ -389,20 +390,20 @@ void Interface::up()
 void Interface::down()
 {
 	iToDo aux = cursor;
-	++aux;
 
-	if (aux.end() && config.getLoopMove())
+	while (++aux)
 	{
-		while (--aux);
-		cursor = aux;
-		cursor_line = -2; // that will force drawCursor to call drwaTodo
+		if (aux.end() && config.getLoopMove())
+			while (--aux);
+		if (!isHide(aux) || (aux == cursor)) break;
 	}
 
-	while (isHide(aux) && ++aux);
 	if (!isHide(aux))
 	{
 		eraseCursor();
-		while (aux != cursor) next();
+		while (aux != cursor)
+			if (!next()) break;
+		while (aux != cursor) prev();
 		drawCursor();
 	}
 	else if (isHide(cursor))
@@ -418,7 +419,7 @@ void Interface::move_up()
 	cursor.del();
 	eraseCursor();
 	--cursor;
-	--cursor_line;
+	cursor_line -= screen.taskLines(cursor.depth(), *cursor);
 	cursor.addChildUp(t);
 	drawTodo();
 }
@@ -428,7 +429,7 @@ void Interface::move_down()
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
-	++cursor_line;
+	cursor_line += screen.taskLines(cursor.depth(), *cursor);
 	cursor.addChild(t);
 	drawTodo();
 }
@@ -477,10 +478,10 @@ void Interface::paste()
 {
 	if (copied)
 	{
+		cursor_line += screen.taskLines(cursor.depth(), *cursor);
 		cursor.addChild(copied);
 		sched.add_recursive(copied);
 		copied = NULL;
-		++cursor_line;
 		drawTodo();
 	}
 }
@@ -501,11 +502,11 @@ void Interface::pasteChild()
 	if (copied)
 	{
 		cursor->actCollapse() = true;
+		cursor_line += screen.taskLines(cursor.depth(), *cursor);
 		cursor.in();
 		cursor.addChildUp(copied);
 		sched.add_recursive(copied);
 		copied = NULL;
-		++cursor_line;
 		drawTodo();
 	}
 }
@@ -550,9 +551,9 @@ void Interface::setCategory()
 
 void Interface::addLine()
 {
+	cursor_line += screen.taskLines(cursor.depth(), *cursor);
 	cursor.addChild(new ToDo());
 	inherit();
-	++cursor_line;
 	drawTodo();
 	wstring title;
 	if ((editLine(title)) && (title != L""))

@@ -388,8 +388,15 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* add the title split to the length of screen */
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attron(A_BOLD);
-	wstring title = t.getTitle().substr(0,coor.coor[WTREE].cols-startTitle);
-	wtree->_addstr(title);
+	wstring title = t.getTitle();
+	for (int i = 0; i < taskLines(depth, t); i++)
+	{
+		unsigned int lenTitleLine = coor.coor[WTREE].cols-startTitle;
+		wstring titleLine = title.substr(0,lenTitleLine);
+		wtree->_addstr(line + i, startTitle, titleLine);
+		if (title.length() > lenTitleLine)
+			title = title.substr(lenTitleLine);
+	}
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attroff(A_BOLD);
 	if (isCursor)

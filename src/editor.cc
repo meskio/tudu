@@ -312,7 +312,7 @@ void CmdEditor::tab() /* do completion */
 
 void CmdEditor::command_completion(wstring& com)
 {
-	/* if it is no the first time */
+	/* if it is not the first time */
 	if ((param == 0) &&
 	    (com_search != commands.end()) &&
 	    (com == com_search->first))

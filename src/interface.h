@@ -44,22 +44,34 @@ private:
 	Sched &sched;
 	Config &config;
 	Writer &writer;
-	/* number of begin and end line of the todos in screen */
-	int tree_begin, tree_end;
 	pToDo copied;
 	char sortOrder[16];
 	wstring search_pattern;
 	Cmd &cmd; /* command interface */
 	set<wstring> hidden_categories;
+	int cursor_line;
 
 	void resizeTerm();
 	void drawTodo();
-	void _calculateLines(int& line_counter);
-	void _drawTodo();
 	void eraseCursor();
+
+	/*
+	 *  calculate the position of the cursor on the screen
+	 *  so if it was out of the screen it places it inside.
+	 *  return true if the screen must be redrawn
+	 */
+	bool fitCursor();
+
 	void drawCursor();
 	bool isHide(iToDo& todo);
 	void inherit();
+
+	/* update cursor and cursor_line to previous entry on the screen */
+	bool next();
+	/* update cursor and cursor_line to next entry on the screen
+	   always points to a valid line */
+	bool prev();
+
 	void left();
 	void right();
 	void up();

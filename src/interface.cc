@@ -19,22 +19,19 @@
 
 #include "interface.h"
 
-#define cursor_line()  (cursor->line-tree_begin)
 #define isCollapse() ((cursor->getCollapse()) && (!cursor->actCollapse()))
 
 Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd &com) 
 		: screen(s), cursor(t), sched(sch), config(c), writer(w), copied(NULL), cmd(com)
 {
 	cmd.get_interface(this);
-
 	search_pattern = L"";
-	tree_begin = 0;
-	tree_end = screen.treeLines();
 
 	strcpy(sortOrder, " ");
 	strncat(sortOrder, config.getSortOrder(), 16);
 	cursor.sort(sortOrder);
-	while (--cursor);
+	while (prev());
+	cursor_line = 0;
 }
 
 Interface::~Interface()
@@ -124,133 +121,151 @@ void Interface::main()
 void Interface::resizeTerm()
 {
 	screen.resizeTerm();
-	tree_end = screen.treeLines() + tree_begin;
-	if (cursor->line > tree_end - 4)
-	{
-		tree_end = cursor->line + 4;
-		tree_begin = tree_end - screen.treeLines();
-	}
 	drawTodo();
 }
 
 void Interface::drawTodo()
 {
-	iToDo aux = cursor;
 	screen.treeClear();
 	cursor.sort(sortOrder);
+	if (isHide(cursor) && !prev() && !next())
+	{
+		while (cursor.out());
+		cursor.addChildUp(new ToDo());
+		inherit();
+		cursor_line = 0;
+	}
+	iToDo aux = cursor;
 
-	/* calculate lines */
-	int line_counter = 0;
 	while (cursor.out());
 	while (--cursor);
 	screen.infoPercent(cursor.percentUp());
-	_calculateLines(line_counter);
-
-	/* calculate the new tree_begin and tree_end */
-	if (aux->line < tree_begin)
-	{
-		tree_begin = aux->line;
-		tree_end = tree_begin + screen.treeLines();
-	}
-	if (aux->line >= tree_end)
-	{
-		tree_end = aux->line+1;
-		tree_begin = tree_end - screen.treeLines();
-	}
 
 	/* redraw screen */
 	cursor = aux;
-	while (cursor.out());
-	while (cursor->line > tree_begin) --cursor;
-	_drawTodo();
+	fitCursor();
+	int line = cursor_line;
+	while ((cursor_line > 0) && prev());
+	cursor_line = 0;
+	while (cursor_line < screen.treeLines())
+	{
+		bool isCursor = (cursor == aux);
+		screen.drawTask(cursor_line, cursor.depth(), *cursor, isCursor);
+		if (isCursor) line = cursor_line;
+
+		if (!next()) break;
+	}
 
 	cursor = aux;
-	drawCursor();
+	cursor_line = line;
 	screen.drawSched(sched, &(*cursor));
 }
 
-void Interface::_calculateLines(int& line_counter)
+bool Interface::next()
 {
-	for (; !(cursor.end()); ++cursor)
-	{
-		if (!isHide(cursor))
+	iToDo oldCursor = cursor;
+	++cursor_line;
+	do {
+		if (!cursor.end() && !isCollapse())
+			cursor.in();
+		else if (!++cursor)
 		{
-			cursor->line = line_counter++;
-			if (!isCollapse())
+			if (!cursor.out())
 			{
-				cursor.in();
-				_calculateLines(line_counter);
-				cursor.out();
+				cursor = oldCursor;
+				--cursor_line;
+				return false;
 			}
+			++cursor;
 		}
-	}
+	} while (isHide(cursor));
+
+	return true;
 }
 
-void Interface::_drawTodo()
+bool Interface::prev()
 {
-	for (; !(cursor.end()); ++cursor)
-	{
-		if (cursor->line >= tree_end) break;
-		if ((cursor->line >= tree_begin) &&
-		    (!isHide(cursor)))
-			screen.drawTask(cursor_line(), cursor.depth(), 
-					*cursor);
-		if (!isCollapse())
+	iToDo oldCursor = cursor;
+	--cursor_line;
+	do {
+		if (!--cursor)
 		{
-			cursor.in();
-			_drawTodo();
-			cursor.out();
+			if (!cursor.out())
+			{
+				cursor = oldCursor;
+				++cursor_line;
+				return false;
+			}
 		}
-	}
+		else
+		{
+			while (cursor->haveChild() && !isCollapse())
+			{
+				cursor.in();
+				while (++cursor);
+				--cursor;
+			}
+		}
+	} while (isHide(cursor));
+
+	return true;
 }
 
 void Interface::eraseCursor()
 {
-	screen.drawTask(cursor_line(), cursor.depth(), *cursor, false);
+	screen.drawTask(cursor_line, cursor.depth(), *cursor, false);
+}
+
+bool Interface::fitCursor()
+{
+	int treeLines = screen.treeLines();
+
+	if (treeLines < 8)
+	{
+		if (cursor_line >= treeLines)
+		{
+			cursor_line = treeLines-1;
+			return true;
+		}
+		else if (cursor_line < 0)
+		{
+			cursor_line = 0;
+			return true;
+		}
+	}
+	else if (cursor_line > treeLines - 4)
+	{
+		iToDo aux = cursor;
+		int i, line = cursor_line;
+		for (i = 1; i < 4; i++)
+			if (!next()) break;
+		cursor = aux;
+		cursor_line = treeLines - i;
+		if (cursor_line != line) return true;
+	}
+	else if (cursor_line < 4)
+	{
+		iToDo aux = cursor;
+		int i, line = cursor_line;
+		for (i = 0; i < 4; i++)
+			if (!prev()) break;
+		cursor = aux;
+		cursor_line = i;
+		if (cursor_line != line) return true;
+	}
+
+	return false;
 }
 
 void Interface::drawCursor()
 {
-	if (screen.treeLines() < 8)
+	if (fitCursor())
 	{
-		if (cursor->line >= tree_end)
-		{
-			tree_end = cursor->line;
-			tree_begin = tree_end - screen.treeLines();
-			drawTodo();
-		}
-		else if (cursor->line < tree_begin)
-		{
-			tree_begin = cursor->line;
-			tree_end = tree_begin + screen.treeLines();
-			drawTodo();
-		}
-		else
-		{
-			screen.drawTask(cursor_line(), cursor.depth(), *cursor, 
-					true);
-			screen.drawText(cursor->getText());
-			screen.drawSched(sched, &(*cursor));
-		}
-	}
-	else if (cursor->line > tree_end - 4)
-	{
-		tree_end = cursor->line + 4;
-		tree_begin = tree_end - screen.treeLines();
-		drawTodo();
-	}
-	else if ((tree_begin != 0) && (cursor->line < tree_begin + 4))
-	{
-		if (cursor->line < 4)
-			tree_begin = 0;
-		else
-			tree_begin = cursor->line - 4;
-		tree_end = tree_begin + screen.treeLines();
 		drawTodo();
 	}
 	else
 	{
-		screen.drawTask(cursor_line(), cursor.depth(), *cursor, 
+		screen.drawTask(cursor_line, cursor.depth(), *cursor, 
 				true);
 		screen.drawText(cursor->getText());
 		screen.drawSched(sched, &(*cursor));
@@ -259,8 +274,9 @@ void Interface::drawCursor()
 
 bool Interface::isHide(iToDo& todo)
 {
-	bool hide;
+	if (todo.end()) return true;
 
+	bool hide;
 	/* if is done */
 	hide = (config.getHideDone() && todo->done());
 	/* if is in hidden category */
@@ -281,7 +297,9 @@ void Interface::inherit()
 	else if (hidden_categories.count(L""))
 	{
 		set<wstring>::iterator cat;
-		for (cat = categories.begin(); (cat != categories.end()) && hidden_categories.count(*cat); cat++);
+		for (cat = categories.begin(); 
+			(cat != categories.end()) && hidden_categories.count(*cat);
+			cat++);
 		if (cat != categories.end()) cursor->setCategory(*cat);
 		else cursor->setCategory(NONE_CATEGORY);
 	}
@@ -289,24 +307,23 @@ void Interface::inherit()
 
 void Interface::left()
 {
-	eraseCursor();
-	if (cursor.out() && isHide(cursor))
+	iToDo aux = cursor;
+
+	while (aux.out() && isHide(aux));
+	if (!isHide(aux))
 	{
-		up();
+		eraseCursor();
+		while (aux != cursor) prev();
+		cursor->actCollapse() = false;
+		if (cursor->getCollapse())
+			drawTodo();
+		else
+			drawCursor();
 	}
 	else if (isHide(cursor))
 	{
-		cursor.addChild(new ToDo());
-		inherit();
-	}
-	cursor->actCollapse() = false;
-	if (cursor->getCollapse())
-	{
+		prev();
 		drawTodo();
-	}
-	else
-	{
-		drawCursor();
 	}
 }
 
@@ -317,6 +334,7 @@ void Interface::right()
 	eraseCursor();
 	cursor->actCollapse() = true;
 	cursor.in();
+	cursor_line++;
 	while (isHide(cursor) && ++cursor);
 
 	if (cursor.end())
@@ -329,9 +347,7 @@ void Interface::right()
 		{
 			cursor->getTitle() = title;
 
-			/*
-			 * Use the config collapse
-			 */
+			/* Use the config collapse */
 			cursor.out();
 			cursor->getCollapse() = config.getCollapse();
 			cursor.in();
@@ -340,91 +356,60 @@ void Interface::right()
 		{
 			del();
 		}
+		need_drawTodo = false;
 	}
+
 	if (need_drawTodo)
-	{
 		drawTodo();
-	}
 	else
-	{
 		drawCursor();
-	}
 }
 
 void Interface::up()
 {
-	eraseCursor();
-	if (config.getLoopMove())
-	{
-		/* Jump to end if beginning reached */
-		if (cursor.begin())
-		{
-			while (++cursor);
-		}
-	}
-	--cursor;
+	iToDo aux = cursor;
 
-	/* Jump hide tasks */
-	while (isHide(cursor))
-	{
-		if (cursor.begin()) break;
-		--cursor;
-	}
-	while (isHide(cursor))
-	{
-		++cursor;
-		if (cursor.end())
-		{
-			--cursor;
-			break;
-		}
-	}
-	if (isHide(cursor)) left();
+	if (aux.begin() && config.getLoopMove())
+		while (++aux);
 
-	drawCursor();
+	while (--aux && isHide(aux));
+	if (!isHide(aux))
+	{
+		eraseCursor();
+		while (aux != cursor) prev();
+		drawCursor();
+	}
+	else if (isHide(cursor))
+	{
+		prev();
+		drawTodo();
+	}
 }
 
 void Interface::down()
 {
-	eraseCursor();
-	++cursor;
-	if (cursor.end())
+	iToDo aux = cursor;
+	++aux;
+
+	if (aux.end() && config.getLoopMove())
 	{
-		if (config.getLoopMove())
-		{
-			/* Jump to beginning if end reached */
-			while (--cursor);
-		}
-		else
-		{
-			--cursor;
-		}
+		while (--aux);
+		cursor = aux;
+		cursor_line = -2; // that will force drawCursor to call drwaTodo
 	}
 
-	/* Jump hide tasks */
-	while (isHide(cursor))
+	while (isHide(aux) && ++aux);
+	if (!isHide(aux))
 	{
-		++cursor;
-		if (cursor.end())
-		{
-			if (config.getLoopMove())
-			{
-				/* Jump to beginning if end reached */
-				while (--cursor);
-			}
-			else
-			{
-				do {
-					--cursor;
-					if (cursor.begin()) break;
-				} while (isHide(cursor));
-				break;
-			}
-		}
+		eraseCursor();
+		while (aux != cursor) next();
+		drawCursor();
 	}
-	if (isHide(cursor)) left();
-
-	drawCursor();
+	else if (isHide(cursor))
+	{
+		prev();
+		drawTodo();
+	}
 }
 
 void Interface::move_up()
@@ -433,6 +418,7 @@ void Interface::move_up()
 	cursor.del();
 	eraseCursor();
 	--cursor;
+	--cursor_line;
 	cursor.addChildUp(t);
 	drawTodo();
 }
@@ -442,6 +428,7 @@ void Interface::move_down()
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
+	++cursor_line;
 	cursor.addChild(t);
 	drawTodo();
 }
@@ -463,23 +450,20 @@ void Interface::del()
 	copied = &(*cursor);
 	sched.del_recursive(&(*cursor));
 	cursor.del();
-	if (cursor.end() & cursor.begin())
-		left();
-	else
-		up();
+	up();
 	drawTodo();
 }
 
 void Interface::delDeadline()
 {
 	cursor->deadline().year() = 1900;
-	screen.deadlineClear(cursor_line());
+	screen.deadlineClear(cursor_line);
 }
 
 void Interface::delPriority()
 {
 	cursor->priority() = 0;
-	screen.priorityClear(cursor_line());
+	screen.priorityClear(cursor_line);
 }
 
 void Interface::delSched()
@@ -496,6 +480,7 @@ void Interface::paste()
 		cursor.addChild(copied);
 		sched.add_recursive(copied);
 		copied = NULL;
+		++cursor_line;
 		drawTodo();
 	}
 }
@@ -520,6 +505,7 @@ void Interface::pasteChild()
 		cursor.addChildUp(copied);
 		sched.add_recursive(copied);
 		copied = NULL;
+		++cursor_line;
 		drawTodo();
 	}
 }
@@ -532,7 +518,7 @@ bool Interface::editLine(wstring& str)
 
 	str = cursor->getTitle();
 	screen.infoMsg("Editing todo. Press ENTER to save or ESC to abort edit");
-	save = screen.editTitle(cursor_line(), cursor.depth(), 
+	save = screen.editTitle(cursor_line, cursor.depth(), 
 			cursor->haveChild(), str);
 	screen.infoClear();
 	return save;
@@ -541,7 +527,7 @@ bool Interface::editLine(wstring& str)
 void Interface::editDeadline()
 {
 	screen.infoMsg("Editing deadline. Press ENTER to save or ESC to abort edit");
-	screen.editDeadline(cursor_line(), cursor->deadline(), cursor->done());
+	screen.editDeadline(cursor_line, cursor->deadline(), cursor->done());
 	screen.infoClear();
 	drawTodo();
 }
@@ -549,7 +535,7 @@ void Interface::editDeadline()
 void Interface::setPriority()
 {
 	screen.infoMsg("Editing priority. Press ENTER to save or ESC to abort edit");
-	screen.setPriority(cursor_line(), cursor->priority());
+	screen.setPriority(cursor_line, cursor->priority());
 	screen.infoClear();
 	drawTodo();
 }
@@ -557,7 +543,7 @@ void Interface::setPriority()
 void Interface::setCategory()
 {
 	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
-	screen.setCategory(cursor_line(), *cursor);
+	screen.setCategory(cursor_line, *cursor);
 	screen.infoClear();
 	drawTodo();
 }
@@ -566,6 +552,7 @@ void Interface::addLine()
 {
 	cursor.addChild(new ToDo());
 	inherit();
+	++cursor_line;
 	drawTodo();
 	wstring title;
 	if ((editLine(title)) && (title != L""))
@@ -732,9 +719,14 @@ bool Interface::_search()
 
 	if (res)
 	{
-		while (cursor.out()) cursor->actCollapse() = false;
-		cursor = hit;
+		iToDo aux = cursor;
+		while (aux.out()) aux->actCollapse() = false;
+		aux = hit;
 		while (hit.out()) hit->actCollapse() = true;
+
+		while (next())
+			if (cursor == aux) return true;
+		while (cursor != aux) prev();
 	}
 	return res;
 }

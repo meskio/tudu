@@ -39,27 +39,25 @@ int& Editor::cursorPos()
 	return cursor;
 }
 
-bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
+Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 {
-	bool resized = false;
-
-	initialize();
+	window = &win;
+	y = begin_y;
+	x = begin_x;
+	cols = ncols;
 	exit = false;
-	result = true;
-	win._move(y, x);
-	win._addstr(text);
-	win._move(y, x+cursor);
+	result = SAVED;
 	echo();
 	curs_set(1);
-	win._refresh();
+	initialize();
+
 	while (!exit)
 	{
-		key = win._getch();
+		key = window->_getch();
 		switch (key)
 		{
 			case KEY_RESIZE:
-				resized = true;
-				break;
+				return RESIZE;
 			case KEY_LEFT: left();
 				break;
 			case KEY_RIGHT: right();
@@ -86,26 +84,24 @@ bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
 			default: other();
 				break;
 		}
-		if (max_length <= text.length())
-			text.erase(max_length);
-		if (cursor >= (int) max_length)
-			cursor = max_length-1;
-		win._move(y, x);
-		win._addstr(text);
-		for (unsigned int i = text.length(); i < max_length; i++) 
-				win._addch(' ');
-		win._move(y, x+cursor);
-		win._refresh();
+		updateText();
 	}
 	noecho();
 	curs_set(0);
-	win._refresh();
+	window->_refresh();
 
-	if (resized) ungetch(KEY_RESIZE);
 	return result;
 }
 
-void Editor::initialize() {}
+void Editor::initialize()
+{
+	window->_move(y, x);
+	window->_addstr(text);
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
+void Editor::updateText() {}
 void Editor::left() {}
 void Editor::right() {}
 void Editor::up() {}
@@ -120,7 +116,7 @@ void Editor::other() {}
 void Editor::esc()
 { 
 	exit = true;
-	result = false;
+	result = NOT_SAVED;
 }
 
 void Editor::enter()
@@ -129,13 +125,30 @@ void Editor::enter()
 }
 
 
+/*
+ *  Editor mono line
+ */
+void LineEditor::updateText()
+{
+	if (cols <= text.length())
+		text.erase(cols);
+	if (cursor >= (int) cols)
+		cursor = cols-1;
+	window->_move(y, x);
+	window->_addstr(text);
+	for (unsigned int i = text.length(); i < cols; i++) 
+			window->_addch(' ');
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
 void LineEditor::left()
 {
 	if (cursor>0) --cursor;
 	else if (text.length() == 0)
 	{
 		exit = true;
-		result = false;
+		result = NOT_SAVED;
 	}
 }
 
@@ -176,9 +189,80 @@ void LineEditor::other()
 	++cursor;
 }
 
+
+/*
+ *  Editor for task titles, multilinear
+ */
+void TitleEditor::initialize()
+{
+	textLines = text.length() / cols;
+
+	for (unsigned int i = 0; i <= textLines; i++)
+	{
+		wstring line(text.substr(i*cols, cols));
+		window->_move(y+i, x);
+		window->_addstr(line);
+	}
+	window->_move(y+cursorLine(), x+cursorCol());
+	window->_refresh();
+}
+
+void TitleEditor::updateText()
+{
+	if (textLines != (text.length() / cols))
+	{
+		exit = true;
+		result = REDRAW;
+		return;
+	}
+
+	for (unsigned int i = 0; i <= textLines; i++)
+	{
+		wstring line(text.substr(i*cols, cols));
+		window->_move(y+i, x);
+		window->_addstr(line);
+	}
+
+	for (unsigned int i = (text.length()-1 % cols); i < cols-1; i++)
+			window->_addch(' ');
+	window->_move(y+cursorLine(), x+cursorCol());
+	window->_refresh();
+}
+
+void TitleEditor::up()
+{
+	if (cursorLine() > 0)
+		cursor -= cols;
+}
+
+void TitleEditor::down()
+{
+	if (cursorLine() < textLines)
+	{
+		cursor += cols;
+		if (cursor > (int)text.length())
+			cursor = text.length();
+	}
+}
+
+unsigned int TitleEditor::cursorLine()
+{
+	return cursor / cols;
+}
+
+unsigned int TitleEditor::cursorCol()
+{
+	return cursor % cols;
+}
+
+
+/*
+ *  Editor of Categories
+ */
 void CategoryEditor::initialize()
 {
 	search = categories.end();
+	LineEditor::initialize();
 }
 
 void CategoryEditor::tab() /* do completion */
@@ -220,11 +304,14 @@ void CategoryEditor::tab() /* do completion */
 	}
 }
 
+
+/*
+ *  Editor with history, used on search
+ */
 void HistoryEditor::initialize()
 {
 	shown = history.begin();
-	cursor = 0;
-	text = L"";
+	LineEditor::initialize();
 }
 
 void HistoryEditor::up()
@@ -253,11 +340,32 @@ void HistoryEditor::enter()
 	history.push_front(text);
 }
 
+void HistoryEditor::backspace()
+{
+	if (text.length() == 0)
+	{
+		exit = true;
+		result = NOT_SAVED;
+		return;
+	}
+
+	LineEditor::backspace();
+}
+
+
+/*
+ *  Command editor
+ */
 void CmdEditor::initialize()
 {
-	search = categories.end();
-	com_search = commands.end();
-	param = 0;
+	/* initialize if is new command, 
+	 * in other case we expect it to be already initialized */
+	if (text == L"")
+	{
+		search = categories.end();
+		com_search = commands.end();
+		param = 0;
+	}
 
 	HistoryEditor::initialize();
 }
@@ -388,6 +496,24 @@ void CmdEditor::category_completion(wstring& cat, int num_param)
 	}
 }
 
+
+/*
+ *  Editor of dates
+ */
+void DateEditor::updateText()
+{ //FIXME: do it properly for dates
+	if (cols <= text.length())
+		text.erase(cols);
+	if (cursor >= (int) cols)
+		cursor = cols-1;
+	window->_move(y, x);
+	window->_addstr(text);
+	for (unsigned int i = text.length(); i < cols; i++) 
+			window->_addch(' ');
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
 void DateEditor::left()
 {
 	if (cursor>0) --cursor;
@@ -421,6 +547,23 @@ void DateEditor::other()
 	}
 }
 
+
+/*
+ *  Editor of priorities
+ */
+void PriorityEditor::updateText()
+{ //FIXME: do it properly for priorities
+	if (cols <= text.length())
+		text.erase(cols);
+	if (cursor >= (int) cols)
+		cursor = cols-1;
+	window->_move(y, x);
+	window->_addstr(text);
+	for (unsigned int i = text.length(); i < cols; i++) 
+			window->_addch(' ');
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
 
 void PriorityEditor::up()
 {

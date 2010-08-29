@@ -340,7 +340,24 @@ void Screen::resizeTerm()
 	}
 }
 
-#define startTitle (depth * 4 + 7)
+int Screen::startTitle(int depth)
+{
+	return depth * 4 + 7;
+}
+
+void Screen::drawTitle(int line, int depth, wstring& title, int startLine)
+{
+	int lines, cols;
+	wtree->_getmaxyx(lines, cols);
+
+	for (unsigned int i = startLine; i <= (title.length() / (cols-startTitle(depth))); i++)
+	{
+		if ((int)(line + i) >= lines) break;
+		unsigned int lenTitleLine = cols-startTitle(depth);
+		wstring titleLine = title.substr(i*lenTitleLine,lenTitleLine);
+		wtree->_addstr(line + i, startTitle(depth), titleLine);
+	}
+}
 
 void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 {
@@ -389,14 +406,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attron(A_BOLD);
 	wstring title = t.getTitle();
-	for (int i = 0; i < taskLines(depth, t); i++)
-	{
-		unsigned int lenTitleLine = coor.coor[WTREE].cols-startTitle;
-		wstring titleLine = title.substr(0,lenTitleLine);
-		wtree->_addstr(line + i, startTitle, titleLine);
-		if (title.length() > lenTitleLine)
-			title = title.substr(lenTitleLine);
-	}
+	drawTitle(line, depth, title);
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attroff(A_BOLD);
 	if (isCursor)
@@ -580,26 +590,27 @@ void Screen::priorityClear(int line)
 	}
 }
 
-bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
+Editor::return_t Screen::editTitle(int line, int depth, bool haveChild, wstring& str, int cursorPos)
 {
-	bool save;
+	Editor::return_t save;
 
 	wtree->_attron(COLOR_SELECTED);
 	if ((haveChild) && (config.getBoldParent()))
 		wtree->_attron(A_BOLD);
-	lineEditor.getText() = str; 
-	lineEditor.cursorPos() = str.length();
-	save = lineEditor.edit(*wtree, line, startTitle, 
-			coor.coor[WTREE].cols-startTitle);
-	if (!save)
+	titleEditor.getText() = str;
+	if (cursorPos >= 0)
+		titleEditor.cursorPos() = cursorPos;
+	save = titleEditor.edit(*wtree, line, startTitle(depth),
+			coor.coor[WTREE].cols-startTitle(depth));
+	if (save == Editor::NOT_SAVED)
 	{
-		wtree->_move(line, startTitle);
-		wtree->_addstr(str);
-		for (int i = startTitle + str.length(); i < coor.coor[WTREE].cols; i++) 
+		drawTitle(line, depth, str);
+		for (int i = startTitle(depth) + (str.length()-1 % coor.coor[WTREE].cols);
+		     i < coor.coor[WTREE].cols-1; i++) 
 				wtree->_addch(' ');
 		wtree->_refresh();
 	}
-	str = lineEditor.getText(); 
+	str = titleEditor.getText(); 
 	if ((haveChild) && (config.getBoldParent()))
 		wtree->_attroff(A_BOLD);
 	wtree->_attroff(COLOR_SELECTED);
@@ -617,7 +628,7 @@ void Screen::editText(Text& t)
 }
 
 void Screen::editDeadline(int line, Date& deadline, bool done)
-{
+{ //TODO: use the new editor interface
 	if (!coor.exist[WDEADLINE])
 		return;
 
@@ -681,7 +692,7 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 }
 
 bool Screen::editSched(Date& s)
-{
+{ //TODO: use the new editor interface
 	if (!coor.exist[WSCHEDULE])
 		return false;
 
@@ -724,7 +735,7 @@ bool Screen::editSched(Date& s)
 }
 
 void Screen::setPriority(int line, int& priority)
-{
+{ //TODO: use the new editor interface
 	if (!coor.exist[WPRIORITY])
 		return;
 
@@ -754,7 +765,7 @@ void Screen::setPriority(int line, int& priority)
 }
 
 void Screen::setCategory(int line, ToDo& t)
-{
+{ //TODO: use the new editor interface
 	if (!coor.exist[WCATEGORY])
 		return;
 
@@ -810,18 +821,20 @@ int Screen::treeLines()
 int Screen::taskLines(int depth, ToDo &t)
 {
 	int titleLength = t.getTitle().length();
-	return (titleLength / (coor.coor[WTREE].cols-startTitle)) + 1;
+	return (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
 }
 
-bool Screen::searchText(wstring& pattern)
+Editor::return_t Screen::searchText(wstring& pattern, int cursorPos)
 {
 	if (!coor.exist[WINFO])
-		return false;
+		return Editor::NOT_SAVED;
 
-	bool save;
-
+	Editor::return_t save;
 	infoClear();
 	winfo->_addch(0,0,'/');
+	searchEditor.getText() = pattern;
+	if (cursorPos >= 0)
+		searchEditor.cursorPos() = cursorPos;
 	save = searchEditor.edit(*winfo, 0, 1, 
 			PERCENT_COL-2);
 	pattern = searchEditor.getText();
@@ -829,15 +842,17 @@ bool Screen::searchText(wstring& pattern)
 	return save;
 }
 
-bool Screen::cmd(wstring& command)
+Editor::return_t Screen::cmd(wstring& command, int cursorPos)
 {
 	if (!coor.exist[WINFO])
-		return false;
+		return Editor::NOT_SAVED;
 
-	bool save;
-
+	Editor::return_t save;
 	infoClear();
 	winfo->_addch(0,0,':');
+	cmdEditor.getText() = command;
+	if (cursorPos >= 0)
+		cmdEditor.cursorPos() = cursorPos;
 	save = cmdEditor.edit(*winfo, 0, 1, 
 			PERCENT_COL-2);
 	command = cmdEditor.getText();

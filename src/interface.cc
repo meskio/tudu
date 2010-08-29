@@ -146,7 +146,11 @@ void Interface::drawTodo()
 	fitCursor();
 	int line = cursor_line;
 	while ((cursor_line > 0) && prev());
-	cursor_line = 0;
+	if (cursor_line < 0)
+	{
+		screen.drawTitle(cursor_line, cursor.depth(), cursor->getTitle(), -cursor_line);
+		next();
+	}
 	while (cursor_line < screen.treeLines())
 	{
 		bool isCursor = (cursor == aux);
@@ -218,12 +222,13 @@ void Interface::eraseCursor()
 bool Interface::fitCursor()
 {
 	int treeLines = screen.treeLines();
+	int taskLines = screen.taskLines(cursor.depth(), *cursor);
 
-	if (treeLines < 8)
+	if (taskLines > treeLines-8)
 	{
-		if (cursor_line >= treeLines)
+		if (cursor_line + taskLines >= treeLines)
 		{
-			cursor_line = treeLines - screen.taskLines(cursor.depth(), *cursor);
+			cursor_line = treeLines - taskLines;
 			return true;
 		}
 		else if (cursor_line < 0)
@@ -232,21 +237,18 @@ bool Interface::fitCursor()
 			return true;
 		}
 	}
-	else if (cursor_line > treeLines - 4)
+	else if (cursor_line + taskLines >= treeLines - 4)
 	{
-		iToDo aux = cursor;
 		int line = cursor_line;
-		while (cursor_line <= line + 4)
-			if (!next()) break;
-		cursor_line = treeLines - screen.taskLines(cursor.depth(), *cursor);
-		while (aux != cursor) prev();
+		cursor_line = treeLines - taskLines - 4;
+		if (cursor_line < 0) cursor_line = 0;
 		if (cursor_line != line) return true;
 	}
 	else if (cursor_line < 4)
 	{
 		iToDo aux = cursor;
 		int line = cursor_line;
-		while (cursor_line >= line - 4)
+		while (cursor_line > line - 4)
 			if (!prev()) break;
 		cursor_line = 0;
 		while (aux != cursor) next();
@@ -511,18 +513,29 @@ void Interface::pasteChild()
 	}
 }
 
-#define startTitle (cursor.depth() * 4 + 7)
-
 bool Interface::editLine(wstring& str)
-{
-	bool save;
+{ //FIXME: clean up oldTitle and str
+	Editor::return_t save;
+	wstring oldTitle = cursor->getTitle();
 
-	str = cursor->getTitle();
+	str = oldTitle;
 	screen.infoMsg("Editing todo. Press ENTER to save or ESC to abort edit");
 	save = screen.editTitle(cursor_line, cursor.depth(), 
-			cursor->haveChild(), str);
+			cursor->haveChild(), str, str.length());
+	while ((save == Editor::REDRAW) || (save == Editor::RESIZE))
+	{
+		cursor->getTitle() = str;
+		if (save == Editor::RESIZE)
+			resizeTerm();
+		else
+			drawTodo();
+		save = screen.editTitle(cursor_line, cursor.depth(), 
+				cursor->haveChild(), str);
+	}
+	cursor->getTitle() = oldTitle;
+
 	screen.infoClear();
-	return save;
+	return (save == Editor::SAVED);
 }
 
 void Interface::editDeadline()
@@ -734,9 +747,16 @@ bool Interface::_search()
 
 void Interface::command_line()
 {
+	Editor::return_t save;
 	wstring command(L"");
+	save = screen.cmd(command, 0);
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.cmd(command);
+	}
 
-	if (screen.cmd(command))
+	if (save == Editor::SAVED)
 	{
 		if (cmd.cmd(command))
 		{
@@ -751,9 +771,16 @@ void Interface::command_line()
 
 void Interface::search()
 {
+	Editor::return_t save;
 	wstring pattern(L"");
+	save = screen.searchText(pattern, 0);
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.searchText(pattern);
+	}
 
-	if (screen.searchText(pattern))
+	if (save == Editor::SAVED)
 	{
 		search_pattern = pattern;
 		if (_search())

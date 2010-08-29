@@ -551,17 +551,16 @@ void DateEditor::other()
 /*
  *  Editor of priorities
  */
+Editor::return_t PriorityEditor::edit(Window& win, int begin_y, int begin_x)
+{
+	return Editor::edit(win, begin_y, begin_x, 1);
+}
+
 void PriorityEditor::updateText()
-{ //FIXME: do it properly for priorities
-	if (cols <= text.length())
-		text.erase(cols);
-	if (cursor >= (int) cols)
-		cursor = cols-1;
+{
+	cursor = 0;
+	window->_addstr(y, x, text);
 	window->_move(y, x);
-	window->_addstr(text);
-	for (unsigned int i = text.length(); i < cols; i++) 
-			window->_addch(' ');
-	window->_move(y, x+cursor);
 	window->_refresh();
 }
 

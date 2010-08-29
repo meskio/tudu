@@ -734,34 +734,26 @@ bool Screen::editSched(Date& s)
 	return false;
 }
 
-void Screen::setPriority(int line, int& priority)
-{ //TODO: use the new editor interface
+Editor::return_t Screen::setPriority(int line, int& priority)
+{
 	if (!coor.exist[WPRIORITY])
-		return;
+		return Editor::NOT_SAVED;
 
 	wchar_t p[2] = L"N";
-	char s[2];
-
 	if (priority)
 		swprintf(p, 2, L"%01d", priority);
-	priorityEditor.getText() = p;
-	if (priorityEditor.edit(*wpriority, line, 0, 1))
-	{
-		char num[2];
-		wcstombs(num, priorityEditor.getText().c_str(), 2);
-		priority = atoi(num);
-	}
 
-	wpriority->_move(line, 0);
-	if (priority)
-		sprintf(s, "%01d", priority);
-	else
-		strcpy(s, " ");
-
+	Editor::return_t save;
 	wpriority->_attron(COLOR_SELECTED);
-	wpriority->_addstr(s);
+	priorityEditor.getText() = p;
+	save = priorityEditor.edit(*wpriority, line, 0);
+
+	char num[2];
+	wcstombs(num, priorityEditor.getText().c_str(), 2);
+	priority = atoi(num);
+
 	wpriority->_attroff(COLOR_SELECTED);
-	wpriority->_refresh();
+	return save;
 }
 
 void Screen::setCategory(int line, ToDo& t)

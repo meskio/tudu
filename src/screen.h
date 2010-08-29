@@ -47,7 +47,7 @@ public:
 	void editText(Text& t);
 	void editDeadline(int line, Date& deadline, bool done);
 	bool editSched(Date& s);
-	void setPriority(int line, int& priority);
+	Editor::return_t setPriority(int line, int& priority);
 	void setCategory(int line, ToDo& t);
 	void treeClear();
 	int treeLines();

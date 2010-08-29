@@ -549,7 +549,19 @@ void Interface::editDeadline()
 void Interface::setPriority()
 {
 	screen.infoMsg("Editing priority. Press ENTER to save or ESC to abort edit");
-	screen.setPriority(cursor_line, cursor->priority());
+
+	Editor::return_t save;
+	int priority = cursor->priority();
+	save = screen.setPriority(cursor_line, priority);
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.setPriority(cursor_line, priority);
+	}
+
+	if (save == Editor::SAVED)
+		cursor->priority() = priority;
+
 	screen.infoClear();
 	drawTodo();
 }

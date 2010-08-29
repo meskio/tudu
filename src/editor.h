@@ -139,7 +139,9 @@ protected:
 };
 
 class DateEditor: public Editor
-{ //TODO: create a proper edit method
+{
+public:
+	return_t edit(Window& win, int begin_y, int begin_x);
 protected:
 	void updateText();
 	void left();

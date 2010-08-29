@@ -182,24 +182,18 @@ void Screen::draw()
 
 wstring Screen::date2str(Date& date)
 {
-	ostringstream ss;
+	wchar_t str[11];
 
 	if (config.useUSDates())
 	{
-		ss << setfill ('0') << setw (2) <<  date.month() << "/" 
-		   << setw (2) <<  date.day() << "/"
-		   << setw (4) << date.year();
+		swprintf(str, 11, L"%2d/%2d/%4d", date.month(), date.day(), date.year());
 	}
 	else 
 	{
-		ss << setfill ('0') << setw (2) <<  date.day() << "/" 
-		   << setw (2) <<  date.month() << "/"
-		   << setw (4) << date.year();
+		swprintf(str, 11, L"%2d/%2d/%4d", date.day(), date.month(), date.year());
 	}
 	
-	wstring str(ss.str().length(), L' ');
-	copy(str.begin(), str.end(), ss.str().begin());
-	return str;
+	return wstring(str);
 }
 
 Date Screen::str2date(wstring str)
@@ -627,12 +621,12 @@ void Screen::editText(Text& t)
 	wtree->_attroff(COLOR_TEXT);
 }
 
-void Screen::editDeadline(int line, Date& deadline, bool done)
-{ //TODO: use the new editor interface
+Editor::return_t Screen::editDeadline(int line, Date& deadline, bool done, int cursorPos)
+{
 	if (!coor.exist[WDEADLINE])
-		return;
+		return Editor::NOT_SAVED;
 
-	bool save;
+	Editor::return_t save;
 	wstring date;
 
 	if (deadline.valid())
@@ -647,57 +641,21 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 	}
 	wdeadline->_attron(COLOR_SELECTED);
 	dateEditor.getText() = date;
-	dateEditor.cursorPos() = 0;
-	save = dateEditor.edit(*wdeadline, line, 0, 11);
-
-	/* store deadline */
-	if (save)
-	{
-		Date d = str2date(dateEditor.getText());
-		if (d.correct())
-			deadline = d;
-		else
-			save = false;
-	}
-
-	/* if will not save redraw deadline */
-	if (!save)
-	{
-		if (deadline.valid())
-		{
-			wdeadline->_move(line, 0);
-			date = date2str(deadline);
-			wdeadline->_addstr(date);
-		}
-		else
-		{
-			wdeadline->_move(line, 0);
-			wdeadline->_addstr("          ");
-		}
-	}
+	if (cursorPos >= 0)
+		dateEditor.cursorPos() = cursorPos;
+	save = dateEditor.edit(*wdeadline, line, 0);
+	deadline = str2date(dateEditor.getText());
 	wdeadline->_attroff(COLOR_SELECTED);
-
-	wdeadline->_move(line, 10);
-	if ((!done) && (deadline_close(deadline)))
-	{
-		wdeadline->_attron(COLOR_DEADLINE_MARK);
-		wdeadline->_addstr("<-");
-		wdeadline->_attroff(COLOR_DEADLINE_MARK);
-	}
-	else
-	{
-		wdeadline->_addstr("  ");
-	}
-	wdeadline->_refresh();
+	return save;
 }
 
-bool Screen::editSched(Date& s)
-{ //TODO: use the new editor interface
+Editor::return_t Screen::editSched(Date& s, int cursorPos)
+{
 	if (!coor.exist[WSCHEDULE])
-		return false;
+		return Editor::NOT_SAVED;
 
 	wstring date;
-	bool save;
+	Editor::return_t save;
 
 	wschedule->_attron(A_BOLD);
 	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
@@ -718,20 +676,11 @@ bool Screen::editSched(Date& s)
 
 	/* edit and store */
 	dateEditor.getText() = date;
-	dateEditor.cursorPos() = 0;
-	save = dateEditor.edit(*wschedule, coor.coor[WSCHEDULE].lines-1, 18, 11);
-	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "                            ");
-	wschedule->_refresh();
-	if (save)
-	{
-		Date d = str2date(dateEditor.getText());
-		if (d.correct())
-		{
-			s = d;
-			return true;
-		}
-	}
-	return false;
+	if (cursorPos >= 0)
+		dateEditor.cursorPos() = cursorPos;
+	save = dateEditor.edit(*wschedule, coor.coor[WSCHEDULE].lines-1, 18);
+	s = str2date(dateEditor.getText());
+	return save;
 }
 
 Editor::return_t Screen::setPriority(int line, int& priority)

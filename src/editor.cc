@@ -497,16 +497,16 @@ void CmdEditor::category_completion(wstring& cat, int num_param)
 /*
  *  Editor of dates
  */
+Editor::return_t DateEditor::edit(Window& win, int begin_y, int begin_x)
+{
+	return Editor::edit(win, begin_y, begin_x, 11);
+}
+
 void DateEditor::updateText()
-{ //FIXME: do it properly for dates
-	if (cols <= text.length())
-		text.erase(cols);
+{
 	if (cursor >= (int) cols)
 		cursor = cols-1;
-	window->_move(y, x);
-	window->_addstr(text);
-	for (unsigned int i = text.length(); i < cols; i++) 
-			window->_addch(' ');
+	window->_addstr(y, x, text);
 	window->_move(y, x+cursor);
 	window->_refresh();
 }

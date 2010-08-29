@@ -514,7 +514,7 @@ void Interface::pasteChild()
 }
 
 bool Interface::editLine(wstring& str)
-{ //FIXME: clean up oldTitle and str
+{
 	Editor::return_t save;
 	wstring oldTitle = cursor->getTitle();
 
@@ -541,7 +541,19 @@ bool Interface::editLine(wstring& str)
 void Interface::editDeadline()
 {
 	screen.infoMsg("Editing deadline. Press ENTER to save or ESC to abort edit");
-	screen.editDeadline(cursor_line, cursor->deadline(), cursor->done());
+
+	Editor::return_t save;
+	Date date = cursor->deadline();
+	save = screen.editDeadline(cursor_line, date, cursor->done(), 0);
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.editDeadline(cursor_line, date, cursor->done());
+	}
+
+	if ((save == Editor::SAVED) && date.correct())
+		cursor->deadline() = date;
+
 	screen.infoClear();
 	drawTodo();
 }
@@ -582,7 +594,7 @@ void Interface::setCategory()
 	if (save == Editor::SAVED)
 		cursor->setCategory(category);
 
-	//screen.infoClear();
+	screen.infoClear();
 	drawTodo();
 }
 
@@ -690,7 +702,19 @@ void Interface::editText()
 void Interface::editSched()
 {
 	sched.del(&(*cursor));
-	screen.editSched(cursor->sched());
+
+	Editor::return_t save;
+	Date date = cursor->sched();
+	save = screen.editSched(date, 0);
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.editSched(date);
+	}
+
+	if ((save == Editor::SAVED) && date.correct())
+		cursor->sched() = date;
+
 	sched.add(&(*cursor));
 	screen.drawSched(sched, &(*cursor));
 }

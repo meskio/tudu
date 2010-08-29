@@ -45,8 +45,8 @@ public:
 	void priorityClear(int line);
 	Editor::return_t editTitle(int line, int depth, bool haveChild, wstring& str, int cursorPos = -1);
 	void editText(Text& t);
-	void editDeadline(int line, Date& deadline, bool done);
-	bool editSched(Date& s);
+	Editor::return_t editDeadline(int line, Date& deadline, bool done, int cursorPos = -1);
+	Editor::return_t editSched(Date& s, int cursorPos = -1);
 	Editor::return_t setPriority(int line, int& priority);
 	Editor::return_t setCategory(int line, wstring& category, int cursorPos = -1);
 	void treeClear();

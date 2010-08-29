@@ -50,6 +50,11 @@
 			<text>
 </text>
 		</todo>
+		<todo done="yes" collapse="no">
+			<title>title editor multi-linear</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
@@ -63,11 +68,6 @@
 	</todo>
 	<todo done="no" collapse="no">
 		<title>cli interface</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>title editor multi-linear</title>
 		<text>
 </text>
 	</todo>

@@ -535,6 +535,7 @@ bool Interface::editLine(wstring& str)
 	cursor->getTitle() = oldTitle;
 
 	screen.infoClear();
+	if (save == Editor::NOT_SAVED) drawTodo();
 	return (save == Editor::SAVED);
 }
 

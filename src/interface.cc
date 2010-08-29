@@ -569,8 +569,20 @@ void Interface::setPriority()
 void Interface::setCategory()
 {
 	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
-	screen.setCategory(cursor_line, *cursor);
-	screen.infoClear();
+
+	Editor::return_t save;
+	wstring category = cursor->getCategory();
+	save = screen.setCategory(cursor_line, category, category.length());
+	while (save == Editor::RESIZE)
+	{
+		resizeTerm();
+		save = screen.setCategory(cursor_line, category);
+	}
+
+	if (save == Editor::SAVED)
+		cursor->setCategory(category);
+
+	//screen.infoClear();
 	drawTodo();
 }
 

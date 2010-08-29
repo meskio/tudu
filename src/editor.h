@@ -99,12 +99,13 @@ protected:
 
 class CategoryEditor: public LineEditor
 {
+public:
+	CategoryEditor();
 protected:
 	set<wstring>::iterator search;
 	set<wstring>::iterator first;
 	int length;
 
-	void initialize();
 	void tab();
 };
 

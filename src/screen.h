@@ -48,7 +48,7 @@ public:
 	void editDeadline(int line, Date& deadline, bool done);
 	bool editSched(Date& s);
 	Editor::return_t setPriority(int line, int& priority);
-	void setCategory(int line, ToDo& t);
+	Editor::return_t setCategory(int line, wstring& category, int cursorPos = -1);
 	void treeClear();
 	int treeLines();
 	/* number of lines the task needs on the screen */
@@ -71,7 +71,6 @@ private:
 	Window *wschedule;
 	vector<Window *> pipes;
 	Config &config;
-	LineEditor lineEditor;
 	TitleEditor titleEditor;
 	CategoryEditor categoryEditor;
 	DateEditor dateEditor;

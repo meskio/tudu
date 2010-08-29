@@ -259,11 +259,8 @@ unsigned int TitleEditor::cursorCol()
 /*
  *  Editor of Categories
  */
-void CategoryEditor::initialize()
-{
-	search = categories.end();
-	LineEditor::initialize();
-}
+CategoryEditor::CategoryEditor():
+		LineEditor(), search(categories.end()) {}
 
 void CategoryEditor::tab() /* do completion */
 {

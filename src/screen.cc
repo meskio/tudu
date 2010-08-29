@@ -756,28 +756,20 @@ Editor::return_t Screen::setPriority(int line, int& priority)
 	return save;
 }
 
-void Screen::setCategory(int line, ToDo& t)
-{ //TODO: use the new editor interface
+Editor::return_t Screen::setCategory(int line, wstring& category, int cursorPos)
+{
 	if (!coor.exist[WCATEGORY])
-		return;
+		return Editor::NOT_SAVED;
 
-	wstring category = t.getCategory();
-	categoryEditor.getText() = category;
-	categoryEditor.cursorPos() = category.length();
-	if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
-	{
-		category = categoryEditor.getText();
-		t.setCategory(category);
-	}
-
-	wcategory->_move(line, 0);
+	Editor::return_t save;
 	wcategory->_attron(COLOR_SELECTED);
-	if (category.empty())
-		for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
-	else
-		wcategory->_addstr(category);
+	categoryEditor.getText() = category;
+	if (cursorPos >= 0)
+		categoryEditor.cursorPos() = cursorPos;
+	save = categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH);
+	category = categoryEditor.getText();
 	wcategory->_attroff(COLOR_SELECTED);
-	wcategory->_refresh();
+	return save;
 }
 
 void Screen::treeClear()

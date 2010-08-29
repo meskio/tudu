@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="no" collapse="yes">
+	<todo done="no" collapse="no">
 		<title>v0.7</title>
 		<text>
 </text>
@@ -35,11 +35,6 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
-			<title>tags or more complex cathegories</title>
-			<text>
-</text>
-		</todo>
 		<todo done="yes" collapse="no">
 			<title>us dates</title>
 			<text>
@@ -60,6 +55,11 @@
 			<text>
 </text>
 		</todo>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>tags or more complex cathegories</title>
+		<text>
+</text>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>

@@ -1,7 +1,7 @@
 Compile
 =======
 
- TuDu needs ncurses library with wide characters (in some systems is call 
+ TuDu needs ncurses library with wide characters (in some systems is known as 
  ncursesw) for work. You will need to install it for compile it.
 
  For compiling the program execute:

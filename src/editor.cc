@@ -53,36 +53,45 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 
 	while (!exit)
 	{
-		key = window->_getch();
-		switch (key)
+		if (window->_getch(key) == KEY_CODE_YES)
 		{
-			case KEY_RESIZE:
-				return RESIZE;
-			case KEY_LEFT: left();
-				break;
-			case KEY_RIGHT: right();
-				break;
-			case KEY_UP: up();
-				break;
-			case KEY_DOWN: down();
-				break;
-			case KEY_HOME: home();
-				break;
-			case KEY_END: end();
-				break;
-			case KEY_BACKSPACE: backspace();
-				break;
-			case KEY_DC: supr();
-				break;
-			case '\e': esc();
-				break;
-			case '\n':
-			case KEY_ENTER: enter();
-				break;
-			case '\t': tab();
-				break;
-			default: other();
-				break;
+			switch (key)
+			{
+				case KEY_RESIZE:
+					return RESIZE;
+				case KEY_LEFT: left();
+					break;
+				case KEY_RIGHT: right();
+					break;
+				case KEY_UP: up();
+					break;
+				case KEY_DOWN: down();
+					break;
+				case KEY_HOME: home();
+					break;
+				case KEY_END: end();
+					break;
+				case KEY_BACKSPACE: backspace();
+					break;
+				case KEY_DC: supr();
+					break;
+				case KEY_ENTER: enter();
+					break;
+			}
+		}
+		else
+		{
+			switch (key)
+			{
+				case '\e': esc();
+					break;
+				case '\n': enter();
+					break;
+				case '\t': tab();
+					break;
+				default: other();
+					break;
+			}
 		}
 		updateText();
 	}

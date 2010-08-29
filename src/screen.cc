@@ -797,7 +797,8 @@ bool Screen::confirmQuit()
 {
 	infoClear();
 	winfo->_addstr(0,0,"Close without save? (y/n) ");
-	wint_t ch = winfo->_getch();
+	wint_t ch = 'N';
+	winfo->_getch(ch);
 	infoClear();
 	if (('Y' == ch) || ('y' == ch))
 		return true;
@@ -873,7 +874,10 @@ void Screen::helpPopUp(string str[], int len)
 	int cursor = 0;
 	draw_help();
 	while (!close) {
-		switch (h._getch())
+		wint_t ch = 'q';
+
+		h._getch(ch);
+		switch (ch)
 		{
 			case KEY_RESIZE:
 				resized = true;

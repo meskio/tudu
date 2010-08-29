@@ -80,44 +80,54 @@ void Text::edit(Window& win)
 	win._refresh();
 	
 	/* editor loop */
-	wint_t key;
-   	key = win._getch();
+	wint_t key = '\e';
+   	bool isKeyCode = (win._getch(key) == KEY_CODE_YES);
 	while ('\e' != key) {
-		switch (key)
+		if (isKeyCode)
 		{
-			case KEY_RESIZE:
-				resized = true;
-				break;
-			case KEY_LEFT: left();
-				break;
-			case KEY_RIGHT: right();
-				break;
-			case KEY_DOWN: down();
-				break;
-			case KEY_UP: up();
-				break;
-			case KEY_HOME: home();
-				break;
-			case KEY_END: end();
-				break;
-			case KEY_NPAGE: next_page();
-				break;
-			case KEY_PPAGE: prev_page();
-				break;
-			case KEY_BACKSPACE: backspace();
-				break;
-			case KEY_DC: supr();
-				break;
-			case '\n':
-			case KEY_ENTER: new_line();
-				break;
-			case '\t': tab();
-				break;
-			default: 
-				cursor_line->insert(cursor_col,1,key);
-				++cursor_col;
-				if (0 == cursor_x) ++cursor_y;
-				break;
+			switch (key)
+			{
+				case KEY_RESIZE:
+					resized = true;
+					break;
+				case KEY_LEFT: left();
+					break;
+				case KEY_RIGHT: right();
+					break;
+				case KEY_DOWN: down();
+					break;
+				case KEY_UP: up();
+					break;
+				case KEY_HOME: home();
+					break;
+				case KEY_END: end();
+					break;
+				case KEY_NPAGE: next_page();
+					break;
+				case KEY_PPAGE: prev_page();
+					break;
+				case KEY_BACKSPACE: backspace();
+					break;
+				case KEY_DC: supr();
+					break;
+				case KEY_ENTER: new_line();
+					break;
+			}
+		}
+		else
+		{
+			switch (key)
+			{
+				case '\n': new_line();
+					break;
+				case '\t': tab();
+					break;
+				default: 
+					cursor_line->insert(cursor_col,1,key);
+					++cursor_col;
+					if (0 == cursor_x) ++cursor_y;
+					break;
+			}
 		}
 
 		/* print the text, place cursor, ... */
@@ -126,7 +136,7 @@ void Text::edit(Window& win)
 		win._addstr(0,0,str);
 		win._move(cursor_y, cursor_x);
 		win._refresh();
-		key = win._getch();
+		isKeyCode = (win._getch(key) == KEY_CODE_YES);
 	}
 	noecho();
 	curs_set(0);

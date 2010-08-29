@@ -51,7 +51,7 @@ public:
 	int _attron(int attrs);
 	int _attroff(int attrs);
 	int _erase();
-	wint_t _getch();
+	int _getch(wint_t& ch);
 	void _getmaxyx(int& y, int& x);
 	int _box();
 	int _lines();

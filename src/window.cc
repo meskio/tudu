@@ -130,11 +130,9 @@ int Window::_erase()
 	return werase(win);
 }
 
-wint_t Window::_getch()
+int Window::_getch(wint_t& ch)
 {
-	wint_t ch;
-	wget_wch(win, &ch);
-	return ch;
+	return wget_wch(win, &ch);
 }
 
 void Window::_getmaxyx(int& y, int& x)

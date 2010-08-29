@@ -59,7 +59,6 @@ public:
 	void setCategory(wstring c);
 	bool haveChild();
 	child_info getChildInfo();
-	int line;
 	bool& getCollapse(); // real collapse
 	bool& actCollapse(); // if must be collapse now
 protected:
@@ -92,6 +91,7 @@ public:
 
 	iToDo& operator=(const iToDo& t);
 	bool operator==(const iToDo& t);
+	bool operator!=(const iToDo& t) { return !operator==(t); }
 	bool operator++();
 	bool operator--();
 	bool in();

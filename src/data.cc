@@ -96,7 +96,6 @@ bool ToDo::haveChild()
 
 child_info ToDo::getChildInfo()
 {
-	//FIXME: there are too many tree search -> cache
 	child_info chinf;
 	if (!haveChild())
 	{

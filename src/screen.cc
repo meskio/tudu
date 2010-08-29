@@ -182,24 +182,18 @@ void Screen::draw()
 
 wstring Screen::date2str(Date& date)
 {
-	ostringstream ss;
+	wchar_t str[11];
 
 	if (config.useUSDates())
 	{
-		ss << setfill ('0') << setw (2) <<  date.month() << "/" 
-		   << setw (2) <<  date.day() << "/"
-		   << setw (4) << date.year();
+		swprintf(str, 11, L"%2d/%2d/%4d", date.month(), date.day(), date.year());
 	}
 	else 
 	{
-		ss << setfill ('0') << setw (2) <<  date.day() << "/" 
-		   << setw (2) <<  date.month() << "/"
-		   << setw (4) << date.year();
+		swprintf(str, 11, L"%2d/%2d/%4d", date.day(), date.month(), date.year());
 	}
 	
-	wstring str(ss.str().length(), L' ');
-	copy(str.begin(), str.end(), ss.str().begin());
-	return str;
+	return wstring(str);
 }
 
 Date Screen::str2date(wstring str)
@@ -340,7 +334,24 @@ void Screen::resizeTerm()
 	}
 }
 
-#define startTitle (depth * 4 + 7)
+int Screen::startTitle(int depth)
+{
+	return depth * 4 + 7;
+}
+
+void Screen::drawTitle(int line, int depth, wstring& title, int startLine)
+{
+	int lines, cols;
+	wtree->_getmaxyx(lines, cols);
+
+	for (unsigned int i = startLine; i <= (title.length() / (cols-startTitle(depth))); i++)
+	{
+		if ((int)(line + i) >= lines) break;
+		unsigned int lenTitleLine = cols-startTitle(depth);
+		wstring titleLine = title.substr(i*lenTitleLine,lenTitleLine);
+		wtree->_addstr(line + i, startTitle(depth), titleLine);
+	}
+}
 
 void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 {
@@ -388,8 +399,8 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* add the title split to the length of screen */
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attron(A_BOLD);
-	wstring title = t.getTitle().substr(0,coor.coor[WTREE].cols-startTitle);
-	wtree->_addstr(title);
+	wstring title = t.getTitle();
+	drawTitle(line, depth, title);
 	if ((t.haveChild()) && (config.getBoldParent()))
 		wtree->_attroff(A_BOLD);
 	if (isCursor)
@@ -573,26 +584,27 @@ void Screen::priorityClear(int line)
 	}
 }
 
-bool Screen::editTitle(int line, int depth, bool haveChild, wstring& str)
+Editor::return_t Screen::editTitle(int line, int depth, bool haveChild, wstring& str, int cursorPos)
 {
-	bool save;
+	Editor::return_t save;
 
 	wtree->_attron(COLOR_SELECTED);
 	if ((haveChild) && (config.getBoldParent()))
 		wtree->_attron(A_BOLD);
-	lineEditor.getText() = str; 
-	lineEditor.cursorPos() = str.length();
-	save = lineEditor.edit(*wtree, line, startTitle, 
-			coor.coor[WTREE].cols-startTitle);
-	if (!save)
+	titleEditor.getText() = str;
+	if (cursorPos >= 0)
+		titleEditor.cursorPos() = cursorPos;
+	save = titleEditor.edit(*wtree, line, startTitle(depth),
+			coor.coor[WTREE].cols-startTitle(depth));
+	if (save == Editor::NOT_SAVED)
 	{
-		wtree->_move(line, startTitle);
-		wtree->_addstr(str);
-		for (int i = startTitle + str.length(); i < coor.coor[WTREE].cols; i++) 
+		drawTitle(line, depth, str);
+		for (int i = startTitle(depth) + (str.length()-1 % coor.coor[WTREE].cols);
+		     i < coor.coor[WTREE].cols-1; i++) 
 				wtree->_addch(' ');
 		wtree->_refresh();
 	}
-	str = lineEditor.getText(); 
+	str = titleEditor.getText(); 
 	if ((haveChild) && (config.getBoldParent()))
 		wtree->_attroff(A_BOLD);
 	wtree->_attroff(COLOR_SELECTED);
@@ -609,12 +621,12 @@ void Screen::editText(Text& t)
 	wtree->_attroff(COLOR_TEXT);
 }
 
-void Screen::editDeadline(int line, Date& deadline, bool done)
+Editor::return_t Screen::editDeadline(int line, Date& deadline, bool done, int cursorPos)
 {
 	if (!coor.exist[WDEADLINE])
-		return;
+		return Editor::NOT_SAVED;
 
-	bool save;
+	Editor::return_t save;
 	wstring date;
 
 	if (deadline.valid())
@@ -629,57 +641,21 @@ void Screen::editDeadline(int line, Date& deadline, bool done)
 	}
 	wdeadline->_attron(COLOR_SELECTED);
 	dateEditor.getText() = date;
-	dateEditor.cursorPos() = 0;
-	save = dateEditor.edit(*wdeadline, line, 0, 11);
-
-	/* store deadline */
-	if (save)
-	{
-		Date d = str2date(dateEditor.getText());
-		if (d.correct())
-			deadline = d;
-		else
-			save = false;
-	}
-
-	/* if will not save redraw deadline */
-	if (!save)
-	{
-		if (deadline.valid())
-		{
-			wdeadline->_move(line, 0);
-			date = date2str(deadline);
-			wdeadline->_addstr(date);
-		}
-		else
-		{
-			wdeadline->_move(line, 0);
-			wdeadline->_addstr("          ");
-		}
-	}
+	if (cursorPos >= 0)
+		dateEditor.cursorPos() = cursorPos;
+	save = dateEditor.edit(*wdeadline, line, 0);
+	deadline = str2date(dateEditor.getText());
 	wdeadline->_attroff(COLOR_SELECTED);
-
-	wdeadline->_move(line, 10);
-	if ((!done) && (deadline_close(deadline)))
-	{
-		wdeadline->_attron(COLOR_DEADLINE_MARK);
-		wdeadline->_addstr("<-");
-		wdeadline->_attroff(COLOR_DEADLINE_MARK);
-	}
-	else
-	{
-		wdeadline->_addstr("  ");
-	}
-	wdeadline->_refresh();
+	return save;
 }
 
-bool Screen::editSched(Date& s)
+Editor::return_t Screen::editSched(Date& s, int cursorPos)
 {
 	if (!coor.exist[WSCHEDULE])
-		return false;
+		return Editor::NOT_SAVED;
 
 	wstring date;
-	bool save;
+	Editor::return_t save;
 
 	wschedule->_attron(A_BOLD);
 	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
@@ -700,74 +676,49 @@ bool Screen::editSched(Date& s)
 
 	/* edit and store */
 	dateEditor.getText() = date;
-	dateEditor.cursorPos() = 0;
-	save = dateEditor.edit(*wschedule, coor.coor[WSCHEDULE].lines-1, 18, 11);
-	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "                            ");
-	wschedule->_refresh();
-	if (save)
-	{
-		Date d = str2date(dateEditor.getText());
-		if (d.correct())
-		{
-			s = d;
-			return true;
-		}
-	}
-	return false;
+	if (cursorPos >= 0)
+		dateEditor.cursorPos() = cursorPos;
+	save = dateEditor.edit(*wschedule, coor.coor[WSCHEDULE].lines-1, 18);
+	s = str2date(dateEditor.getText());
+	return save;
 }
 
-void Screen::setPriority(int line, int& priority)
+Editor::return_t Screen::setPriority(int line, int& priority)
 {
 	if (!coor.exist[WPRIORITY])
-		return;
+		return Editor::NOT_SAVED;
 
 	wchar_t p[2] = L"N";
-	char s[2];
-
 	if (priority)
 		swprintf(p, 2, L"%01d", priority);
-	priorityEditor.getText() = p;
-	if (priorityEditor.edit(*wpriority, line, 0, 1))
-	{
-		char num[2];
-		wcstombs(num, priorityEditor.getText().c_str(), 2);
-		priority = atoi(num);
-	}
 
-	wpriority->_move(line, 0);
-	if (priority)
-		sprintf(s, "%01d", priority);
-	else
-		strcpy(s, " ");
-
+	Editor::return_t save;
 	wpriority->_attron(COLOR_SELECTED);
-	wpriority->_addstr(s);
+	priorityEditor.getText() = p;
+	save = priorityEditor.edit(*wpriority, line, 0);
+
+	char num[2];
+	wcstombs(num, priorityEditor.getText().c_str(), 2);
+	priority = atoi(num);
+
 	wpriority->_attroff(COLOR_SELECTED);
-	wpriority->_refresh();
+	return save;
 }
 
-void Screen::setCategory(int line, ToDo& t)
+Editor::return_t Screen::setCategory(int line, wstring& category, int cursorPos)
 {
 	if (!coor.exist[WCATEGORY])
-		return;
+		return Editor::NOT_SAVED;
 
-	wstring category = t.getCategory();
-	categoryEditor.getText() = category;
-	categoryEditor.cursorPos() = category.length();
-	if (categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH))
-	{
-		category = categoryEditor.getText();
-		t.setCategory(category);
-	}
-
-	wcategory->_move(line, 0);
+	Editor::return_t save;
 	wcategory->_attron(COLOR_SELECTED);
-	if (category.empty())
-		for (int i=0; i<CATEGORY_LENGTH; i++) wcategory->_addch(' ');
-	else
-		wcategory->_addstr(category);
+	categoryEditor.getText() = category;
+	if (cursorPos >= 0)
+		categoryEditor.cursorPos() = cursorPos;
+	save = categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH);
+	category = categoryEditor.getText();
 	wcategory->_attroff(COLOR_SELECTED);
-	wcategory->_refresh();
+	return save;
 }
 
 void Screen::treeClear()
@@ -800,15 +751,23 @@ int Screen::treeLines()
 	return wtree->_lines();
 }
 
-bool Screen::searchText(wstring& pattern)
+int Screen::taskLines(int depth, ToDo &t)
+{
+	int titleLength = t.getTitle().length();
+	return (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+}
+
+Editor::return_t Screen::searchText(wstring& pattern, int cursorPos)
 {
 	if (!coor.exist[WINFO])
-		return false;
+		return Editor::NOT_SAVED;
 
-	bool save;
-
+	Editor::return_t save;
 	infoClear();
 	winfo->_addch(0,0,'/');
+	searchEditor.getText() = pattern;
+	if (cursorPos >= 0)
+		searchEditor.cursorPos() = cursorPos;
 	save = searchEditor.edit(*winfo, 0, 1, 
 			PERCENT_COL-2);
 	pattern = searchEditor.getText();
@@ -816,15 +775,17 @@ bool Screen::searchText(wstring& pattern)
 	return save;
 }
 
-bool Screen::cmd(wstring& command)
+Editor::return_t Screen::cmd(wstring& command, int cursorPos)
 {
 	if (!coor.exist[WINFO])
-		return false;
+		return Editor::NOT_SAVED;
 
-	bool save;
-
+	Editor::return_t save;
 	infoClear();
 	winfo->_addch(0,0,':');
+	cmdEditor.getText() = command;
+	if (cursorPos >= 0)
+		cmdEditor.cursorPos() = cursorPos;
 	save = cmdEditor.edit(*winfo, 0, 1, 
 			PERCENT_COL-2);
 	command = cmdEditor.getText();

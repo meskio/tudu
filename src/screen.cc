@@ -527,14 +527,20 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 			line++;
 		}
 		if (cursor == (*i))
+		{
+			wschedule->_attroff(COLOR_SCHED);
 			wschedule->_attron(COLOR_SELECTED);
+		}
 		wschedule->_addstr("    ");
 		wstring title = (*i)->getTitle().substr(0,coor.coor[WSCHEDULE].cols-4);
 		wschedule->_addstr(title);
 		if (title.length() < (size_t)coor.coor[WSCHEDULE].cols-4)
 			wschedule->_addstr("\n");
 		if (cursor == (*i))
+		{
 			wschedule->_attroff(COLOR_SELECTED);
+			wschedule->_attron(COLOR_SCHED);
+		}
 	}
 	wschedule->_attroff(COLOR_SCHED);
 	wschedule->_refresh();

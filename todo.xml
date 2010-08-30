@@ -2,63 +2,10 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>v0.7</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>pipes to difference windows</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>loop dead at empty .tudu.xml</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>if disk fool don't warns you and don't save</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>optional bold parents</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>fixed year bug #568064</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>fixed UTF8 problem on external editor</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>us dates</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>make DESTDIR="$HOME/opt"</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>title editor multi-linear</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>collision of ą and ć (polish) with key codes</title>
-			<text>
-</text>
-		</todo>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>tags or more complex cathegories</title>
-		<text>
+		<title>more complex cathegories</title>
+		<text>Multi category support and not limitation on name length.
+
+So categories become more like tags.
 </text>
 	</todo>
 	<todo done="no" collapse="no">

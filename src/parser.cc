@@ -91,6 +91,10 @@ bool Parser::parse(ToDo& todo, Sched& sched)
 		}
 	}
 
+	// in case of empty file create an empty task
+	if (!todo.haveChild())
+		iterator.addChild(new ToDo());
+
 	return true;
 }
 
@@ -325,7 +329,9 @@ void Writer::_save()
 			putTabs((*i).depth()+2);
 			file << "<month>" << date.month() << "</month>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<year>" << date.year() << "</year>" << endl;
+			char str[10]; /* fixing problem with locales that prints 2,010 */
+			sprintf(str,"%i",date.year());
+			file << "<year>" << str << "</year>" << endl;
 			putTabs((*i).depth()+1);
 			file << "</deadline>" << endl;
 		}
@@ -361,7 +367,9 @@ void Writer::_save()
 			putTabs((*i).depth()+2);
 			file << "<month>" << date.month() << "</month>" << endl;
 			putTabs((*i).depth()+2);
-			file << "<year>" << date.year() << "</year>" << endl;
+			char str[10]; /* fixing problem with locales that prints 2,010 */
+			sprintf(str,"%i",date.year());
+			file << "<year>" << str << "</year>" << endl;
 			putTabs((*i).depth()+2);
 			file << "<position>" << (*i)->schedPosition() << "</position>" << endl;
 			putTabs((*i).depth()+1);

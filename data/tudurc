@@ -7,10 +7,13 @@ hide_done    = no  # Whether to hide tasks marked as done.
 hide_percent = no  # Whether to hide percentage display on tasks
 visual_tree  = no  # Toggle graphical tree. It shows (+) on parent's left side.
                    # Necessary in some shells that can not display bold characters.
+bold_parent  = yes # hilight the parents with children with bold letters
 loop_move    = no  # whether to jump to the beginning (or end) 
                    # when the end (or beginning) is reached
 days_warn    = 2   # how many days before the task is due
                    # will the deadline sport a warning remark
+us_dates     = no  # use US date format (mm/dd/yyyy). 
+                   # by default it uses dd/mm/yyyy
 
 # The default order in which tasks will be shown.
 # Tasks are ordered by the 1st letter in the string, then by the 2nd, and so on.
@@ -91,9 +94,10 @@ columns = title,priority,category,deadline
 # The help and info windows don't need to have a height, because is predefined as 1.
 # TuDu will try to guess the non given information.
 row = (help)
-row = 1(blank)
-row = 70%(tree,30|schedule) # Show the schedule on the right side of screen
-# row = 70%(tree)           # or, alternatively, do not show the schedule.
+row = 1(blank,vpipe,30|blank)
+row = 70%(tree,vpipe,30|schedule) # Show the schedule on the right side of screen
+# row = 70%(tree)                  # or, alternatively, do not show the schedule.
+row = (hpipe)
 row = (text)
 row = (info)
 
@@ -104,6 +108,7 @@ row = (info)
 color = white, transparent # Default colors
 selected = green, transparent
 deadlineMark = red, transparent
+pipe = white, blue
 help = white, blue
 # tree =
 # info =

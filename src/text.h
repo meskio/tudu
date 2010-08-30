@@ -28,7 +28,6 @@ class Text
 public:
 	Text& operator=(const wstring& str);
 	bool operator!=(const wstring& str);
-	friend wostream& operator<<(wostream& os, Text& t);
 	void print(Window& win);
 	void edit(Window& win);
 	wstring getStr();
@@ -61,5 +60,6 @@ private:
 };
 
 wostream& operator<<(wostream& os, Text& t);
+wistream& operator>>(wistream& is, Text& t);
 
 #endif

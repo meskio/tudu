@@ -6,7 +6,7 @@
  *                                                                        *
  *  TuDu is free software; you can redistribute it and/or modify          *
  *  it under the terms of the GNU General Public License as published by  *
- *  the Free Software Foundation; version 3 of the License.        *
+ *  the Free Software Foundation; version 3 of the License.               *
  *                                                                        *
  *  TuDu is distributed in the hope that it will be useful,               *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -21,6 +21,7 @@
 #define CONFIG_H
 
 #include "defs.h"
+#include "window.h"
 
 struct key_action;
 typedef map<char,key_action> key_map;
@@ -36,58 +37,51 @@ typedef map<string,string> action_list;
 #define HELP_MIN_WIDTH 67
 
 /* information about window position */
-#define MAX_THEME_WINDOWS 8
+#define MAX_THEME_COLS 16
 #define MAX_THEME_ROWS 16
 #define MAX_THEME_TREECOLS 4
-#define NUM_WINDOWS 8
-#define WNULL 10
-#define WBLANK 11
-#define WHELP 0
-#define WTREE 1
-#define WTEXT 2
-#define WINFO 3
-#define WPRIORITY 4
-#define WCATEGORY 5
-#define WDEADLINE 6
-#define WSCHEDULE 7
+enum window_type {
+	WHELP,
+	WTREE,
+	WTEXT,
+	WINFO,
+	WPRIORITY,
+	WCATEGORY,
+	WDEADLINE,
+	WSCHEDULE,
+	NUM_WINDOWS,
+	WNULL,
+	WBLANK,
+	WVPIPE,
+	WHPIPE
+};
 typedef struct {
-	int window;
-	int width;
-	bool absolute_width;
-} theme_window;
-typedef struct {
-	theme_window windows[MAX_THEME_WINDOWS];
-	int num_windows;
-	int height;
-	bool absolute_height;
-} theme_row;
-typedef struct {
-	bool exist;
-	int y, x;
-	int lines, cols;
-} window_coor;
+	bool exist[NUM_WINDOWS];
+	window_coor coor[NUM_WINDOWS];
+	vector<window_coor> vpipe;
+	vector<window_coor> hpipe;
+} windows_defs;
 
 /* color theme */
-#define NUM_CT 8
-#define CT_DEFAULT 0
-#define CT_SELECTED 1
-#define CT_DEADLINE_MARK 2
-#define CT_HELP 3
-#define CT_TREE 4
-#define CT_TEXT 5
-#define CT_INFO 6
-#define CT_SCHEDULE 7
-typedef struct {
-	bool exist;
-	short int foreground;
-	short int background;
-} color_pair_t;
+enum color_theme {
+	CT_DEFAULT,
+	CT_SELECTED,
+	CT_DEADLINE_MARK,
+	CT_HELP,
+	CT_TREE,
+	CT_TEXT,
+	CT_INFO,
+	CT_SCHEDULE,
+	CT_PIPE,
+	NUM_CT
+};
 typedef struct {
 	short int color;
 	short int red;
 	short int green;
 	short int blue;
 } color_t;
+
 
 class Config
 {
@@ -101,21 +95,42 @@ public:
 	bool& getHideDone();
 	bool getHidePercent();
 	bool getVisualTree();
+	bool getBoldParent();
 	bool getLoopMove();
 	int getDaysWarn();
+	bool useUSDates();
 	char* getSortOrder();
 	char* getEditor();
-	void genWindowCoor(int lines, int cols, window_coor coor[]);
+	void genWindowCoor(int lines, int cols, windows_defs& coor);
 	void getColorList(color_t* color_list[], short int& length);
 	void getColorPair(short int win, short int& foreground, short int& background);
 private:
+	typedef struct {
+		window_type window;
+		int width;
+		bool absolute_width;
+	} theme_window;
+	typedef struct {
+		theme_window windows[MAX_THEME_COLS];
+		int num_windows;
+		int height;
+		bool absolute_height;
+	} theme_row;
+	typedef struct {
+		bool exist;
+		short int foreground;
+		short int background;
+	} color_pair_t;
+
 	key_map tree_keys;
 	action_list action_keys;
 	bool collapse;
 	bool hide_done;
 	bool hide_percent;
 	bool visual_tree;
+	bool bold_parent;
 	int  days_warn_deadline;
+	bool us_dates;
 	bool loop_move;
 	char sort_order[16];
 	char editor[64];
@@ -129,6 +144,7 @@ private:
 	short int num_colors;
 
 	void getOutContextOption(string& option, string& value);
+	bool isYes(string& value);
 	void getGeneralOption(string& option, string& value);
 	void insertKeyMap(key_map& k, string action, string keys);
 	void resetTheme();
@@ -139,7 +155,10 @@ private:
 	void getThemeColors(string& option, string& value);
 	short int getThemeColor(string color);
 	int getContext(string& str);
-	bool _genWindowCoor(int lines, int cols, window_coor coor[]);
+	bool genWindowHeights(int lines, int height[]);
+	bool genWindowWidths(int row_index, int cols, windows_defs& coor, int width[]);
+	bool genWindowTree(windows_defs& coor, int height, int x, int y);
+	bool _genWindowCoor(int lines, int cols, windows_defs& coor);
 };
 
 #endif

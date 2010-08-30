@@ -39,73 +39,78 @@ int& Editor::cursorPos()
 	return cursor;
 }
 
-bool Editor::edit(Window& win, int y, int x, unsigned int max_length)
+Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 {
-	bool resized = false;
-
-	initialize();
+	window = &win;
+	y = begin_y;
+	x = begin_x;
+	cols = ncols;
 	exit = false;
-	result = true;
-	win._move(y, x);
-	win._addstr(text);
-	win._move(y, x+cursor);
+	result = SAVED;
 	echo();
 	curs_set(1);
-	win._refresh();
+	initialize();
+
 	while (!exit)
 	{
-		key = win._getch();
-		switch (key)
+		if (window->_getch(key) == KEY_CODE_YES)
 		{
-			case KEY_RESIZE:
-				resized = true;
-				break;
-			case KEY_LEFT: left();
-				break;
-			case KEY_RIGHT: right();
-				break;
-			case KEY_UP: up();
-				break;
-			case KEY_DOWN: down();
-				break;
-			case KEY_HOME: home();
-				break;
-			case KEY_END: end();
-				break;
-			case KEY_BACKSPACE: backspace();
-				break;
-			case KEY_DC: supr();
-				break;
-			case '\e': esc();
-				break;
-			case '\n':
-			case KEY_ENTER: enter();
-				break;
-			case '\t': tab();
-				break;
-			default: other();
-				break;
+			switch (key)
+			{
+				case KEY_RESIZE:
+					return RESIZE;
+				case KEY_LEFT: left();
+					break;
+				case KEY_RIGHT: right();
+					break;
+				case KEY_UP: up();
+					break;
+				case KEY_DOWN: down();
+					break;
+				case KEY_HOME: home();
+					break;
+				case KEY_END: end();
+					break;
+				case KEY_BACKSPACE: backspace();
+					break;
+				case KEY_DC: supr();
+					break;
+				case KEY_ENTER: enter();
+					break;
+			}
 		}
-		if (max_length <= text.length())
-			text.erase(max_length);
-		if (cursor >= (int) max_length)
-			cursor = max_length-1;
-		win._move(y, x);
-		win._addstr(text);
-		for (unsigned int i = text.length(); i < max_length; i++) 
-				win._addch(' ');
-		win._move(y, x+cursor);
-		win._refresh();
+		else
+		{
+			switch (key)
+			{
+				case '\e': esc();
+					break;
+				case '\n': enter();
+					break;
+				case '\t': tab();
+					break;
+				default: other();
+					break;
+			}
+		}
+		updateText();
 	}
 	noecho();
 	curs_set(0);
-	win._refresh();
+	window->_refresh();
 
-	if (resized) ungetch(KEY_RESIZE);
 	return result;
 }
 
-void Editor::initialize() {}
+void Editor::initialize()
+{
+	window->_move(y, x);
+	window->_addstr(text);
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
+void Editor::updateText() {}
 void Editor::left() {}
 void Editor::right() {}
 void Editor::up() {}
@@ -120,7 +125,7 @@ void Editor::other() {}
 void Editor::esc()
 { 
 	exit = true;
-	result = false;
+	result = NOT_SAVED;
 }
 
 void Editor::enter()
@@ -129,13 +134,30 @@ void Editor::enter()
 }
 
 
+/*
+ *  Editor mono line
+ */
+void LineEditor::updateText()
+{
+	if (cols <= text.length())
+		text.erase(cols);
+	if (cursor >= (int) cols)
+		cursor = cols-1;
+	window->_move(y, x);
+	window->_addstr(text);
+	for (unsigned int i = text.length(); i < cols; i++) 
+			window->_addch(' ');
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
 void LineEditor::left()
 {
 	if (cursor>0) --cursor;
 	else if (text.length() == 0)
 	{
 		exit = true;
-		result = false;
+		result = NOT_SAVED;
 	}
 }
 
@@ -176,10 +198,78 @@ void LineEditor::other()
 	++cursor;
 }
 
-void CategoryEditor::initialize()
+
+/*
+ *  Editor for task titles, multilinear
+ */
+void TitleEditor::initialize()
 {
-	search = categories.end();
+	textLines = text.length() / cols;
+
+	for (unsigned int i = 0; i <= textLines; i++)
+	{
+		wstring line(text.substr(i*cols, cols));
+		window->_move(y+i, x);
+		window->_addstr(line);
+	}
+	window->_move(y+cursorLine(), x+cursorCol());
+	window->_refresh();
 }
+
+void TitleEditor::updateText()
+{
+	if (textLines != (text.length() / cols))
+	{
+		exit = true;
+		result = REDRAW;
+		return;
+	}
+
+	for (unsigned int i = 0; i <= textLines; i++)
+	{
+		wstring line(text.substr(i*cols, cols));
+		window->_move(y+i, x);
+		window->_addstr(line);
+	}
+
+	for (unsigned int i = (text.length()-1 % cols); i < cols-1; i++)
+			window->_addch(' ');
+	window->_move(y+cursorLine(), x+cursorCol());
+	window->_refresh();
+}
+
+void TitleEditor::up()
+{
+	if (cursorLine() > 0)
+		cursor -= cols;
+}
+
+void TitleEditor::down()
+{
+	if (cursorLine() < textLines)
+	{
+		cursor += cols;
+		if (cursor > (int)text.length())
+			cursor = text.length();
+	}
+}
+
+unsigned int TitleEditor::cursorLine()
+{
+	return cursor / cols;
+}
+
+unsigned int TitleEditor::cursorCol()
+{
+	return cursor % cols;
+}
+
+
+/*
+ *  Editor of Categories
+ */
+CategoryEditor::CategoryEditor():
+		LineEditor(), search(categories.end()) {}
 
 void CategoryEditor::tab() /* do completion */
 {
@@ -220,11 +310,14 @@ void CategoryEditor::tab() /* do completion */
 	}
 }
 
+
+/*
+ *  Editor with history, used on search
+ */
 void HistoryEditor::initialize()
 {
 	shown = history.begin();
-	cursor = 0;
-	text = L"";
+	LineEditor::initialize();
 }
 
 void HistoryEditor::up()
@@ -253,11 +346,32 @@ void HistoryEditor::enter()
 	history.push_front(text);
 }
 
+void HistoryEditor::backspace()
+{
+	if (text.length() == 0)
+	{
+		exit = true;
+		result = NOT_SAVED;
+		return;
+	}
+
+	LineEditor::backspace();
+}
+
+
+/*
+ *  Command editor
+ */
 void CmdEditor::initialize()
 {
-	search = categories.end();
-	com_search = commands.end();
-	param = 0;
+	/* initialize if is new command, 
+	 * in other case we expect it to be already initialized */
+	if (text == L"")
+	{
+		search = categories.end();
+		com_search = commands.end();
+		param = 0;
+	}
 
 	HistoryEditor::initialize();
 }
@@ -312,7 +426,7 @@ void CmdEditor::tab() /* do completion */
 
 void CmdEditor::command_completion(wstring& com)
 {
-	/* if it is no the first time */
+	/* if it is not the first time */
 	if ((param == 0) &&
 	    (com_search != commands.end()) &&
 	    (com == com_search->first))
@@ -388,6 +502,24 @@ void CmdEditor::category_completion(wstring& cat, int num_param)
 	}
 }
 
+
+/*
+ *  Editor of dates
+ */
+Editor::return_t DateEditor::edit(Window& win, int begin_y, int begin_x)
+{
+	return Editor::edit(win, begin_y, begin_x, 11);
+}
+
+void DateEditor::updateText()
+{
+	if (cursor >= (int) cols)
+		cursor = cols-1;
+	window->_addstr(y, x, text);
+	window->_move(y, x+cursor);
+	window->_refresh();
+}
+
 void DateEditor::left()
 {
 	if (cursor>0) --cursor;
@@ -421,6 +553,22 @@ void DateEditor::other()
 	}
 }
 
+
+/*
+ *  Editor of priorities
+ */
+Editor::return_t PriorityEditor::edit(Window& win, int begin_y, int begin_x)
+{
+	return Editor::edit(win, begin_y, begin_x, 1);
+}
+
+void PriorityEditor::updateText()
+{
+	cursor = 0;
+	window->_addstr(y, x, text);
+	window->_move(y, x);
+	window->_refresh();
+}
 
 void PriorityEditor::up()
 {

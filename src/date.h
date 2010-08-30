@@ -30,6 +30,7 @@ public:
 	int& day(int d = 0);
 	int& month(int m = 0);
 	int& year(int y = 0);
+	void setToday();
 	bool valid(); /* if valid date if year == 1900 is invalid */
 	bool correct(); /* if this date exist */
 	int daysLeft();

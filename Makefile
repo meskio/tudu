@@ -1,8 +1,8 @@
-DESTDIR=/usr/local/
-BIN_DIR=$(DESTDIR)bin
-ETC_DIR=$(DESTDIR)etc
-SHARE_DIR=$(DESTDIR)share/tudu
-MAN_DIR=$(DESTDIR)share/man
+DESTDIR=/usr/local
+BIN_DIR=$(DESTDIR)/bin
+ETC_DIR=$(DESTDIR)/etc
+SHARE_DIR=$(DESTDIR)/share/tudu
+MAN_DIR=$(DESTDIR)/share/man
 
 all:
 	$(MAKE) -C src all SHARE_DIR=$(SHARE_DIR) ETC_DIR=$(ETC_DIR)

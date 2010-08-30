@@ -1,3 +1,15 @@
+0.7
+	* Added support to multi linear task titles
+	* New pipe windows as separators
+	* Configurable date format as US or european
+	* Configurable tasks with child displayed bold
+	* Warn when disk is full
+	* Fixed install path problems if the DESTDIR didn't end with '/'
+	* Fixed year xml storage with different locales (debian bug #568064)
+	* Fixed problems with external editors and UTF-8
+	* Fixed collision with some polish characters and control keys
+	* Fixed dead loop when .tudu.xml is empty
+
 0.6.1
 	* Added confirm question on Q
 	* Configurable beggining to end move

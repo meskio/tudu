@@ -36,22 +36,25 @@ public:
 
 	void resizeTerm();
 	void drawTask(int line, int depth, ToDo& t, bool isCursor=false);
+	void drawTitle(int line, int depth, wstring& title, int startLine=0);
 	void drawText(Text &t);
 	void drawSched(Sched &sched, pToDo cursor = NULL);
 	void scrollUpText(Text &t);
 	void scrollDownText(Text &t);
 	void deadlineClear(int line);
 	void priorityClear(int line);
-	bool editTitle(int line, int depth, bool haveChild, wstring& str);
+	Editor::return_t editTitle(int line, int depth, bool haveChild, wstring& str, int cursorPos = -1);
 	void editText(Text& t);
-	void editDeadline(int line, Date& deadline, bool done);
-	bool editSched(Date& s);
-	void setPriority(int line, int& priority);
-	void setCategory(int line, ToDo& t);
+	Editor::return_t editDeadline(int line, Date& deadline, bool done, int cursorPos = -1);
+	Editor::return_t editSched(Date& s, int cursorPos = -1);
+	Editor::return_t setPriority(int line, int& priority);
+	Editor::return_t setCategory(int line, wstring& category, int cursorPos = -1);
 	void treeClear();
 	int treeLines();
-	bool searchText(wstring& pattern);
-	bool cmd(wstring& command);
+	/* number of lines the task needs on the screen */
+	int taskLines(int depth, ToDo &t);
+	Editor::return_t searchText(wstring& pattern, int cursorPos = -1);
+	Editor::return_t cmd(wstring& command, int cursorPos = -1);
 	bool confirmQuit();
 	void infoMsg(const char str[]);
 	void infoClear();
@@ -66,17 +69,23 @@ private:
 	Window *wtext;
 	Window *winfo;
 	Window *wschedule;
+	vector<Window *> pipes;
 	Config &config;
-	LineEditor lineEditor;
+	TitleEditor titleEditor;
 	CategoryEditor categoryEditor;
 	DateEditor dateEditor;
 	PriorityEditor priorityEditor;
 	HistoryEditor searchEditor;
 	CmdEditor cmdEditor;
-	window_coor coor[NUM_WINDOWS];
+	windows_defs coor;
 
 	void draw_helpbar(window_coor c);
 	void draw();
+	wstring date2str(Date& date);
+	Date str2date(wstring str);
+
+	/* col where the title text starts */
+	int startTitle(int depth);
 };
 
 #endif

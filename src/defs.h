@@ -47,6 +47,8 @@ using namespace std;
 #include <clocale>
 #include <climits>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <cerrno>
 
 #endif

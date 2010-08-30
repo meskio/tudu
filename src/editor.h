@@ -27,19 +27,34 @@
 class Editor
 {
 public:
+	/* return values for the editor */
+	enum return_t {
+		NOT_SAVED = 0,
+		SAVED,
+		/* In case of changes that need to redraw or resize the screen.
+		 * After update the screen the function edit should be call again. */
+		RESIZE,
+		REDRAW
+	};
+
 	Editor();
 
 	wstring& getText();
 	int& cursorPos();
-	bool edit(Window& win, int y, int x, unsigned int max_length);
+	return_t edit(Window& win, int begin_y, int begin_x, int ncols);
 protected:
+	Window *window;
+	int y;
+	int x;
+	unsigned int cols;
 	wstring text;
 	int cursor;
 	wint_t key;
 	bool exit;
-	bool result;
+	return_t result;
 
 	virtual void initialize();
+	virtual void updateText();
 	virtual void left();
 	virtual void right();
 	virtual void up();
@@ -57,6 +72,7 @@ protected:
 class LineEditor: public Editor
 {
 protected:
+	void updateText();
 	void left();
 	void right();
 	void home();
@@ -67,14 +83,29 @@ protected:
 	void other();
 };
 
+class TitleEditor: public LineEditor
+{
+protected:
+	unsigned int textLines;
+
+	void initialize();
+	void updateText();
+	void up();
+	void down();
+
+	unsigned int cursorLine();
+	unsigned int cursorCol();
+};
+
 class CategoryEditor: public LineEditor
 {
+public:
+	CategoryEditor();
 protected:
 	set<wstring>::iterator search;
 	set<wstring>::iterator first;
 	int length;
 
-	void initialize();
 	void tab();
 };
 
@@ -88,6 +119,7 @@ protected:
 	void up();
 	void down();
 	void enter();
+	void backspace();
 };
 
 class CmdEditor: public HistoryEditor
@@ -108,7 +140,10 @@ protected:
 
 class DateEditor: public Editor
 {
+public:
+	return_t edit(Window& win, int begin_y, int begin_x);
 protected:
+	void updateText();
 	void left();
 	void right();
 	void home();
@@ -118,7 +153,10 @@ protected:
 
 class PriorityEditor: public Editor
 {
+public:
+	return_t edit(Window& win, int begin_y, int begin_x);
 protected:
+	void updateText();
 	void up();
 	void down();
 	void backspace();

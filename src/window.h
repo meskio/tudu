@@ -22,9 +22,15 @@
 
 #include "defs.h"
 
+typedef struct {
+	int y, x;
+	int lines, cols;
+} window_coor;
+
 class Window
 {
 public:
+	Window(window_coor coor);
 	Window(int lines, int cols, int y, int x);
 	Window();
 	~Window();
@@ -45,13 +51,15 @@ public:
 	int _attron(int attrs);
 	int _attroff(int attrs);
 	int _erase();
-	wint_t _getch();
+	int _getch(wint_t& ch);
 	void _getmaxyx(int& y, int& x);
 	int _box();
 	int _lines();
 	int _cols();
 	int _resize(int lines, int columns);
 	int _mv(int y, int x);
+	int _vline(chtype ch, int n);
+	int _hline(chtype ch, int n);
 	int _delwin();
 protected:
 	WINDOW *win;

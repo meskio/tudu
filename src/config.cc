@@ -115,75 +115,45 @@ void Config::getOutContextOption(string& option, string& value)
 	}
 }
 
+bool Config::isYes(string& value)
+{
+	if ("yes" == value)
+		return true;
+
+	return false;
+}
+
 void Config::getGeneralOption(string& option, string& value)
 {
 	if ("collapse" == option)
-	{
-		if ("yes" == value)
-		{
-			collapse = true;
-		}
-		if ("no" == value)
-		{
-			collapse = false;
-		}
-	}
+		collapse = isYes(value);
+
 	if ("hide_done" == option)
-	{
-		if ("yes" == value)
-		{
-			hide_done = true;
-		}
-		if ("no" == value)
-		{
-			hide_done = false;
-		}
-	}
+		hide_done = isYes(value);
+
 	if ("hide_percent" == option)
-	{
-		if ("yes" == value)
-		{
-			hide_percent = true;
-		}
-		if ("no" == value)
-		{
-			hide_percent = false;
-		}
-	}
+		hide_percent = isYes(value);
+
 	if ("visual_tree" == option)
-	{
-		if ("yes" == value)
-		{
-			visual_tree = true;
-		}
-		if ("no" == value)
-		{
-			visual_tree = false;
-		}
-	}
+		visual_tree = isYes(value);
+
+	if ("bold_parent" == option)
+		bold_parent = isYes(value);
+
 	if ("loop_move" == option)
-	{
-		if ("yes" == value)
-		{
-			loop_move = true;
-		}
-		if ("no" == value)
-		{
-			loop_move = false;
-		}
-	}
+		loop_move = isYes(value);
+
 	if ("days_warn" == option)
-	{
 		days_warn_deadline = atoi(value.c_str());
-	}
+
+	if ("us_dates" == option)
+		us_dates = isYes(value);
+
 	if ("sort_order" == option)
-	{
 		strncpy(sort_order, value.c_str(), 16);
-	}
+
 	if ("editor" == option)
-	{
 		strncpy(editor, value.c_str(), 16);
-	}
 }
 
 void Config::insertKeyMap(key_map& k, string action, string keys)
@@ -331,7 +301,7 @@ void Config::getThemeRow(string& value)
 
 		j=i+1;
 		i=value.find(",", j);
-		if (win == MAX_THEME_WINDOWS)
+		if (win == MAX_THEME_COLS)
 		{
 			fprintf(stderr, "Error: too many windows in a row for theme\n");
 			exit(1);
@@ -381,6 +351,10 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 	}
 	else if ("blank" == fmt)
 		w.window = WBLANK;
+	else if ("vpipe" == fmt)
+		w.window = WVPIPE;
+	else if ("hpipe" == fmt)
+		w.window = WHPIPE;
 	else if ("help" == fmt)
 		w.window = WHELP;
 	else if ("tree" == fmt)
@@ -449,6 +423,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_SELECTED;
 	else if ("deadlineMark" == option)
 		color_index = CT_DEADLINE_MARK;
+	else if ("pipe" == option)
+		color_index = CT_PIPE;
 	else if ("help" == option)
 		color_index = CT_HELP;
 	else if ("tree" == option)
@@ -579,6 +555,11 @@ bool Config::getVisualTree()
 	return visual_tree;
 }
 
+bool Config::getBoldParent()
+{
+	return bold_parent;
+}
+
 bool Config::getLoopMove()
 {
 	return loop_move;
@@ -587,6 +568,11 @@ bool Config::getLoopMove()
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
+}
+
+bool Config::useUSDates()
+{
+	return us_dates;
 }
 
 char* Config::getSortOrder()
@@ -599,39 +585,31 @@ char* Config::getEditor()
 	return editor;
 }
 
-void Config::genWindowCoor(int lines, int cols, window_coor coor[])
+void Config::genWindowCoor(int lines, int cols, windows_defs& coor)
 {
 	/* if window don't fits will display only the tree */
 	if (!_genWindowCoor(lines, cols, coor))
 	{
 		for (int i = 0; i < NUM_WINDOWS; ++i)
-			coor[i].exist = false;
+			coor.exist[i] = false;
 
-		coor[WTREE].exist = true;
-		coor[WTREE].x = 0;
-		coor[WTREE].y = 0;
-		coor[WTREE].lines = lines;
-		coor[WTREE].cols = cols;
+		coor.exist[WTREE] = true;
+		coor.coor[WTREE].x = 0;
+		coor.coor[WTREE].y = 0;
+		coor.coor[WTREE].lines = lines;
+		coor.coor[WTREE].cols = cols;
 	}
 }
 
-bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
+bool Config::genWindowHeights(int lines, int height[])
 {
-	int height[MAX_THEME_ROWS];
-	int undefined_row;
 	int sum_height;
-	int y = 0,x = 0;
-	bool undefined_height = false;
+	int undefined_row;
+	bool undefined_height;
 
-	/* check if there is enought rows */
-	if (lines < row_index + 8) return false;
-
-	/* initialice the windows as not present */
-	for (int i=0; i<NUM_WINDOWS; ++i) coor[i].exist = false;
-
-	/* calculate the height of each row */
 	sum_height = 0;
 	undefined_row = -1;
+	undefined_height = false;
 	for (int i=0; i<row_index; ++i)
 	{
 		theme_row& row = rows[i];
@@ -657,7 +635,8 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 			for (int j=0; j<row.num_windows; ++j)
 			{
 				if ((row.windows[j].window == WHELP) ||
-				    (row.windows[j].window == WINFO))
+				    (row.windows[j].window == WINFO) ||
+					(row.windows[j].window == WHPIPE))
 				{
 					height[i] = 1;
 					sum_height++;
@@ -681,57 +660,151 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 		height[undefined_row] = lines-sum_height;
 	}
 
+	return true;
+}
+
+bool Config::genWindowWidths(int row_index, int cols, windows_defs& coor, int width[])
+{
+	int top_win;
+	int undefined_col = -1;
+	int sum_width = 0;
+	bool undefined_width = false;
+	theme_row& row = rows[row_index];
+
+	for (int j=0; j<row.num_windows; ++j)
+	{
+		theme_window& win = row.windows[j];
+
+		if (win.width)
+		{
+			/* column width absolute */
+			if (win.absolute_width)
+			{
+				sum_width += win.width;
+				width[j]  = win.width;
+			}
+			/* column width in percent */
+			else
+			{
+				width[j]  = cols*win.width/100;
+				sum_width += width[j];
+			}
+		}
+		/* column width not defined */
+		else if  (win.window == WNULL)
+		{
+			top_win = rows[row_index-1].windows[j].window;
+			width[j] = coor.coor[top_win].cols;
+			sum_width += width[j];
+		}
+		else if (win.window == WVPIPE)
+		{
+			width[j] = 1;
+			sum_width++;
+		}
+		else
+		{
+			if (undefined_width) return false;
+			undefined_width = true;
+			undefined_col = j;
+		}
+	}
+	if (sum_width > cols)
+	{
+		return false; /* don't fit in screen */
+	}
+	if (undefined_col != -1)
+	{
+		width[undefined_col] = cols-sum_width;
+	}
+
+	return true;
+}
+
+bool Config::genWindowTree(windows_defs& coor, int height, int x, int y)
+{
+	int x_tree;
+
+	x_tree = x;
+	coor.coor[WTREE].cols--;
+	for (int k=0; k<tree_index; ++k)
+	{
+		if (tree_columns[k] == WPRIORITY)
+			coor.coor[WTREE].cols -= PRIORITY_LENGTH+1;
+		else if (tree_columns[k] == WCATEGORY)
+			coor.coor[WTREE].cols -= CATEGORY_LENGTH+1;
+		else if (tree_columns[k] == WDEADLINE)
+			coor.coor[WTREE].cols -= DEADLINE_LENGTH+1;
+	}
+
+	for (int k=0; k<tree_index; ++k)
+	{
+		if (tree_columns[k] == WPRIORITY)
+		{
+			coor.exist[WPRIORITY] = true;
+			coor.coor[WPRIORITY].lines = height;
+			coor.coor[WPRIORITY].cols = PRIORITY_LENGTH;
+			coor.coor[WPRIORITY].y = y;
+			coor.coor[WPRIORITY].x = x_tree;
+			x_tree += PRIORITY_LENGTH+1;
+		}
+		else if (tree_columns[k] == WCATEGORY)
+		{
+			coor.exist[WCATEGORY] = true;
+			coor.coor[WCATEGORY].lines = height;
+			coor.coor[WCATEGORY].cols = CATEGORY_LENGTH;
+			coor.coor[WCATEGORY].y = y;
+			coor.coor[WCATEGORY].x = x_tree;
+			x_tree += CATEGORY_LENGTH+1;
+		}
+		else if (tree_columns[k] == WDEADLINE)
+		{
+			coor.exist[WDEADLINE] = true;
+			coor.coor[WDEADLINE].lines = height;
+			coor.coor[WDEADLINE].cols = DEADLINE_LENGTH;
+			coor.coor[WDEADLINE].y = y;
+			coor.coor[WDEADLINE].x = x_tree;
+			x_tree += DEADLINE_LENGTH+1;
+		}
+		else if (tree_columns[k] == WTREE)
+		{
+			coor.coor[WTREE].x = x_tree;
+			x_tree += coor.coor[WTREE].cols+1;
+		}
+	}
+
+	if ((coor.coor[WTREE].cols < 20) || (coor.coor[WTREE].lines < 6))
+		return false;
+
+	return true;
+}
+
+bool Config::_genWindowCoor(int lines, int cols, windows_defs& coor)
+{
+	int height[MAX_THEME_ROWS];
+	int y = 0,x = 0;
+
+	/* check if there is enought rows */
+	if (lines < row_index + 8) return false;
+
+	/* initialice the windows as not present */
+	for (int i=0; i<NUM_WINDOWS; ++i) coor.exist[i] = false;
+	coor.vpipe.clear();
+	coor.hpipe.clear();
+
+	/* calculate the height of each row */
+	if (!genWindowHeights(lines, height)) return false;
+
 	/* calculate windows */
 	for (int i=0; i<row_index; ++i)
 	{
 		theme_row& row = rows[i];
-		int width[MAX_THEME_WINDOWS];
+		int width[MAX_THEME_COLS];
 		int top_win;
+		window_coor c;
 
 		/* calculate width */
-		int undefined_col = -1;
-		int sum_width = 0;
-		bool undefined_width = false;
-		for (int j=0; j<row.num_windows; ++j)
-		{
-			theme_window& win = row.windows[j];
-
-			if (win.width)
-			{
-				/* column width absolute */
-				if (win.absolute_width)
-				{
-					sum_width += win.width;
-					width[j]  = win.width;
-				}
-				/* column width in percent */
-				else
-				{
-					width[j]  = cols*win.width/100;
-					sum_width += width[j];
-				}
-			}
-			/* column width not defined */
-			else if  (win.window == WNULL)
-			{
-				top_win = rows[i-1].windows[j].window;
-				width[i] = coor[top_win].cols;
-			}
-			else
-			{
-				if (undefined_width) return false;
-				undefined_width = true;
-				undefined_col = j;
-			}
-		}
-		if (sum_width > cols)
-		{
-			return false; /* don't fit in screen */
-		}
-		if (undefined_col != -1)
-		{
-			width[undefined_col] = cols-sum_width;
-		}
+		if (!genWindowWidths(i, cols, coor, width)) return false;
 
 		/* generate the rest of the coordinates */
 		if (i == 0) y = 0;
@@ -739,84 +812,36 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 		for (int j=0; j<row.num_windows; ++j)
 		{
 			theme_window& win = row.windows[j];
-			int x_tree;
 
 			if (j == 0) x = 0;
 			else x += width[j-1];
 			if (win.window < NUM_WINDOWS)
 			{
-				coor[win.window].exist = true;
-				coor[win.window].cols = width[j];
-				coor[win.window].lines = height[i];
-				coor[win.window].y = y;
-				coor[win.window].x = x;
+				coor.exist[win.window] = true;
+				coor.coor[win.window].cols = width[j];
+				coor.coor[win.window].lines = height[i];
+				coor.coor[win.window].y = y;
+				coor.coor[win.window].x = x;
 			}
 
 			switch (win.window)
 			{
 			case WHELP:
-				if ((coor[WHELP].lines != 1) ||
-				   (coor[WHELP].cols < HELP_MIN_WIDTH))
+				if ((coor.coor[WHELP].lines != 1) ||
+				   (coor.coor[WHELP].cols < HELP_MIN_WIDTH))
 					return false;
 				break;
 			case WINFO:
-				if (coor[WINFO].lines != 1)
+				if (coor.coor[WINFO].lines != 1)
 					return false;
 				break;
 			case WSCHEDULE:
-				if ((coor[WSCHEDULE].lines < 5) ||
-				   (coor[WSCHEDULE].cols < 29))
+				if ((coor.coor[WSCHEDULE].lines < 5) ||
+				   (coor.coor[WSCHEDULE].cols < 29))
 					return false;
 				break;
 			case WTREE:
-				x_tree = x;
-				coor[WTREE].cols--;
-				for (int k=0; k<tree_index; ++k)
-				{
-					if (tree_columns[k] == WPRIORITY)
-						coor[WTREE].cols -= PRIORITY_LENGTH+1;
-					else if (tree_columns[k] == WCATEGORY)
-						coor[WTREE].cols -= CATEGORY_LENGTH+1;
-					else if (tree_columns[k] == WDEADLINE)
-						coor[WTREE].cols -= DEADLINE_LENGTH+1;
-				}
-				for (int k=0; k<tree_index; ++k)
-				{
-					if (tree_columns[k] == WPRIORITY)
-					{
-						coor[WPRIORITY].exist = true;
-						coor[WPRIORITY].lines = height[i];
-						coor[WPRIORITY].cols = PRIORITY_LENGTH;
-						coor[WPRIORITY].y = y;
-						coor[WPRIORITY].x = x_tree;
-						x_tree += PRIORITY_LENGTH+1;
-					}
-					else if (tree_columns[k] == WCATEGORY)
-					{
-						coor[WCATEGORY].exist = true;
-						coor[WCATEGORY].lines = height[i];
-						coor[WCATEGORY].cols = CATEGORY_LENGTH;
-						coor[WCATEGORY].y = y;
-						coor[WCATEGORY].x = x_tree;
-						x_tree += CATEGORY_LENGTH+1;
-					}
-					else if (tree_columns[k] == WDEADLINE)
-					{
-						coor[WDEADLINE].exist = true;
-						coor[WDEADLINE].lines = height[i];
-						coor[WDEADLINE].cols = DEADLINE_LENGTH;
-						coor[WDEADLINE].y = y;
-						coor[WDEADLINE].x = x_tree;
-						x_tree += DEADLINE_LENGTH+1;
-					}
-					else if (tree_columns[k] == WTREE)
-					{
-						coor[WTREE].x = x_tree;
-						x_tree += coor[WTREE].cols+1;
-					}
-				}
-				if ((coor[WTREE].cols < 20) || (coor[WTREE].lines < 6))
-					return false;
+				if (!genWindowTree(coor, height[i], x, y)) return false;
 				break;
 			case WNULL:
 				if (rows[i-1].num_windows <= j)
@@ -824,22 +849,38 @@ bool Config::_genWindowCoor(int lines, int cols, window_coor coor[])
 				top_win = rows[i-1].windows[j].window;
 				if (top_win == WTREE)
 				{
-					coor[top_win].lines += height[i];
-					if (coor[WPRIORITY].exist)
-						coor[WPRIORITY].lines += height[i];
-					if (coor[WCATEGORY].exist)
-						coor[WCATEGORY].lines += height[i];
-					if (coor[WDEADLINE].exist)
-						coor[WDEADLINE].lines += height[i];
+					coor.coor[top_win].lines += height[i];
+					if (coor.exist[WPRIORITY])
+						coor.coor[WPRIORITY].lines += height[i];
+					if (coor.exist[WCATEGORY])
+						coor.coor[WCATEGORY].lines += height[i];
+					if (coor.exist[WDEADLINE])
+						coor.coor[WDEADLINE].lines += height[i];
 				}
 				else if (top_win != WBLANK)
-					coor[top_win].lines += height[i];
+					coor.coor[top_win].lines += height[i];
+				break;
+			case WVPIPE:
+				c.cols = width[j];
+				c.lines = height[i];
+				c.y = y; c.x = x;
+				if (c.cols != 1) return false;
+				coor.vpipe.push_back(c);
+				break;
+			case WHPIPE:
+				c.cols = width[j];
+				c.lines = height[i];
+				c.y = y;  c.x = x;
+				if (c.lines != 1) return false;
+				coor.hpipe.push_back(c);
+				break;
+			default:
 				break;
 			}
 		}
 	}
 
-	if (!coor[WTREE].exist) return false;
+	if (!coor.exist[WTREE]) return false;
 	return true;
 }
 

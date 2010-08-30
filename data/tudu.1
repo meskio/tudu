@@ -215,6 +215,8 @@ It is necessary in some shells that can not display bold characters.
 Whether to jump to the beginning (or end) when the end (or beginning) is reached.
 .IP "days_warn = number"
 How many days before the task is due will the deadline sport a warning remark.
+.IP "us_dates = yes|no"
+Use US date format (mm/dd/yyyy), by default it uses dd/mm/yyyy.
 .IP "sort_order = string"
 Default order in which tasks will be shown. Tasks are ordered by the 1st letter
 in the string, then by the 2nd, and so on.
@@ -256,8 +258,9 @@ Window positions are described by rows; each row with the syntax:
 row = [height]([width|]window[, [width|]window, ...])
 .RE
 The height and width can be the number of characters or a percentage followed by
-\fB%\fR. The possible windows are: help, tree, info, blank, text and schedule.
-The windows help and info don't need to have height, because is predefined as 1.
+\fB%\fR. The possible windows are: help, tree, info, blank, vpipe, hpipe text, 
+and schedule. The windows help, vpipe and info don't need to have height, neither 
+hpipe needs to have width, because is predefined as 1.
 TuDu will try to guess the non given information.
 
 Other options for the theme are:
@@ -269,7 +272,8 @@ The default colors for the text and background. The colors can be defined as
 \fB(r, g, b)\fR, where r, g and b are numbers from 0 to 1000, or with the words:
 black, red, green, yellow, blue, magenta, cyan, white, transparent.
 .IP "window = color_text, color_background"
-For each window can be defined it's own colors.
+For each window can be defined it's own colors. The colors of vpipe and hpipe are
+the same, and defined with the window name \fBpipe\fR.
 .IP "selected = color_text, color_background"
 Color for the items under the cursor.
 .IP "deadlineMark = color_text, color_background"

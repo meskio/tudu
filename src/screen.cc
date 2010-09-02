@@ -760,7 +760,11 @@ int Screen::treeLines()
 int Screen::taskLines(int depth, ToDo &t)
 {
 	int titleLength = t.getTitle().length();
-	return (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+	int titleLines = (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+	
+	if (titleLength && !(titleLength % (coor.coor[WTREE].cols-startTitle(depth))))
+			titleLines -= 1;
+	return titleLines;
 }
 
 Editor::return_t Screen::searchText(wstring& pattern, int cursorPos)

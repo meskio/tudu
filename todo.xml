@@ -2,6 +2,21 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
+		<title>v0.7.1</title>
+		<text>
+</text>
+		<todo done="yes" collapse="no">
+			<title>on title lenth == to screen_title_lenght uses two lines</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>if new task and old has text it didn't removes</title>
+			<text>
+</text>
+		</todo>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>more complex cathegories</title>
 		<text>Multi category support and not limitation on name length.
 
@@ -62,6 +77,11 @@ Should I create it? I think the answer is yes, but in your case could not be
 what you wanted.
 
 I'll think about it. Could be a nice feature.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>if sched is not done keep it as warn or something</title>
+		<text>
 </text>
 	</todo>
 </todo>

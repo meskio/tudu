@@ -204,9 +204,9 @@ void LineEditor::other()
  */
 void TitleEditor::initialize()
 {
-	textLines = text.length() / cols;
+	textLines = ((int)text.length()-1) / (int)cols;
 
-	for (unsigned int i = 0; i <= textLines; i++)
+	for (int i = 0; i <= textLines; i++)
 	{
 		wstring line(text.substr(i*cols, cols));
 		window->_move(y+i, x);
@@ -218,21 +218,21 @@ void TitleEditor::initialize()
 
 void TitleEditor::updateText()
 {
-	if (textLines != (text.length() / cols))
+	if (textLines != ((int)(text.length()-1) / (int)cols))
 	{
 		exit = true;
 		result = REDRAW;
 		return;
 	}
 
-	for (unsigned int i = 0; i <= textLines; i++)
+	for (int i = 0; i <= textLines; i++)
 	{
 		wstring line(text.substr(i*cols, cols));
 		window->_move(y+i, x);
 		window->_addstr(line);
 	}
 
-	for (unsigned int i = (text.length()-1 % cols); i < cols-1; i++)
+	for (unsigned int i = ((text.length()-1) % cols); i < cols-1; i++)
 			window->_addch(' ');
 	window->_move(y+cursorLine(), x+cursorCol());
 	window->_refresh();
@@ -246,7 +246,7 @@ void TitleEditor::up()
 
 void TitleEditor::down()
 {
-	if (cursorLine() < textLines)
+	if ((int)cursorLine() < textLines)
 	{
 		cursor += cols;
 		if (cursor > (int)text.length())

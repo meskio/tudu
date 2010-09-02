@@ -86,7 +86,7 @@ protected:
 class TitleEditor: public LineEditor
 {
 protected:
-	unsigned int textLines;
+	int textLines;
 
 	void initialize();
 	void updateText();

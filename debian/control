@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Ruben Pollan Bella <meskio@sindominio.net>
 Build-Depends: debhelper (>= 8.0.0), cdbs, libncursesw5-dev, libncurses5-dev
-Standards-Version: 3.8.3
+Standards-Version: 3.9.1
 Homepage: http://cauterized.net/~meskio/tudu/
 
 Package: tudu

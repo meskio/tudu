@@ -162,6 +162,7 @@ void Interface::drawTodo()
 
 	cursor = aux;
 	cursor_line = line;
+	screen.drawText(cursor->getText());
 	screen.drawSched(sched, &(*cursor));
 }
 

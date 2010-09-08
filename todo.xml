@@ -10,7 +10,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>if new task and old has text it didn't removes</title>
 			<text>
 </text>

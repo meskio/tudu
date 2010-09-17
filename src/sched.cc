@@ -108,14 +108,13 @@ void Sched::del_recursive(pToDo todo)
 	sched.remove(todo);
 }
 
-int Sched::get(Date& from, Date& to, sched_l& list)
+int Sched::get(sched_l& list)
 {
 	sched_l::iterator i;
 	int num_scheds = 0;
 
 	list.clear();
-	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < from); i++);
-	for (;  (i != sched.end()) && ((*i)->sched() < to); i++)
+	for (i = sched.begin();  (i != sched.end()); i++)
 	{
 		num_scheds++;
 		list.push_back(*i);

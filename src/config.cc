@@ -143,6 +143,9 @@ void Config::getGeneralOption(string& option, string& value)
 	if ("loop_move" == option)
 		loop_move = isYes(value);
 
+	if ("old_sched" == option)
+		old_sched = isYes(value);
+
 	if ("days_warn" == option)
 		days_warn_deadline = atoi(value.c_str());
 
@@ -421,8 +424,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_DEFAULT;
 	else if ("selected" == option)
 		color_index = CT_SELECTED;
-	else if ("deadlineMark" == option)
-		color_index = CT_DEADLINE_MARK;
+	else if ("warn" == option)
+		color_index = CT_WARN;
 	else if ("pipe" == option)
 		color_index = CT_PIPE;
 	else if ("help" == option)
@@ -563,6 +566,11 @@ bool Config::getBoldParent()
 bool Config::getLoopMove()
 {
 	return loop_move;
+}
+
+bool Config::getOldSched()
+{
+	return old_sched;
 }
 
 int Config::getDaysWarn()

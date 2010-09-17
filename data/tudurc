@@ -14,6 +14,7 @@ days_warn    = 2   # how many days before the task is due
                    # will the deadline sport a warning remark
 us_dates     = no  # use US date format (mm/dd/yyyy). 
                    # by default it uses dd/mm/yyyy
+old_sched    = yes # display past sched task on the scheduler 
 
 # The default order in which tasks will be shown.
 # Tasks are ordered by the 1st letter in the string, then by the 2nd, and so on.
@@ -107,7 +108,7 @@ row = (info)
 # where 'r', 'g' and 'b' are numbers from 0 to 1000.
 color = white, transparent # Default colors
 selected = green, transparent
-deadlineMark = red, transparent
+warn = red, transparent
 pipe = white, blue
 help = white, blue
 # tree =

@@ -66,7 +66,7 @@ typedef struct {
 enum color_theme {
 	CT_DEFAULT,
 	CT_SELECTED,
-	CT_DEADLINE_MARK,
+	CT_WARN,
 	CT_HELP,
 	CT_TREE,
 	CT_TEXT,
@@ -97,6 +97,7 @@ public:
 	bool getVisualTree();
 	bool getBoldParent();
 	bool getLoopMove();
+	bool getOldSched();
 	int getDaysWarn();
 	bool useUSDates();
 	char* getSortOrder();
@@ -132,6 +133,7 @@ private:
 	int  days_warn_deadline;
 	bool us_dates;
 	bool loop_move;
+	bool old_sched;
 	char sort_order[16];
 	char editor[64];
 	/* themes */

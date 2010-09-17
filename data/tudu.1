@@ -211,12 +211,17 @@ Whether to hide the percentage display on each task.
 .IP "visual_tree = yes|no"
 Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks.
 It is necessary in some shells that can not display bold characters.
+.IP "bold_parent = yes|no"
+Hilight the parents with children with bold letters.
 .IP "loop_move = yes|no"
 Whether to jump to the beginning (or end) when the end (or beginning) is reached.
 .IP "days_warn = number"
 How many days before the task is due will the deadline sport a warning remark.
 .IP "us_dates = yes|no"
 Use US date format (mm/dd/yyyy), by default it uses dd/mm/yyyy.
+.IP "old_sched = yes|no"
+Whether display or not past scheduled tasks on the scheduler. In case of yes the
+scheduled tasks for days already past will be displayed on warn color.
 .IP "sort_order = string"
 Default order in which tasks will be shown. Tasks are ordered by the 1st letter
 in the string, then by the 2nd, and so on.
@@ -276,8 +281,9 @@ For each window can be defined it's own colors. The colors of vpipe and hpipe ar
 the same, and defined with the window name \fBpipe\fR.
 .IP "selected = color_text, color_background"
 Color for the items under the cursor.
-.IP "deadlineMark = color_text, color_background"
-Color for the mark of deadline soon.
+.IP "warn = color_text, color_background"
+Color for the warnings, like the mark of deadline soon or the color of the task
+scheduled on the past.
 .SH FILES
 .PP
 .IP "~/.tudurc"

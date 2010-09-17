@@ -15,6 +15,21 @@
 			<text>
 </text>
 		</todo>
+		<todo done="no" collapse="no">
+			<title>detect ncurses.h</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>updated manual</title>
+			<text>
+</text>
+		</todo>
+		<todo done="yes" collapse="no">
+			<title>if sched is not done keep it as warn or something</title>
+			<text>
+</text>
+		</todo>
 	</todo>
 	<todo done="no" collapse="no">
 		<title>more complex cathegories</title>
@@ -77,11 +92,6 @@ Should I create it? I think the answer is yes, but in your case could not be
 what you wanted.
 
 I'll think about it. Could be a nice feature.
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>if sched is not done keep it as warn or something</title>
-		<text>
 </text>
 	</todo>
 </todo>

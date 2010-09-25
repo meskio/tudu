@@ -512,9 +512,6 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 	int line = 0;
 	wschedule->_erase();
 	wschedule->_move(0,0);
-	char str[30];
-	sprintf(str, "%d", coor.coor[WSCHEDULE].lines);
-	infoMsg(str);
 	for (sched_l::iterator i = sched_list.begin(); 
 			(i != sched_list.end()) && (line < coor.coor[WSCHEDULE].lines); i++)
 	{

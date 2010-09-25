@@ -432,8 +432,9 @@ void Interface::move_down()
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
-	cursor_line += screen.taskLines(cursor.depth(), *cursor);
-	cursor.addChild(t);
+	iToDo aux = cursor;
+	aux.addChild(t);
+	while (aux != cursor) next();
 	drawTodo();
 }
 
@@ -481,8 +482,9 @@ void Interface::paste()
 {
 	if (copied)
 	{
-		cursor_line += screen.taskLines(cursor.depth(), *cursor);
-		cursor.addChild(copied);
+		iToDo aux = cursor;
+		aux.addChild(copied);
+		while (aux != cursor) next();
 		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
@@ -602,8 +604,9 @@ void Interface::setCategory()
 
 void Interface::addLine()
 {
-	cursor_line += screen.taskLines(cursor.depth(), *cursor);
-	cursor.addChild(new ToDo());
+	iToDo aux = cursor;
+	aux.addChild(new ToDo());
+	while (aux != cursor) next();
 	inherit();
 	drawTodo();
 	wstring title;

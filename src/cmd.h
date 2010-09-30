@@ -19,7 +19,7 @@
 #ifndef CMD_H
 #define CMD_H
 
-#include "defs.h"
+#include "includes.h"
 class Cmd;
 #include "interface.h"
 #include "data.h"

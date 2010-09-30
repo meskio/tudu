@@ -20,7 +20,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "defs.h"
+#include "includes.h"
 #include "window.h"
 
 struct key_action;

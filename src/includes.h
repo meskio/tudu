@@ -17,31 +17,51 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef DATE_H
-#define DATE_H
+#ifndef DEFS_H
+#define DEFS_H
 
-#include "includes.h"
+#include "defs.h"
 
-class Date
-{
-public:
-	Date(int day = 1, int month = 1, int year = 1900);
+/* include curses */
+#define _XOPEN_SOURCE_EXTENDED
+#ifdef HAVE_XCURSES_H
+#include <xcurses.h>
+#elif defined(HAVE_NCURSESW_CURSES_H)
+#include <ncursesw/curses.h>
+#elif defined(HAVE_NCURSES_CURSES_H)
+#include <ncurses/curses.h>
+#else
+#include <curses.h>
+#endif
 
-	int& day(int d = 0);
-	int& month(int m = 0);
-	int& year(int y = 0);
-	void setToday();
-	bool valid(); /* if valid date if year == 1900 is invalid */
-	bool correct(); /* if this date exist */
-	int daysLeft();
-	Date operator-(int days);
-	Date operator+(int days);
-	bool operator<(Date d);
-	bool operator>(Date d);
-	bool operator!=(Date d);
-	bool operator==(Date d);
-protected:
-	int _day, _month, _year;
-};
+/* system includes */
+#include <string>
+#include <vector>
+#include <map>
+#include <fstream>
+#include <list>
+#include <stack>
+#include <algorithm>
+#include <set>
+#include <ctime>
+#include <cstring>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <locale>
+#include <cwchar>
+#include <clocale>
+#include <climits>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <cerrno>
+
+using namespace std;
 
 #endif

@@ -20,7 +20,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "defs.h"
+#include "includes.h"
 #include "window.h"
 
 class Text

@@ -20,7 +20,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "defs.h"
+#include "includes.h"
 
 typedef struct {
 	int y, x;

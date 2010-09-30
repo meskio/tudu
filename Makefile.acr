@@ -1,0 +1,38 @@
+VPATH=@VPATH@
+PKGNAME=@PKGNAME@
+VERSION=@VERSION@
+.PHONY: all install uninstall dist clean mrproper
+
+all:
+	cd src && ${MAKE}
+	cd data && ${MAKE}
+
+install: all
+	cd src && ${MAKE} install
+	cd data && ${MAKE} install
+
+clean:
+	cd src && ${MAKE} clean
+	cd data && ${MAKE} clean
+
+mrproper: clean
+	cd src && ${MAKE} mrproper
+	cd data && ${MAKE} mrproper
+	rm Makefile
+
+uninstall:
+	cd src && ${MAKE} uninstall
+	cd data && ${MAKE} uninstall
+
+dist: mrproper
+	cd ..  && \
+	cp -r ${PKGNAME} ${PKGNAME}-${VERSION} && \
+	cd ${PKGNAME}-${VERSION} && \
+	rm -rf .git .vimrc \
+	rm -rf _*.xml _*.xml.bkp .*.xml_lock \
+	rm -rf *.c *.jpg *.png \
+	acr
+	cd ..  && \
+	tar czvf ${PKGNAME}-${VERSION}.tar.gz ${PKGNAME}-${VERSION} && \
+	echo "dist done"
+

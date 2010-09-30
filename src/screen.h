@@ -20,7 +20,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "defs.h"
+#include "includes.h"
 #include "window.h"
 #include "text.h"
 #include "data.h"

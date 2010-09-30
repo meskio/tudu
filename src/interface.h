@@ -20,7 +20,7 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include "defs.h"
+#include "includes.h"
 class Interface;
 #include "data.h"
 #include "sched.h"

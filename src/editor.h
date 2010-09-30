@@ -20,7 +20,7 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include "defs.h"
+#include "includes.h"
 #include "data.h"
 #include "window.h"
 

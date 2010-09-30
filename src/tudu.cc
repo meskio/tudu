@@ -18,7 +18,7 @@
  **************************************************************************/
 
 
-#include "defs.h"
+#include "includes.h"
 extern int errno;
 #include "interface.h"
 #include "screen.h"
@@ -26,18 +26,6 @@ extern int errno;
 #include "sched.h"
 #include "parser.h"
 #include "config.h"
-
-#ifndef SHARE_DIR
-#define SHARE_DIR "/usr/local/share/tudu"
-#endif
-
-#ifndef ETC_DIR
-#define ETC_DIR "/usr/local/etc"
-#endif
-
-#define VERSION "TuDu 0.7 (2010)"
-#define WELCOME_FILE SHARE_DIR"/welcome.xml"
-#define CONFIG_FILE ETC_DIR"/tudurc"
 
 #define usage() \
 	cout << "Usage: " << argv[0] << " [options]" << endl; \
@@ -48,14 +36,14 @@ extern int errno;
 	cout << "The default config file is in ~/.tudurc" << endl;
 
 #define version() \
-	cout << VERSION << endl; \
+	cout << VERSION_STR << endl; \
 	cout << "TuDu Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
 
 #define copyright() \
-	cout << VERSION << endl; \
+	cout << VERSION_STR << endl; \
 	cout << "Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
  	cout << "TuDu is free software; you can redistribute it and/or modify" << endl; \
  	cout << "it under the terms of the GNU General Public License as published by" << endl; \

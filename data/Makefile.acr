@@ -12,12 +12,12 @@ all:
 
 install:
 	mkdir -p $(DATADIR)/$(PKGNAME)
-	$(INSTALL_DATA) $(VPATH)/tudu.dtd $(DATADIR)/$(PKGNAME)
-	$(INSTALL_DATA) $(VPATH)/welcome.xml $(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) tudu.dtd $(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) welcome.xml $(DATADIR)/$(PKGNAME)
 	mkdir -p $(SYSCONFDIR)
-	$(INSTALL_DATA) $(VPATH)/tudurc $(SYSCONFDIR)
+	$(INSTALL_DATA) tudurc $(SYSCONFDIR)
 	mkdir -p $(MANDIR)/man1
-	$(INSTALL_DATA) $(VPATH)/tudu.1 $(MANDIR)/man1
+	$(INSTALL_DATA) tudu.1 $(MANDIR)/man1
 
 clean:
 

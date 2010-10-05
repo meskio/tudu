@@ -720,7 +720,9 @@ void Interface::editSched()
 	if ((save == Editor::SAVED) && date.correct())
 		cursor->sched() = date;
 
-	sched.add(&(*cursor));
+	if (cursor->sched().valid())
+		sched.add(&(*cursor));
+
 	screen.drawSched(sched, &(*cursor));
 }
 

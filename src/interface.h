@@ -76,6 +76,10 @@ private:
 	void right();
 	void up();
 	void down();
+	void prevPage();
+	void nextPage();
+	void home();
+	void end();
 	void move_up();
 	void move_down();
 	void done();

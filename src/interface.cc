@@ -41,7 +41,7 @@ Interface::~Interface()
 
 void Interface::main()
 {
-	int key; //TODO: migrate to utf
+	wint_t key;
 	string action;
 
 	while (cursor.out());
@@ -50,15 +50,22 @@ void Interface::main()
 
 	while (true) 
 	{
-		key = getch();
-		screen.infoClear();
-		if (KEY_RESIZE == key) resizeTerm();
-		if (KEY_LEFT == key) left();
-		if (KEY_RIGHT == key) right();
-		if (KEY_DOWN  == key) down();
-		if (KEY_UP == key) up();
-		if (config.getAction(key, action))
+		if (get_wch(&key) == KEY_CODE_YES)
 		{
+			screen.infoClear();
+			if (KEY_RESIZE == key) resizeTerm();
+			if (KEY_LEFT == key) left();
+			if (KEY_RIGHT == key) right();
+			if (KEY_DOWN  == key) down();
+			if (KEY_UP == key) up();
+			if (KEY_PPAGE == key) prevPage();
+			if (KEY_NPAGE == key) nextPage();
+			if (KEY_HOME == key) home();
+			if (KEY_END == key) end();
+		}
+		else if (config.getAction(key, action))
+		{
+			screen.infoClear();
 			if ("quit" == action)
 			{
 				if (writer.save())
@@ -414,6 +421,48 @@ void Interface::down()
 		prev();
 		drawTodo();
 	}
+}
+
+void Interface::prevPage()
+{
+	int treeLines = screen.treeLines();
+	while (cursor_line >= 0)
+		if (!prev()) break;
+	iToDo aux = cursor;
+	cursor_line = treeLines - 1;
+	while (cursor_line >= 0)
+		if (!prev()) break;
+	cursor = aux;
+	cursor_line = treeLines - cursor_line;
+	drawTodo();
+}
+
+void Interface::nextPage()
+{
+	int treeLines = screen.treeLines();
+	while (cursor_line < treeLines)
+		if (!next()) break;
+	iToDo aux = cursor;
+	cursor_line = 0;
+	while (cursor_line < treeLines)
+		if (!next()) break;
+	cursor = aux;
+	cursor_line = treeLines - cursor_line;
+	drawTodo();
+}
+
+void Interface::home()
+{
+	eraseCursor();
+	while (prev());
+	drawCursor();
+}
+
+void Interface::end()
+{
+	eraseCursor();
+	while (next());
+	drawCursor();
 }
 
 void Interface::move_up()

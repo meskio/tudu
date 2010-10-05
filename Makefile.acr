@@ -28,7 +28,7 @@ dist: mrproper
 	cd ..  && \
 	cp -r ${PKGNAME} ${PKGNAME}-${VERSION} && \
 	cd ${PKGNAME}-${VERSION} && \
-	rm -rf .git .vimrc \
+	rm -rf .git .gitignore .vimrc \
 	rm -rf _*.xml _*.xml.bkp .*.xml_lock \
 	rm -rf *.c *.jpg *.png \
 	acr

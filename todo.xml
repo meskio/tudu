@@ -15,7 +15,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>detect ncurses.h</title>
 			<text>
 </text>
@@ -32,6 +32,11 @@
 		</todo>
 		<todo done="yes" collapse="no">
 			<title>creating a task from a one with children scrolls up</title>
+			<text>
+</text>
+		</todo>
+		<todo done="no" collapse="no">
+			<title>editing sched if exit without save it prints the task</title>
 			<text>
 </text>
 		</todo>

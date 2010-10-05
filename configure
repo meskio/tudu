@@ -354,7 +354,7 @@ else
 	echo no
 fi
 if [ "$WIDEC_CURSES" = "0" ]; then
-case "$undefined_variable" in 0|"") echo ; echo "ERROR: There is wide character support on curses!" >&2 ; echo ; exit 1 ;; esac; fi
+case "$undefined_variable" in 0|"") echo ; echo "ERROR: There is no wide character support on curses!" >&2 ; echo ; exit 1 ;; esac; fi
 check_include HAVE_STRING string 1
 
 check_include HAVE_VECTOR vector 1

@@ -42,7 +42,7 @@ eval \$${COMPILER} ${CXXFLAGS} ${LDFLAGS} test.c >/dev/null 2>&1 \
 if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi \
 rm test.c
 <<EOF
-IFNOT WIDEC_CURSES { DIENOW There is wide character support on curses! ; }
+IFNOT WIDEC_CURSES { DIENOW There is no wide character support on curses! ; }
 
 
 // Test all the includes

@@ -440,8 +440,13 @@ void Interface::prevPage()
 void Interface::nextPage()
 {
 	int treeLines = screen.treeLines();
+	eraseCursor();
 	while (cursor_line < treeLines)
-		if (!next()) break;
+		if (!next()) {
+			drawCursor();
+			return;
+		}
+
 	iToDo aux = cursor;
 	cursor_line = 0;
 	while (cursor_line < treeLines)

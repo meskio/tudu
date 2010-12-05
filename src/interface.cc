@@ -329,7 +329,7 @@ void Interface::inherit()
 	{
 		iToDo father = cursor;
 		father.out();
-		cursor->setCategory(father->getCategory());
+		cursor->setCategories(father->getCategories());
 	}
 	else if (hidden_categories.count(L""))
 	{

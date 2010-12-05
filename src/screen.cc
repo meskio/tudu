@@ -721,7 +721,7 @@ Editor::return_t Screen::setCategory(int line, wstring& category, int cursorPos)
 	categoryEditor.getText() = category;
 	if (cursorPos >= 0)
 		categoryEditor.cursorPos() = cursorPos;
-	save = categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH);
+	save = categoryEditor.edit(*wcategory, line, 0, config.getCategoryLength());
 	category = categoryEditor.getText();
 	wcategory->_attroff(COLOR_SELECTED);
 	return save;

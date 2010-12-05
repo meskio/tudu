@@ -82,7 +82,7 @@ wstring ToDo::getCategory()
 	if (_category.empty())
 		return L"";
 	else
-		return *(_category.begin()); //FIXME
+		return *(_category.begin());
 }
 
 set<wstring>& ToDo::getCategories()

@@ -32,7 +32,6 @@ struct key_action {
 typedef map<string,string> action_list;
 
 #define PRIORITY_LENGTH 1
-#define CATEGORY_LENGTH 7
 #define DEADLINE_LENGTH 12
 #define HELP_MIN_WIDTH 67
 
@@ -102,6 +101,7 @@ public:
 	bool useUSDates();
 	string& getSortOrder();
 	char* getEditor();
+	int getCategoryLength();
 	void genWindowCoor(int lines, int cols, windows_defs& coor);
 	void getColorList(color_t* color_list[], short int& length);
 	void getColorPair(short int win, short int& foreground, short int& background);
@@ -141,6 +141,7 @@ private:
 	theme_row rows[MAX_THEME_ROWS];
 	int tree_columns[MAX_THEME_TREECOLS];
 	int tree_index;
+	int category_length;
 	color_pair_t color_win[NUM_CT];
 	color_t colors[NUM_CT*2];
 	short int num_colors;
@@ -154,6 +155,7 @@ private:
 	void getThemeRow(string& value);
 	void getThemeWindow(string fmt, theme_window& w);
 	void getThemeTree(string& value);
+	void getThemeCategoryLength(string& value);
 	void getThemeColors(string& option, string& value);
 	short int getThemeColor(string color);
 	int getContext(string& str);

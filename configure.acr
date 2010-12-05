@@ -16,11 +16,13 @@ SRCS += tudu.cc data.cc editor.cc interface.cc window.cc text.cc parser.cc
 CHKINC xcurses.h
 CHKINC ncursesw/curses.h
 CHKINC ncurses/curses.h
+CHKINC ncurses.h
 CHKINC curses.h
 
 IF HAVE_XCURSES_H { CURSES_INCLUDE = xcurses.h ; }
 IF HAVE_NCURSESW_CURSES_H { CURSES_INCLUDE ?= ncursesw/curses.h ; }
 IF HAVE_NCURSES_CURSES_H { CURSES_INCLUDE ?= ncurses/curses.h ; }
+IF HAVE_NCURSES_H { CURSES_INCLUDE ?= ncurses.h ; }
 IF HAVE_CURSES_H { CURSES_INCLUDE ?= curses.h ; }
 IFNULL CURSES_INCLUDE { DIENOW There is no curses installed! ; }
 

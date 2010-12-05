@@ -70,22 +70,22 @@ int Window::_addstr(int y, int x, const wchar_t *str)
 	return mvwaddwstr(win, y, x, str);
 }
 
-int Window::_addstr(string &str)
+int Window::_addstr(const string &str)
 {
 	return waddstr(win, str.c_str());
 }
 
-int Window::_addstr(wstring &str)
+int Window::_addstr(const wstring &str)
 {
 	return waddwstr(win, str.c_str());
 }
 
-int Window::_addstr(int y, int x, string &str)
+int Window::_addstr(int y, int x, const string &str)
 {
 	return mvwaddstr(win, y, x,  str.c_str());
 }
 
-int Window::_addstr(int y, int x, wstring &str)
+int Window::_addstr(int y, int x, const wstring &str)
 {
 	return mvwaddwstr(win, y, x,  str.c_str());
 }

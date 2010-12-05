@@ -139,15 +139,20 @@ void Editor::enter()
  */
 void LineEditor::updateText()
 {
-	if (cols <= text.length())
-		text.erase(cols);
-	if (cursor >= (int) cols)
-		cursor = cols-1;
+	static int offset = 0;
+
+	if (cols > text.length())
+		offset = 0;
+	if (cursor >= (int)cols+offset)
+		offset = cursor-cols+1;
+	if (cursor < offset)
+		offset = cursor;
+
 	window->_move(y, x);
-	window->_addstr(text);
-	for (unsigned int i = text.length(); i < cols; i++) 
+	window->_addstr(text.substr(offset, cols));
+	for (unsigned int i = text.length()-offset; i < cols; i++) 
 			window->_addch(' ');
-	window->_move(y, x+cursor);
+	window->_move(y, x+cursor-offset);
 	window->_refresh();
 }
 

@@ -682,7 +682,7 @@ void Interface::setPriority()
 
 void Interface::setCategory()
 {
-	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
+	screen.infoMsg("Editing categories. Separate multiple categories with ','. Press ENTER to save or ESC to abort edit");
 
 	Editor::return_t save;
 	wstring category = cursor->getCategoriesStr();

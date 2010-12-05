@@ -40,7 +40,7 @@
 			<text>
 </text>
 		</todo>
-		<todo done="no" collapse="no">
+		<todo done="yes" collapse="no">
 			<title>more complex cathegories</title>
 			<text>Multi category support and not limitation on name length.
 

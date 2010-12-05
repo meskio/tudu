@@ -77,41 +77,47 @@ int& ToDo::priority()
 	return _priority;
 }
 
-wstring ToDo::getCategory()
-{
-	if (_category.empty())
-		return L"";
-	else
-		return *(_category.begin());
-}
-
 set<wstring>& ToDo::getCategories()
 {
 	return _category;
 }
 
-void ToDo::addCategory(wstring& c)
+wstring ToDo::getCategoriesStr()
 {
-	_category.insert(c);
+	wstring cat(L"");
+	for (set<wstring>::iterator it = _category.begin();
+	     it != _category.end(); it++)
+	{
+		cat += (*it);
+		if (it != --(_category.end()))
+		   	cat += L',';
+	}
+
+	return cat;
 }
 
-void ToDo::setCategory(wstring c)
+void ToDo::addCategory(const wstring& c)
 {
-
-	if (c != NONE_CATEGORY)
-	{
-	   	categories.insert(c);
-		_category.insert(c);
-	}
-	else
-	{
-		_category.empty();
-	}
+	_category.insert(c);
 }
 
 void ToDo::setCategories(set<wstring>& c)
 {
 	_category = c;
+}
+
+void ToDo::setCategoriesStr(wstring& c)
+{
+	_category.clear();
+	if (c.empty()) return;
+
+	size_t posEnd, posStart = 0;
+	while ((posEnd = c.find(L',', posStart)) != wstring::npos)
+	{
+		_category.insert(c.substr(posStart, posEnd-posStart));
+		posStart = posEnd+1;
+	}
+	_category.insert(c.substr(posStart));
 }
 
 bool ToDo::haveChild()
@@ -269,7 +275,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->getCategory()<t2->getCategory());
+						res = (t1->getCategoriesStr()<t2->getCategoriesStr());
 					out = true;
 				}
 				break;
@@ -281,7 +287,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->getCategory()>t2->getCategory());
+						res = (t1->getCategoriesStr()>t2->getCategoriesStr());
 					out = true;
 				}
 				break;

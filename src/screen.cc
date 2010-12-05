@@ -434,7 +434,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* draw category */
 	if (coor.exist[WCATEGORY])
 	{
-		wstring category = t.getCategory().substr(0, config.getCategoryLength());
+		wstring category = t.getCategoriesStr().substr(0, config.getCategoryLength());
 		if (isCursor)
 			wcategory->_attron(COLOR_SELECTED);
 		else

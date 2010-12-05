@@ -29,7 +29,7 @@ typedef list<pToDo>::iterator cursor_t;
 #include "date.h"
 
 extern set<wstring> categories;
-#define NONE_CATEGORY L"NONE" //TODO: del it
+#define NONE_CATEGORY L"NONE"
 
 struct child_info {
 	int percent;
@@ -55,11 +55,11 @@ public:
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	wstring getCategory(); //TODO: del it
 	set<wstring>& getCategories();
-	void addCategory(wstring& c);
-	void setCategory(wstring c); //TODO: del it
+	wstring getCategoriesStr();
+	void addCategory(const wstring& c);
 	void setCategories(set<wstring>& c);
+	void setCategoriesStr(wstring& c);
 	bool haveChild();
 	child_info getChildInfo();
 	bool& getCollapse(); // real collapse

@@ -337,8 +337,8 @@ void Interface::inherit()
 		for (cat = categories.begin(); 
 			(cat != categories.end()) && hidden_categories.count(*cat);
 			cat++);
-		if (cat != categories.end()) cursor->setCategory(*cat);
-		else cursor->setCategory(NONE_CATEGORY);
+		if (cat != categories.end()) cursor->addCategory(*cat);
+		else cursor->addCategory(NONE_CATEGORY);
 	}
 }
 
@@ -685,7 +685,7 @@ void Interface::setCategory()
 	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
 
 	Editor::return_t save;
-	wstring category = cursor->getCategory();
+	wstring category = cursor->getCategoriesStr();
 	save = screen.setCategory(cursor_line, category, category.length());
 	while (save == Editor::RESIZE)
 	{
@@ -694,7 +694,7 @@ void Interface::setCategory()
 	}
 
 	if (save == Editor::SAVED)
-		cursor->setCategory(category);
+		cursor->setCategoriesStr(category);
 
 	screen.infoClear();
 	drawTodo();
@@ -915,7 +915,7 @@ void Interface::command_line()
 		{
 			if (isHide(cursor)) up();
 			/* destroy empty with NONE category */
-			if ((cursor->getCategory() == NONE_CATEGORY) && cursor->getTitle().empty())
+			if ((cursor->getCategories().count(NONE_CATEGORY)) && cursor->getTitle().empty())
 					del();
 			drawTodo();
 		}

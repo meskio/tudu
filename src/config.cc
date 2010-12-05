@@ -25,10 +25,12 @@
  * Context in the config file
  * define with [ keys ]
  */
-#define C_NULL 0
-#define C_KEYS 1
-#define C_GENERAL 2
-#define C_THEME 3
+enum context_type {
+	C_NULL,
+	C_KEYS,
+	C_GENERAL,
+	C_THEME
+};
 
 Config::Config()
 {

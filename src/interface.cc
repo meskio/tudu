@@ -302,13 +302,24 @@ bool Interface::isHide(iToDo& todo)
 {
 	if (todo.end()) return true;
 
-	bool hide;
 	/* if is done */
-	hide = (config.getHideDone() && todo->done());
-	/* if is in hidden category */
-	hide = hide || (hidden_categories.count(todo->getCategory()));
+	bool hideDone = (config.getHideDone() && todo->done());
 
-	return hide;
+	/* if is in hidden category */
+	bool hideCat = false;
+	set<wstring>& categories = todo->getCategories();
+	for (set<wstring>::iterator it = categories.begin();
+	     it != categories.end(); it++)
+	{
+		if (!hidden_categories.count(*it))
+		{
+			hideCat = false;
+			break;
+		}
+		hideCat = true;
+	}
+		
+	return hideDone || hideCat;
 }
 
 void Interface::inherit()

@@ -109,6 +109,11 @@ void ToDo::setCategory(wstring c)
 	}
 }
 
+void ToDo::setCategories(set<wstring>& c)
+{
+	_category = c;
+}
+
 bool ToDo::haveChild()
 {
 	return !childs.empty();

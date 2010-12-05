@@ -55,10 +55,11 @@ public:
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	wstring getCategory();
+	wstring getCategory(); //TODO: del it
 	set<wstring>& getCategories();
 	void addCategory(wstring& c);
 	void setCategory(wstring c); //TODO: del it
+	void setCategories(set<wstring>& c);
 	bool haveChild();
 	child_info getChildInfo();
 	bool& getCollapse(); // real collapse

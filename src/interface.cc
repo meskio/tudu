@@ -261,6 +261,24 @@ bool Interface::fitCursor()
 		while (aux != cursor) next();
 		if (cursor_line != line) return true;
 	}
+	else
+	{
+		iToDo aux = cursor;
+		int line = cursor_line;
+		while (cursor_line != 0)
+			if (!prev()) break;
+		if (cursor_line == 0)
+		{
+			cursor = aux;
+			cursor_line = line;
+		}
+		else
+		{
+			cursor_line = 0;
+			while (aux != cursor) next();
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -515,13 +533,29 @@ void Interface::del()
 void Interface::delDeadline()
 {
 	cursor->deadline().year() = 1900;
-	screen.deadlineClear(cursor_line);
+	if ((string::npos != sortOrder.find('l')) ||
+	    (string::npos != sortOrder.find('L')))
+	{
+		drawTodo();
+	}
+	else
+	{
+		screen.deadlineClear(cursor_line);
+	}
 }
 
 void Interface::delPriority()
 {
 	cursor->priority() = 0;
-	screen.priorityClear(cursor_line);
+	if ((string::npos != sortOrder.find('p')) ||
+	    (string::npos != sortOrder.find('P')))
+	{
+		drawTodo();
+	}
+	else
+	{
+		screen.priorityClear(cursor_line);
+	}
 }
 
 void Interface::delSched()

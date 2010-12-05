@@ -134,7 +134,7 @@ bool& ToDo::actCollapse()
 	return cursor_in;
 }
 
-char cmpOrder[16];
+string cmpOrder;
 bool cmp(pToDo t1, pToDo t2)
 {
 	bool res = true;
@@ -521,19 +521,11 @@ int iToDo::depth()
 	return path.size();
 }
 
-void iToDo::sort(char order[])
+void iToDo::sort(string order)
 {
-	strncpy(cmpOrder, order, 15);
-	cmpOrder[15] = '\0';
-	for (int i = 0; i<15; i++)
-	{
-		if (cmpOrder[i] == '\0')
-		{
-			cmpOrder[i] = 'u';
-			cmpOrder[i+1] = '\0';
-			break;
-		}
-	}
+	cmpOrder = order;
+	if (cmpOrder.find('u') == string::npos)
+		cmpOrder += 'u';
 	root->_sort();
 }
 

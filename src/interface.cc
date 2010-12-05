@@ -27,8 +27,7 @@ Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd 
 	cmd.get_interface(this);
 	search_pattern = L"";
 
-	strcpy(sortOrder, " ");
-	strncat(sortOrder, config.getSortOrder(), 16);
+	sortOrder = config.getSortOrder();
 	cursor.sort(sortOrder);
 	while (prev());
 	cursor_line = 0;
@@ -923,73 +922,73 @@ void Interface::search_prev()
 
 void Interface::sortByTitle()
 {
-	sortOrder[0] = 't';
+	sortOrder = 't' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDone()
 {
-	sortOrder[0] = 'd';
+	sortOrder = 'd' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDeadline()
 {
-	sortOrder[0] = 'l';
+	sortOrder = 'l' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByPriority()
 {
-	sortOrder[0] = 'p';
+	sortOrder = 'p' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByCategory()
 {
-	sortOrder[0] = 'c';
+	sortOrder = 'c' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByUser()
 {
-	sortOrder[0] = 'u';
+	sortOrder = 'u' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevTitle()
 {
-	sortOrder[0] = 'T';
+	sortOrder = 'T' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDone()
 {
-	sortOrder[0] = 'D';
+	sortOrder = 'D' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDeadline()
 {
-	sortOrder[0] = 'L';
+	sortOrder = 'L' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevPriority()
 {
-	sortOrder[0] = 'P';
+	sortOrder = 'P' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevCategory()
 {
-	sortOrder[0] = 'C';
+	sortOrder = 'C' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevUser()
 {
-	sortOrder[0] = 'U';
+	sortOrder = 'U' + sortOrder;
 	drawTodo();
 }
 

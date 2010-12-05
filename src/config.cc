@@ -41,7 +41,7 @@ bool Config::load(const char* path)
 	ifstream file(path);
 	if (!file) return false;
 
-	sort_order[0] = '\0';
+	sort_order = "";
 	editor[0] = '\0';
 	while (!file.eof())
 	{
@@ -153,7 +153,7 @@ void Config::getGeneralOption(string& option, string& value)
 		us_dates = isYes(value);
 
 	if ("sort_order" == option)
-		strncpy(sort_order, value.c_str(), 16);
+		sort_order = value.c_str();
 
 	if ("editor" == option)
 		strncpy(editor, value.c_str(), 16);
@@ -583,7 +583,7 @@ bool Config::useUSDates()
 	return us_dates;
 }
 
-char* Config::getSortOrder()
+string& Config::getSortOrder()
 {
 	return sort_order;
 }

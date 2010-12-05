@@ -100,7 +100,7 @@ public:
 	bool getOldSched();
 	int getDaysWarn();
 	bool useUSDates();
-	char* getSortOrder();
+	string& getSortOrder();
 	char* getEditor();
 	void genWindowCoor(int lines, int cols, windows_defs& coor);
 	void getColorList(color_t* color_list[], short int& length);
@@ -134,7 +134,7 @@ private:
 	bool us_dates;
 	bool loop_move;
 	bool old_sched;
-	char sort_order[16];
+	string sort_order;
 	char editor[64];
 	/* themes */
 	int row_index;

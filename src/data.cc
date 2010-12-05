@@ -79,14 +79,34 @@ int& ToDo::priority()
 
 wstring ToDo::getCategory()
 {
+	if (_category.empty())
+		return L"";
+	else
+		return *(_category.begin()); //FIXME
+}
+
+set<wstring>& ToDo::getCategories()
+{
 	return _category;
+}
+
+void ToDo::addCategory(wstring& c)
+{
+	_category.insert(c);
 }
 
 void ToDo::setCategory(wstring c)
 {
-	_category = c;
 
-	if (c != NONE_CATEGORY) categories.insert(c);
+	if (c != NONE_CATEGORY)
+	{
+	   	categories.insert(c);
+		_category.insert(c);
+	}
+	else
+	{
+		_category.empty();
+	}
 }
 
 bool ToDo::haveChild()
@@ -244,7 +264,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->_category<t2->_category);
+						res = (t1->getCategory()<t2->getCategory());
 					out = true;
 				}
 				break;
@@ -256,7 +276,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->_category>t2->_category);
+						res = (t1->getCategory()>t2->getCategory());
 					out = true;
 				}
 				break;

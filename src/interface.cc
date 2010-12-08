@@ -380,10 +380,8 @@ void Interface::right()
 		inherit();
 		drawTodo();
 		wstring title;
-		if ((editLine(title)) && (title != L""))
+		if (editLine(title) && (title != L""))
 		{
-			cursor->getTitle() = title;
-
 			/* Use the config collapse */
 			cursor.out();
 			cursor->getCollapse() = config.getCollapse();
@@ -633,10 +631,20 @@ bool Interface::editLine(wstring& str)
 		save = screen.editTitle(cursor_line, cursor.depth(), 
 				cursor->haveChild(), str);
 	}
-	cursor->getTitle() = oldTitle;
 
 	screen.infoClear();
-	if (save == Editor::NOT_SAVED) drawTodo();
+	if (save == Editor::NOT_SAVED)
+	{
+		cursor->getTitle() = oldTitle;
+		drawTodo();
+	}
+	else
+	{
+		cursor->getTitle() = str;
+		if (cursor->sched().valid())
+			screen.drawSched(sched, &(*cursor));
+	}
+
 	return (save == Editor::SAVED);
 }
 
@@ -708,9 +716,7 @@ void Interface::addLine()
 	inherit();
 	drawTodo();
 	wstring title;
-	if ((editLine(title)) && (title != L""))
-		cursor->getTitle() = title;
-	else
+	if (!editLine(title) || (title == L""))
 		del();
 }
 
@@ -720,17 +726,14 @@ void Interface::addLineUp()
 	inherit();
 	drawTodo();
 	wstring title;
-	if ((editLine(title)) && (title != L""))
-		cursor->getTitle() = title;
-	else
+	if (!editLine(title) || (title == L""))
 		del();
 }
 
 void Interface::modifyLine()
 {
 	wstring title;
-	if (editLine(title))
-		cursor->getTitle() = title;
+	editLine(title);
 }
 
 void Interface::editText()

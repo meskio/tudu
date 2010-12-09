@@ -11,13 +11,13 @@ MANDIR?=@MANDIR@
 all:
 
 install:
-	mkdir -p $(DATADIR)/$(PKGNAME)
-	$(INSTALL_DATA) tudu.dtd $(DATADIR)/$(PKGNAME)
-	$(INSTALL_DATA) welcome.xml $(DATADIR)/$(PKGNAME)
-	mkdir -p $(SYSCONFDIR)
-	$(INSTALL_DATA) tudurc $(SYSCONFDIR)
-	mkdir -p $(MANDIR)/man1
-	$(INSTALL_DATA) tudu.1 $(MANDIR)/man1
+	mkdir -p $(DESTDIR)$(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) tudu.dtd $(DESTDIR)$(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) welcome.xml $(DESTDIR)$(DATADIR)/$(PKGNAME)
+	mkdir -p $(DESTDIR)$(SYSCONFDIR)
+	$(INSTALL_DATA) tudurc $(DESTDIR)$(SYSCONFDIR)
+	mkdir -p $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL_DATA) tudu.1 $(DESTDIR)$(MANDIR)/man1
 
 clean:
 
@@ -25,7 +25,7 @@ mrproper: clean
 	rm Makefile
 
 uninstall:
-	rm $(DATADIR)/$(PKGNAME)/tudu.dtd
-	rm $(DATADIR)/$(PKGNAME)/welcome.xml
-	rm $(MANDIR)/man1/tudu.1
-	rmdir $(DATADIR)/$(PKGNAME)
+	rm $(DESTDIR)$(DATADIR)/$(PKGNAME)/tudu.dtd
+	rm $(DESTDIR)$(DATADIR)/$(PKGNAME)/welcome.xml
+	rm $(DESTDIR)$(MANDIR)/man1/tudu.1
+	rmdir $(DESTDIR)$(DATADIR)/$(PKGNAME)

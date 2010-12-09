@@ -9,8 +9,6 @@ LDFLAGS=@LDFLAGS@
 SRCS=@SRCS@
 
 BINDIR?=@BINDIR@
-DATADIR?=@DATADIR@
-SYSCONFDIR?=@SYSCONFDIR@
 
 
 OBJS=$(SRCS:.cc=.o)
@@ -24,8 +22,8 @@ $(PKGNAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $<
 
 install: all
-	mkdir -p $(BINDIR)
-	$(INSTALL_PROGRAM) $(PKGNAME) $(BINDIR)
+	mkdir -p $(DESTDIR)$(BINDIR)
+	$(INSTALL_PROGRAM) $(PKGNAME) $(DESTDIR)$(BINDIR)
 
 clean:
 	@rm -f $(PKGNAME) $(OBJS) core tags
@@ -34,4 +32,4 @@ mrproper: clean
 	rm Makefile defs.h
 
 uninstall:
-	rm $(BINDIR)/$(PKGNAME)
+	rm $(DESTDIR)$(BINDIR)/$(PKGNAME)

@@ -2,58 +2,6 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>v0.8</title>
-		<text>
-</text>
-		<todo done="yes" collapse="no">
-			<title>on title lenth == to screen_title_lenght uses two lines</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>if new task and old has text it didn't removes</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>detect ncurses.h</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>updated manual</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>if sched is not done keep it as warn or something</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>creating a task from a one with children scrolls up</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>editing sched if exit without save it prints the task</title>
-			<text>
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>more complex cathegories</title>
-			<text>Multi category support and not limitation on name length.
-
-So categories become more like tags.
-</text>
-		</todo>
-		<todo done="yes" collapse="no">
-			<title>AvPag and RePag on normal interface</title>
-			<text>
-</text>
-		</todo>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
 		<text>
 </text>

@@ -1,17 +1,14 @@
-Compile
+Install
 =======
 
  TuDu needs ncurses library with wide characters (in some systems is known as 
  ncursesw) for work. You will need to install it for compile it.
 
  For compiling the program execute:
+ $ ./configure
  $ make
 
-
-Install
-=======
-
- For installing the program execute:
+ For installing the program execute (as root):
  # make install
 
 
@@ -32,7 +29,11 @@ The file tudurc in the source code is an example of config file.
 Notes
 =====
 
-Some environments (like Konsole of KDE3) don't show well the tasks that have
+* Since version 0.8 the theme config deadlineMark now is call warn, because is
+not use just for the deadline is also use for the past sched.
+
+
+* Some environments (like Konsole of KDE3) don't show well the tasks that have
 childs. The normal way to show them is because they are bold, but in some 
 shells the bold characters are indistinguishable of the normal ones. For that
 cases (or others) there is the posibility of show "(+)", for the collapsed 

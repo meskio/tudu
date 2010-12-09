@@ -1,6 +1,12 @@
 *.o
 *.swp
+Makefile
 /.vimrc
+/src/defs.h
 /src/tudu
 /_*.xml
 /_*.xml.bkp
+/.*.xml_lock
+/*.c
+/*.png
+/*.jpg

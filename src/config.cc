@@ -6,7 +6,7 @@
  *                                                                       *
  *  TuDu is free software; you can redistribute it and/or modify         *
  *  it under the terms of the GNU General Public License as published by *
- *  the Free Software Foundation; version 3 of the License.       *
+ *  the Free Software Foundation; version 3 of the License.              *
  *                                                                       *
  *  TuDu is distributed in the hope that it will be useful,              *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of       *
@@ -19,19 +19,24 @@
 
 #include "config.h"
 
+#define DEFAULT_CATEGORY_LENGTH 7
+
 /*
  * Context in the config file
  * define with [ keys ]
  */
-#define C_NULL 0
-#define C_KEYS 1
-#define C_GENERAL 2
-#define C_THEME 3
+enum context_type {
+	C_NULL,
+	C_KEYS,
+	C_GENERAL,
+	C_THEME
+};
 
 Config::Config()
 {
 	collapse = false;
 	hide_done = false;
+	category_length = DEFAULT_CATEGORY_LENGTH;
 }
 
 bool Config::load(const char* path)
@@ -41,7 +46,7 @@ bool Config::load(const char* path)
 	ifstream file(path);
 	if (!file) return false;
 
-	sort_order[0] = '\0';
+	sort_order = "";
 	editor[0] = '\0';
 	while (!file.eof())
 	{
@@ -143,6 +148,9 @@ void Config::getGeneralOption(string& option, string& value)
 	if ("loop_move" == option)
 		loop_move = isYes(value);
 
+	if ("old_sched" == option)
+		old_sched = isYes(value);
+
 	if ("days_warn" == option)
 		days_warn_deadline = atoi(value.c_str());
 
@@ -150,7 +158,7 @@ void Config::getGeneralOption(string& option, string& value)
 		us_dates = isYes(value);
 
 	if ("sort_order" == option)
-		strncpy(sort_order, value.c_str(), 16);
+		sort_order = value.c_str();
 
 	if ("editor" == option)
 		strncpy(editor, value.c_str(), 16);
@@ -251,6 +259,10 @@ void Config::getThemeOption(string& option, string& value)
 	else if ("columns" == option)
 	{
 		getThemeTree(value);
+	}
+	else if ("category_length" == option)
+	{
+		getThemeCategoryLength(value);
 	}
 	else
 	{
@@ -412,6 +424,11 @@ void Config::getThemeTree(string& value)
 	}
 }
 
+void Config::getThemeCategoryLength(string& value)
+{
+	category_length = atoi(value.c_str());
+}
+
 void Config::getThemeColors(string& option, string& value)
 {
 	short int color_index;
@@ -421,8 +438,8 @@ void Config::getThemeColors(string& option, string& value)
 		color_index = CT_DEFAULT;
 	else if ("selected" == option)
 		color_index = CT_SELECTED;
-	else if ("deadlineMark" == option)
-		color_index = CT_DEADLINE_MARK;
+	else if ("warn" == option)
+		color_index = CT_WARN;
 	else if ("pipe" == option)
 		color_index = CT_PIPE;
 	else if ("help" == option)
@@ -565,6 +582,11 @@ bool Config::getLoopMove()
 	return loop_move;
 }
 
+bool Config::getOldSched()
+{
+	return old_sched;
+}
+
 int Config::getDaysWarn()
 {
 	return days_warn_deadline;
@@ -575,7 +597,7 @@ bool Config::useUSDates()
 	return us_dates;
 }
 
-char* Config::getSortOrder()
+string& Config::getSortOrder()
 {
 	return sort_order;
 }
@@ -583,6 +605,11 @@ char* Config::getSortOrder()
 char* Config::getEditor()
 {
 	return editor;
+}
+
+int Config::getCategoryLength()
+{
+	return category_length;
 }
 
 void Config::genWindowCoor(int lines, int cols, windows_defs& coor)
@@ -732,7 +759,7 @@ bool Config::genWindowTree(windows_defs& coor, int height, int x, int y)
 		if (tree_columns[k] == WPRIORITY)
 			coor.coor[WTREE].cols -= PRIORITY_LENGTH+1;
 		else if (tree_columns[k] == WCATEGORY)
-			coor.coor[WTREE].cols -= CATEGORY_LENGTH+1;
+			coor.coor[WTREE].cols -= category_length+1;
 		else if (tree_columns[k] == WDEADLINE)
 			coor.coor[WTREE].cols -= DEADLINE_LENGTH+1;
 	}
@@ -752,10 +779,10 @@ bool Config::genWindowTree(windows_defs& coor, int height, int x, int y)
 		{
 			coor.exist[WCATEGORY] = true;
 			coor.coor[WCATEGORY].lines = height;
-			coor.coor[WCATEGORY].cols = CATEGORY_LENGTH;
+			coor.coor[WCATEGORY].cols = category_length;
 			coor.coor[WCATEGORY].y = y;
 			coor.coor[WCATEGORY].x = x_tree;
-			x_tree += CATEGORY_LENGTH+1;
+			x_tree += category_length+1;
 		}
 		else if (tree_columns[k] == WDEADLINE)
 		{

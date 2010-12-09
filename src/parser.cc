@@ -221,7 +221,7 @@ void Parser::ptag(iToDo& iterator, Sched& sched)
 	}
 	if (L"/category" == str)
 	{
-		iterator->setCategory(txt);
+		iterator->addCategory(txt);
 	}
 	if (L"text" == str)
 	{
@@ -284,7 +284,7 @@ bool Writer::save()
 	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
 	file << "<todo>" << endl;
 	i = new iToDo(todo);
-	i->sort((char*)"");
+	i->sort("");
 	while(--(*i));
 	_save();
 	delete i;
@@ -341,11 +341,15 @@ void Writer::_save()
 			file << "<priority>" << (*i)->priority() << 
 					"</priority>" << endl;
 		}
-		if (!(*i)->getCategory().empty())
+		if (!(*i)->getCategories().empty())
 		{
-			putTabs((*i).depth()+1);
-			file << "<category>" << (*i)->getCategory() << 
-					"</category>" << endl;
+			for (set<wstring>::iterator it = (*i)->getCategories().begin();
+			     it != (*i)->getCategories().end(); it++)
+			{
+				putTabs((*i).depth()+1);
+				file << "<category>" << *it << 
+						"</category>" << endl;
+			}
 		}
 		if ((*i)->getText() != L"")
 		{

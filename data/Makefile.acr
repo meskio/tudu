@@ -1,0 +1,31 @@
+VPATH=@VPATH@
+PKGNAME=@PKGNAME@
+VERSION=@VERSION@
+INSTALL_DATA=@INSTALL_DATA@
+.PHONY: all install uninstall clean mrproper
+
+DATADIR?=@DATADIR@
+SYSCONFDIR?=@SYSCONFDIR@
+MANDIR?=@MANDIR@
+
+all:
+
+install:
+	mkdir -p $(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) tudu.dtd $(DATADIR)/$(PKGNAME)
+	$(INSTALL_DATA) welcome.xml $(DATADIR)/$(PKGNAME)
+	mkdir -p $(SYSCONFDIR)
+	$(INSTALL_DATA) tudurc $(SYSCONFDIR)
+	mkdir -p $(MANDIR)/man1
+	$(INSTALL_DATA) tudu.1 $(MANDIR)/man1
+
+clean:
+
+mrproper: clean
+	rm Makefile
+
+uninstall:
+	rm $(DATADIR)/$(PKGNAME)/tudu.dtd
+	rm $(DATADIR)/$(PKGNAME)/welcome.xml
+	rm $(MANDIR)/man1/tudu.1
+	rmdir $(DATADIR)/$(PKGNAME)

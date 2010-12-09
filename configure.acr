@@ -1,0 +1,78 @@
+REQUIRE_ACR_VERSION 0.8.2
+
+PKGNAME tudu
+VERSION 0.8
+CONTACT Ruben Pollan ; meskio@sindominio.net
+YEAR = 2010 ;
+
+LANG_CXX!
+
+CXXFLAGS += -Wall -O2 ;
+SRCS += tudu.cc data.cc editor.cc interface.cc window.cc text.cc parser.cc
+        config.cc date.cc screen.cc sched.cc cmd.cc ;
+
+
+// Detecting curses
+CHKINC xcurses.h
+CHKINC ncursesw/curses.h
+CHKINC ncurses/curses.h
+CHKINC ncurses.h
+CHKINC curses.h
+
+IF HAVE_XCURSES_H { CURSES_INCLUDE = xcurses.h ; }
+IF HAVE_NCURSESW_CURSES_H { CURSES_INCLUDE ?= ncursesw/curses.h ; }
+IF HAVE_NCURSES_CURSES_H { CURSES_INCLUDE ?= ncurses/curses.h ; }
+IF HAVE_NCURSES_H { CURSES_INCLUDE ?= ncurses.h ; }
+IF HAVE_CURSES_H { CURSES_INCLUDE ?= curses.h ; }
+IFNULL CURSES_INCLUDE { DIENOW There is no curses installed! ; }
+
+CHKLIB ncursesw
+CHKLIB ncurses
+CHKLIB curses
+
+IF HAVE_LIB_NCURSESW { LD_CURSES = -lncursesw ; }
+IF HAVE_LIB_NCURSES { LD_CURSES ?= -lncurses ; }
+IF HAVE_LIB_CURSES { LD_CURSES ?= -lcurses ; }
+IFNULL LD_CURSES { DIENOW There is no curses installed! ; }
+LDFLAGS += $LD_CURSES ;
+
+CHECK WIDEC_CURSES <<EOF
+echo "#define _XOPEN_SOURCE_EXTENDED" > test.c \
+echo "#include<$CURSES_INCLUDE>" >> test.c \
+echo "main(){ addwstr(L\"\"); }" >> test.c \
+eval \$${COMPILER} ${CXXFLAGS} ${LDFLAGS} test.c >/dev/null 2>&1 \
+if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi \
+rm test.c
+<<EOF
+IFNOT WIDEC_CURSES { DIENOW There is no wide character support on curses! ; }
+
+
+// Test all the includes
+CHKINC! string
+CHKINC! vector
+CHKINC! map
+CHKINC! fstream
+CHKINC! list
+CHKINC! stack
+CHKINC! algorithm
+CHKINC! set
+CHKINC! ctime
+CHKINC! cstring
+CHKINC! csignal
+CHKINC! cstdio
+CHKINC! cstdlib
+CHKINC! sys/types.h
+CHKINC! sys/wait.h
+CHKINC! sys/stat.h
+CHKINC! unistd.h
+CHKINC! fcntl.h
+CHKINC! locale
+CHKINC! cwchar
+CHKINC! clocale
+CHKINC! climits
+CHKINC! iostream
+CHKINC! iomanip
+CHKINC! sstream
+CHKINC! cerrno
+
+SUBDIRS . src data src/defs.h ;

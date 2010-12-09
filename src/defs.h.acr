@@ -17,38 +17,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#ifndef DEFS_H
-#define DEFS_H
+#define VERSION_STR "TuDu @VERSION@ (@YEAR@)"
 
-using namespace std;
+#define SHARE_DIR "@DATADIR@/@PKGNAME@"
+#define WELCOME_FILE "@DATADIR@/@PKGNAME@/welcome.xml"
+#define CONFIG_FILE "@SYSCONFDIR@/tudurc"
+#define PATH_DTD "@DATADIR@/@PKGNAME@/tudu.dtd"
 
-/* system includes */
-#include <ncursesw/ncurses.h>
-#include <string>
-#include <vector>
-#include <map>
-#include <fstream>
-#include <list>
-#include <stack>
-#include <algorithm>
-#include <set>
-#include <ctime>
-#include <cstring>
-#include <csignal>
-#include <cstdio>
-#include <cstdlib>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <locale>
-#include <cwchar>
-#include <clocale>
-#include <climits>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <cerrno>
 
+#if @HAVE_XCURSES_H@
+#define HAVE_XCURSES_H
+#endif
+
+#if @HAVE_NCURSESW_CURSES_H@
+#define HAVE_NCURSESW_CURSES_H
+#endif
+
+#if @HAVE_NCURSES_CURSES_H@
+#define HAVE_NCURSES_CURSES_H
+#endif
+
+#if @HAVE_CURSES_H@
+#define HAVE_CURSES_H
 #endif

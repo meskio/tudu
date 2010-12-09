@@ -77,16 +77,47 @@ int& ToDo::priority()
 	return _priority;
 }
 
-wstring ToDo::getCategory()
+set<wstring>& ToDo::getCategories()
 {
 	return _category;
 }
 
-void ToDo::setCategory(wstring c)
+wstring ToDo::getCategoriesStr()
+{
+	wstring cat(L"");
+	for (set<wstring>::iterator it = _category.begin();
+	     it != _category.end(); it++)
+	{
+		cat += (*it);
+		if (it != --(_category.end()))
+		   	cat += L',';
+	}
+
+	return cat;
+}
+
+void ToDo::addCategory(const wstring& c)
+{
+	_category.insert(c);
+}
+
+void ToDo::setCategories(set<wstring>& c)
 {
 	_category = c;
+}
 
-	if (c != NONE_CATEGORY) categories.insert(c);
+void ToDo::setCategoriesStr(wstring& c)
+{
+	_category.clear();
+	if (c.empty()) return;
+
+	size_t posEnd, posStart = 0;
+	while ((posEnd = c.find(L',', posStart)) != wstring::npos)
+	{
+		_category.insert(c.substr(posStart, posEnd-posStart));
+		posStart = posEnd+1;
+	}
+	_category.insert(c.substr(posStart));
 }
 
 bool ToDo::haveChild()
@@ -134,7 +165,7 @@ bool& ToDo::actCollapse()
 	return cursor_in;
 }
 
-char cmpOrder[16];
+string cmpOrder;
 bool cmp(pToDo t1, pToDo t2)
 {
 	bool res = true;
@@ -244,7 +275,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->_category<t2->_category);
+						res = (t1->getCategoriesStr()<t2->getCategoriesStr());
 					out = true;
 				}
 				break;
@@ -256,7 +287,7 @@ bool cmp(pToDo t1, pToDo t2)
 					else if (t2->_category.empty())
 						res = true;
 					else
-						res = (t1->_category>t2->_category);
+						res = (t1->getCategoriesStr()>t2->getCategoriesStr());
 					out = true;
 				}
 				break;
@@ -521,19 +552,11 @@ int iToDo::depth()
 	return path.size();
 }
 
-void iToDo::sort(char order[])
+void iToDo::sort(string order)
 {
-	strncpy(cmpOrder, order, 15);
-	cmpOrder[15] = '\0';
-	for (int i = 0; i<15; i++)
-	{
-		if (cmpOrder[i] == '\0')
-		{
-			cmpOrder[i] = 'u';
-			cmpOrder[i+1] = '\0';
-			break;
-		}
-	}
+	cmpOrder = order;
+	if (cmpOrder.find('u') == string::npos)
+		cmpOrder += 'u';
 	root->_sort();
 }
 

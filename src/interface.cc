@@ -27,8 +27,7 @@ Interface::Interface(Screen &s, iToDo &t, Sched& sch, Config &c, Writer &w, Cmd 
 	cmd.get_interface(this);
 	search_pattern = L"";
 
-	strcpy(sortOrder, " ");
-	strncat(sortOrder, config.getSortOrder(), 16);
+	sortOrder = config.getSortOrder();
 	cursor.sort(sortOrder);
 	while (prev());
 	cursor_line = 0;
@@ -41,7 +40,7 @@ Interface::~Interface()
 
 void Interface::main()
 {
-	int key; //TODO: migrate to utf
+	wint_t key;
 	string action;
 
 	while (cursor.out());
@@ -50,15 +49,22 @@ void Interface::main()
 
 	while (true) 
 	{
-		key = getch();
-		screen.infoClear();
-		if (KEY_RESIZE == key) resizeTerm();
-		if (KEY_LEFT == key) left();
-		if (KEY_RIGHT == key) right();
-		if (KEY_DOWN  == key) down();
-		if (KEY_UP == key) up();
-		if (config.getAction(key, action))
+		if (get_wch(&key) == KEY_CODE_YES)
 		{
+			screen.infoClear();
+			if (KEY_RESIZE == key) resizeTerm();
+			if (KEY_LEFT == key) left();
+			if (KEY_RIGHT == key) right();
+			if (KEY_DOWN  == key) down();
+			if (KEY_UP == key) up();
+			if (KEY_PPAGE == key) prevPage();
+			if (KEY_NPAGE == key) nextPage();
+			if (KEY_HOME == key) home();
+			if (KEY_END == key) end();
+		}
+		else if (config.getAction(key, action))
+		{
+			screen.infoClear();
 			if ("quit" == action)
 			{
 				if (writer.save())
@@ -162,6 +168,7 @@ void Interface::drawTodo()
 
 	cursor = aux;
 	cursor_line = line;
+	screen.drawText(cursor->getText());
 	screen.drawSched(sched, &(*cursor));
 }
 
@@ -254,6 +261,24 @@ bool Interface::fitCursor()
 		while (aux != cursor) next();
 		if (cursor_line != line) return true;
 	}
+	else
+	{
+		iToDo aux = cursor;
+		int line = cursor_line;
+		while (cursor_line != 0)
+			if (!prev()) break;
+		if (cursor_line == 0)
+		{
+			cursor = aux;
+			cursor_line = line;
+		}
+		else
+		{
+			cursor_line = 0;
+			while (aux != cursor) next();
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -277,13 +302,24 @@ bool Interface::isHide(iToDo& todo)
 {
 	if (todo.end()) return true;
 
-	bool hide;
 	/* if is done */
-	hide = (config.getHideDone() && todo->done());
-	/* if is in hidden category */
-	hide = hide || (hidden_categories.count(todo->getCategory()));
+	bool hideDone = (config.getHideDone() && todo->done());
 
-	return hide;
+	/* if is in hidden category */
+	bool hideCat = false;
+	set<wstring>& categories = todo->getCategories();
+	for (set<wstring>::iterator it = categories.begin();
+	     it != categories.end(); it++)
+	{
+		if (!hidden_categories.count(*it))
+		{
+			hideCat = false;
+			break;
+		}
+		hideCat = true;
+	}
+		
+	return hideDone || hideCat;
 }
 
 void Interface::inherit()
@@ -293,7 +329,7 @@ void Interface::inherit()
 	{
 		iToDo father = cursor;
 		father.out();
-		cursor->setCategory(father->getCategory());
+		cursor->setCategories(father->getCategories());
 	}
 	else if (hidden_categories.count(L""))
 	{
@@ -301,8 +337,8 @@ void Interface::inherit()
 		for (cat = categories.begin(); 
 			(cat != categories.end()) && hidden_categories.count(*cat);
 			cat++);
-		if (cat != categories.end()) cursor->setCategory(*cat);
-		else cursor->setCategory(NONE_CATEGORY);
+		if (cat != categories.end()) cursor->addCategory(*cat);
+		else cursor->addCategory(NONE_CATEGORY);
 	}
 }
 
@@ -344,10 +380,8 @@ void Interface::right()
 		inherit();
 		drawTodo();
 		wstring title;
-		if ((editLine(title)) && (title != L""))
+		if (editLine(title) && (title != L""))
 		{
-			cursor->getTitle() = title;
-
 			/* Use the config collapse */
 			cursor.out();
 			cursor->getCollapse() = config.getCollapse();
@@ -415,6 +449,53 @@ void Interface::down()
 	}
 }
 
+void Interface::prevPage()
+{
+	int treeLines = screen.treeLines();
+	while (cursor_line >= 0)
+		if (!prev()) break;
+	iToDo aux = cursor;
+	cursor_line = treeLines - 1;
+	while (cursor_line >= 0)
+		if (!prev()) break;
+	cursor = aux;
+	cursor_line = treeLines - cursor_line;
+	drawTodo();
+}
+
+void Interface::nextPage()
+{
+	int treeLines = screen.treeLines();
+	eraseCursor();
+	while (cursor_line < treeLines)
+		if (!next()) {
+			drawCursor();
+			return;
+		}
+
+	iToDo aux = cursor;
+	cursor_line = 0;
+	while (cursor_line < treeLines)
+		if (!next()) break;
+	cursor = aux;
+	cursor_line = treeLines - cursor_line;
+	drawTodo();
+}
+
+void Interface::home()
+{
+	eraseCursor();
+	while (prev());
+	drawCursor();
+}
+
+void Interface::end()
+{
+	eraseCursor();
+	while (next());
+	drawCursor();
+}
+
 void Interface::move_up()
 {
 	pToDo t = &(*cursor);
@@ -431,8 +512,9 @@ void Interface::move_down()
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
-	cursor_line += screen.taskLines(cursor.depth(), *cursor);
-	cursor.addChild(t);
+	iToDo aux = cursor;
+	aux.addChild(t);
+	while (aux != cursor) next();
 	drawTodo();
 }
 
@@ -460,13 +542,29 @@ void Interface::del()
 void Interface::delDeadline()
 {
 	cursor->deadline().year() = 1900;
-	screen.deadlineClear(cursor_line);
+	if ((string::npos != sortOrder.find('l')) ||
+	    (string::npos != sortOrder.find('L')))
+	{
+		drawTodo();
+	}
+	else
+	{
+		screen.deadlineClear(cursor_line);
+	}
 }
 
 void Interface::delPriority()
 {
 	cursor->priority() = 0;
-	screen.priorityClear(cursor_line);
+	if ((string::npos != sortOrder.find('p')) ||
+	    (string::npos != sortOrder.find('P')))
+	{
+		drawTodo();
+	}
+	else
+	{
+		screen.priorityClear(cursor_line);
+	}
 }
 
 void Interface::delSched()
@@ -480,8 +578,9 @@ void Interface::paste()
 {
 	if (copied)
 	{
-		cursor_line += screen.taskLines(cursor.depth(), *cursor);
-		cursor.addChild(copied);
+		iToDo aux = cursor;
+		aux.addChild(copied);
+		while (aux != cursor) next();
 		sched.add_recursive(copied);
 		copied = NULL;
 		drawTodo();
@@ -532,10 +631,20 @@ bool Interface::editLine(wstring& str)
 		save = screen.editTitle(cursor_line, cursor.depth(), 
 				cursor->haveChild(), str);
 	}
-	cursor->getTitle() = oldTitle;
 
 	screen.infoClear();
-	if (save == Editor::NOT_SAVED) drawTodo();
+	if (save == Editor::NOT_SAVED)
+	{
+		cursor->getTitle() = oldTitle;
+		drawTodo();
+	}
+	else
+	{
+		cursor->getTitle() = str;
+		if (cursor->sched().valid())
+			screen.drawSched(sched, &(*cursor));
+	}
+
 	return (save == Editor::SAVED);
 }
 
@@ -581,10 +690,10 @@ void Interface::setPriority()
 
 void Interface::setCategory()
 {
-	screen.infoMsg("Editing category. Press ENTER to save or ESC to abort edit");
+	screen.infoMsg("Editing categories. Separate multiple categories with ','. Press ENTER to save or ESC to abort edit");
 
 	Editor::return_t save;
-	wstring category = cursor->getCategory();
+	wstring category = cursor->getCategoriesStr();
 	save = screen.setCategory(cursor_line, category, category.length());
 	while (save == Editor::RESIZE)
 	{
@@ -593,7 +702,7 @@ void Interface::setCategory()
 	}
 
 	if (save == Editor::SAVED)
-		cursor->setCategory(category);
+		cursor->setCategoriesStr(category);
 
 	screen.infoClear();
 	drawTodo();
@@ -601,14 +710,13 @@ void Interface::setCategory()
 
 void Interface::addLine()
 {
-	cursor_line += screen.taskLines(cursor.depth(), *cursor);
-	cursor.addChild(new ToDo());
+	iToDo aux = cursor;
+	aux.addChild(new ToDo());
+	while (aux != cursor) next();
 	inherit();
 	drawTodo();
 	wstring title;
-	if ((editLine(title)) && (title != L""))
-		cursor->getTitle() = title;
-	else
+	if (!editLine(title) || (title == L""))
 		del();
 }
 
@@ -618,17 +726,14 @@ void Interface::addLineUp()
 	inherit();
 	drawTodo();
 	wstring title;
-	if ((editLine(title)) && (title != L""))
-		cursor->getTitle() = title;
-	else
+	if (!editLine(title) || (title == L""))
 		del();
 }
 
 void Interface::modifyLine()
 {
 	wstring title;
-	if (editLine(title))
-		cursor->getTitle() = title;
+	editLine(title);
 }
 
 void Interface::editText()
@@ -716,7 +821,9 @@ void Interface::editSched()
 	if ((save == Editor::SAVED) && date.correct())
 		cursor->sched() = date;
 
-	sched.add(&(*cursor));
+	if (cursor->sched().valid())
+		sched.add(&(*cursor));
+
 	screen.drawSched(sched, &(*cursor));
 }
 
@@ -811,7 +918,7 @@ void Interface::command_line()
 		{
 			if (isHide(cursor)) up();
 			/* destroy empty with NONE category */
-			if ((cursor->getCategory() == NONE_CATEGORY) && cursor->getTitle().empty())
+			if ((cursor->getCategories().count(NONE_CATEGORY)) && cursor->getTitle().empty())
 					del();
 			drawTodo();
 		}
@@ -863,73 +970,73 @@ void Interface::search_prev()
 
 void Interface::sortByTitle()
 {
-	sortOrder[0] = 't';
+	sortOrder = 't' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDone()
 {
-	sortOrder[0] = 'd';
+	sortOrder = 'd' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDeadline()
 {
-	sortOrder[0] = 'l';
+	sortOrder = 'l' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByPriority()
 {
-	sortOrder[0] = 'p';
+	sortOrder = 'p' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByCategory()
 {
-	sortOrder[0] = 'c';
+	sortOrder = 'c' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByUser()
 {
-	sortOrder[0] = 'u';
+	sortOrder = 'u' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevTitle()
 {
-	sortOrder[0] = 'T';
+	sortOrder = 'T' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDone()
 {
-	sortOrder[0] = 'D';
+	sortOrder = 'D' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDeadline()
 {
-	sortOrder[0] = 'L';
+	sortOrder = 'L' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevPriority()
 {
-	sortOrder[0] = 'P';
+	sortOrder = 'P' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevCategory()
 {
-	sortOrder[0] = 'C';
+	sortOrder = 'C' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevUser()
 {
-	sortOrder[0] = 'U';
+	sortOrder = 'U' + sortOrder;
 	drawTodo();
 }
 

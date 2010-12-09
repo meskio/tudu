@@ -20,7 +20,7 @@
 #include "screen.h"
 
 #define COLOR_SELECTED COLOR_PAIR(CT_SELECTED)
-#define COLOR_DEADLINE_MARK COLOR_PAIR(CT_DEADLINE_MARK)
+#define COLOR_WARN     COLOR_PAIR(CT_WARN)
 #define COLOR_HELP     COLOR_PAIR(CT_HELP)
 #define COLOR_TREE     COLOR_PAIR(CT_TREE)
 #define COLOR_TEXT     COLOR_PAIR(CT_TEXT)
@@ -434,7 +434,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* draw category */
 	if (coor.exist[WCATEGORY])
 	{
-		wstring category = t.getCategory();
+		wstring category = t.getCategoriesStr().substr(0, config.getCategoryLength());
 		if (isCursor)
 			wcategory->_attron(COLOR_SELECTED);
 		else
@@ -468,9 +468,9 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 		wdeadline->_move(line, 10);
 		if ((!t.done() && deadline_close(deadline)) || (isCollapse(t) && deadline_close(chinf.deadline)))
 		{
-			wdeadline->_attron(COLOR_DEADLINE_MARK);
+			wdeadline->_attron(COLOR_WARN);
 			wdeadline->_addstr("<-");
-			wdeadline->_attroff(COLOR_DEADLINE_MARK);
+			wdeadline->_attroff(COLOR_WARN);
 		}
 		else
 		{
@@ -503,19 +503,26 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 	Date today;
 	today.setToday();
 	sched_l sched_list;
-	sched.get(today,sched_list);
+	if (config.getOldSched())
+		sched.get(sched_list);
+	else
+		sched.get(today,sched_list);
 
 	Date last;
 	int line = 0;
 	wschedule->_erase();
 	wschedule->_move(0,0);
-	wschedule->_attron(COLOR_SCHED);
 	for (sched_l::iterator i = sched_list.begin(); 
-			(i != sched_list.end()) && (line < coor.coor[WSCHEDULE].lines); i++, line++)
+			(i != sched_list.end()) && (line < coor.coor[WSCHEDULE].lines); i++)
 	{
+		if (today > (*i)->sched())
+			wschedule->_attron(COLOR_WARN);
+		else
+			wschedule->_attron(COLOR_SCHED);
 		if ((*i)->done()) continue;
 		if ((*i)->sched() != last)
 		{
+			if (line+2 > coor.coor[WSCHEDULE].lines) break;
 			last = (*i)->sched();
 
 			wostringstream ss;
@@ -527,22 +534,14 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 			line++;
 		}
 		if (cursor == (*i))
-		{
-			wschedule->_attroff(COLOR_SCHED);
 			wschedule->_attron(COLOR_SELECTED);
-		}
 		wschedule->_addstr("    ");
 		wstring title = (*i)->getTitle().substr(0,coor.coor[WSCHEDULE].cols-4);
 		wschedule->_addstr(title);
 		if (title.length() < (size_t)coor.coor[WSCHEDULE].cols-4)
 			wschedule->_addstr("\n");
-		if (cursor == (*i))
-		{
-			wschedule->_attroff(COLOR_SELECTED);
-			wschedule->_attron(COLOR_SCHED);
-		}
+		line++;
 	}
-	wschedule->_attroff(COLOR_SCHED);
 	wschedule->_refresh();
 }
 
@@ -663,6 +662,7 @@ Editor::return_t Screen::editSched(Date& s, int cursorPos)
 	wstring date;
 	Editor::return_t save;
 
+	wschedule->_attron(COLOR_SCHED);
 	wschedule->_attron(A_BOLD);
 	wschedule->_addstr(coor.coor[WSCHEDULE].lines-1, 0, "   Edit schedule: ");
 	wschedule->_attroff(A_BOLD);
@@ -721,7 +721,7 @@ Editor::return_t Screen::setCategory(int line, wstring& category, int cursorPos)
 	categoryEditor.getText() = category;
 	if (cursorPos >= 0)
 		categoryEditor.cursorPos() = cursorPos;
-	save = categoryEditor.edit(*wcategory, line, 0, CATEGORY_LENGTH);
+	save = categoryEditor.edit(*wcategory, line, 0, config.getCategoryLength());
 	category = categoryEditor.getText();
 	wcategory->_attroff(COLOR_SELECTED);
 	return save;
@@ -760,7 +760,11 @@ int Screen::treeLines()
 int Screen::taskLines(int depth, ToDo &t)
 {
 	int titleLength = t.getTitle().length();
-	return (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+	int titleLines = (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+	
+	if (titleLength && !(titleLength % (coor.coor[WTREE].cols-startTitle(depth))))
+			titleLines -= 1;
+	return titleLines;
 }
 
 Editor::return_t Screen::searchText(wstring& pattern, int cursorPos)

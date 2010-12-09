@@ -2,13 +2,6 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>more complex cathegories</title>
-		<text>Multi category support and not limitation on name length.
-
-So categories become more like tags.
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
 		<text>
 </text>

@@ -20,7 +20,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include "defs.h"
+#include "includes.h"
 class ToDo;
 class iToDo;
 typedef ToDo* pToDo;
@@ -55,8 +55,11 @@ public:
 	int& schedPosition();
 	bool& done();
 	int& priority();
-	wstring getCategory();
-	void setCategory(wstring c);
+	set<wstring>& getCategories();
+	wstring getCategoriesStr();
+	void addCategory(const wstring& c);
+	void setCategories(set<wstring>& c);
+	void setCategoriesStr(wstring& c);
 	bool haveChild();
 	child_info getChildInfo();
 	bool& getCollapse(); // real collapse
@@ -69,7 +72,7 @@ protected:
 	Date _sched;
 	int sched_position; // position on the sched list, use for sort the list
 	int  _priority;
-	wstring _category;
+	set<wstring> _category;
 	Text text;
 	list<pToDo> childs;
 	bool collapse; //real param
@@ -118,7 +121,7 @@ public:
 	 * u = user
 	 * the same leters in capital are for inverse order
 	 */
-	void sort(char order[]);
+	void sort(string order);
 	bool search(wstring& str);
 	bool searchUp(wstring& str);
 protected:

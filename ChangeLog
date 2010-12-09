@@ -1,3 +1,12 @@
+0.8
+	* Added ./configure script compatible with autotools
+	* Added multiple category support
+	* Added support for non-fix length categories
+	* Added warning color to old scheduled tasks in sched
+	* Added AvPag and RvPag to normal interface
+	* Fixed display when the length of the title equal to the screen
+	* Fixed problems with updating sched when the title changes
+
 0.7
 	* Added support to multi linear task titles
 	* New pipe windows as separators

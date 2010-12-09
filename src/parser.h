@@ -20,15 +20,11 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "defs.h"
+#include "includes.h"
 #include "data.h"
 #include "sched.h"
 #include "text.h"
 
-#ifndef SHARE_DIR
-#define SHARE_DIR "/usr/local/share/tudu"
-#endif
-#define PATH_DTD SHARE_DIR"/tudu.dtd"
 
 class Parser
 {

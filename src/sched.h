@@ -20,7 +20,7 @@
 #ifndef SCHEDULE_H
 #define SCHEDULE_H
 
-#include "defs.h"
+#include "includes.h"
 #include "data.h"
 #include "date.h"
 
@@ -35,7 +35,7 @@ public:
 	void down(pToDo todo);
 	void del(pToDo todo);
 	void del_recursive(pToDo todo);
-	int get(Date& from, Date& to, sched_l& list);
+	int get(sched_l& list);
 	int get(Date& from, sched_l& list);
 private:
 	sched_l sched;

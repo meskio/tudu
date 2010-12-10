@@ -1,8 +1,8 @@
-tudu (0.7-1) unstable; urgency=low
+tudu (0.8-1) unstable; urgency=low
 
   * New upstream release (Closes: #568064).
 
- -- Ruben Pollan Bella <meskio@sindominio.net>  Mon, 30 Aug 2010 15:16:19 +0200
+ -- Ruben Pollan Bella <meskio@sindominio.net>  Thu, 9 Dec 2010 21:39:19 +0200
 
 tudu (0.6.1-1) unstable; urgency=low
 

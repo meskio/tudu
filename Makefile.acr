@@ -1,7 +1,7 @@
 VPATH=@VPATH@
 PKGNAME=@PKGNAME@
 VERSION=@VERSION@
-.PHONY: all install uninstall dist clean mrproper
+.PHONY: all install uninstall dist clean mrproper distclean
 
 all:
 	cd src && ${MAKE}
@@ -15,6 +15,7 @@ clean:
 	cd src && ${MAKE} clean
 	cd data && ${MAKE} clean
 
+distclean: mrproper
 mrproper: clean
 	cd src && ${MAKE} mrproper
 	cd data && ${MAKE} mrproper

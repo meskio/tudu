@@ -283,9 +283,9 @@ bool cmp(pToDo t1, pToDo t2)
 				if (t1->_category != t2->_category)
 				{
 					if (t1->_category.empty())
-						res = false;
-					else if (t2->_category.empty())
 						res = true;
+					else if (t2->_category.empty())
+						res = false;
 					else
 						res = (t1->getCategoriesStr()>t2->getCategoriesStr());
 					out = true;

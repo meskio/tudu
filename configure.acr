@@ -40,7 +40,7 @@ CHECK WIDEC_CURSES <<EOF
 echo "#define _XOPEN_SOURCE_EXTENDED" > test.c \
 echo "#include<$CURSES_INCLUDE>" >> test.c \
 echo "main(){ addwstr(L\"\"); }" >> test.c \
-eval \$${COMPILER} ${CXXFLAGS} ${LDFLAGS} test.c >/dev/null 2>&1 \
+eval \$${COMPILER} ${CXXFLAGS} test.c ${LDFLAGS} >/dev/null 2>&1 \
 if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi \
 rm test.c
 <<EOF

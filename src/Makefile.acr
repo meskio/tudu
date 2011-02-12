@@ -17,7 +17,7 @@ OBJS=$(SRCS:.cc=.o)
 all: $(PKGNAME)
 
 $(PKGNAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $<

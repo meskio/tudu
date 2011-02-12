@@ -57,4 +57,19 @@ what you wanted.
 I'll think about it. Could be a nice feature.
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>on done-undone it plots wrong the screen</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>arrows on date editor</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>tudu -h gives config error, it should not check the config</title>
+		<text>
+</text>
+	</todo>
 </todo>

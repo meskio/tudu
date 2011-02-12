@@ -537,6 +537,20 @@ void DateEditor::right()
 	if ((2==cursor) || (5==cursor)) ++cursor;
 }
 
+void DateEditor::up()
+{
+	if ((text[cursor] < '0') || (text[cursor] > '9'))
+		text[cursor] = '0';
+	if (text[cursor] < '9')
+		text[cursor]++;
+}
+
+void DateEditor::down()
+{
+	if ((text[cursor] > '0') && (text[cursor] <= '9'))
+		text[cursor]--;
+}
+
 void DateEditor::home()
 {
 	cursor = 0;

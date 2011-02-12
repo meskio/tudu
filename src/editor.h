@@ -146,6 +146,8 @@ protected:
 	void updateText();
 	void left();
 	void right();
+	void up();
+	void down();
 	void home();
 	void end();
 	void other();

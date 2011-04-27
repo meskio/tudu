@@ -43,50 +43,51 @@ bool Config::load(const char* path)
 {
 	int context = C_NULL;
 
-	ifstream file(path);
+	wifstream file;
+	file.imbue(locale(""));
+	file.open(path);
 	if (!file) return false;
 
-	sort_order = "";
+	sort_order = L"";
 	editor[0] = '\0';
 	while (!file.eof())
 	{
-		char line[256];
-		string str = "", option, value;
+		wstring line, str = L"", option, value;
 		int pos;
 		bool is_definition = false;
 		bool quote = false;
 
-		file.getline(line,256);
+		getline(file, line);
 
 		// drop all the spaces
-		for (unsigned int i = 0; i<strlen(line); i++)
+		for (wstring::iterator i = line.begin(); i != line.end(); i++)
 		{
-			if ('"' == line[i])
+			if (L'"' == *i)
 				quote = !quote;
 			else if (quote)
-				str += line[i];
-			else if ('#' == line[i]) break; //is a coment
-			else if ('=' == line[i])
+				str += *i;
+			else if (L'#' == *i) break; //is a coment
+			else if (L'=' == *i)
 			{
 				is_definition = true;
-				str += line[i];
+				str += *i;
 			}
-			else if ((line[i] != ' ') && (line[i] != '\t'))
-				str += line[i];
+			else if ((*i != L' ') && (*i != L'\t'))
+				str += *i;
 		}
 
 		/*
 		 * Change of context
 		 */
-		if (('[' == str[0]) && (']' == str[str.length()-1]))
+		if ((L'[' == str[0]) && (L']' == str[str.length()-1]))
 		{
-			string aux = str.substr(1,str.length()-2);
+			wstring aux = str.substr(1,str.length()-2);
 			context = getContext(aux);
 			continue;
 		}
 		if (!is_definition) continue; //is not a valid line
 
-		pos = str.find("=");
+		pos = str.find(L"=");
 		option = str.substr(0, pos);
 		value = str.substr(pos+1);
 		if (value.empty()) continue;
@@ -100,7 +101,7 @@ bool Config::load(const char* path)
 			case C_KEYS:
 				insertKeyMap(tree_keys, option, value);
 				action_keys.erase(option);
-				action_keys.insert(pair<string,string>(option,value));
+				action_keys.insert(pair<wstring,wstring>(option,value));
 				break;
 			case C_THEME:
 				getThemeOption(option, value);
@@ -112,80 +113,86 @@ bool Config::load(const char* path)
 	return true;
 }
 
-void Config::getOutContextOption(string& option, string& value)
+void Config::getOutContextOption(wstring& option, wstring& value)
 {
-	if ("@include" == option)
+	if (L"@include" == option)
 	{
-		load(value.c_str());
+		char path[256];
+		wcstombs(path, value.c_str(), 256);
+		load(path);
 	}
 }
 
-bool Config::isYes(string& value)
+bool Config::isYes(wstring& value)
 {
-	if ("yes" == value)
+	if (L"yes" == value)
 		return true;
 
 	return false;
 }
 
-void Config::getGeneralOption(string& option, string& value)
+void Config::getGeneralOption(wstring& option, wstring& value)
 {
-	if ("collapse" == option)
+	if (L"collapse" == option)
 		collapse = isYes(value);
 
-	if ("hide_done" == option)
+	if (L"hide_done" == option)
 		hide_done = isYes(value);
 
-	if ("hide_percent" == option)
+	if (L"hide_percent" == option)
 		hide_percent = isYes(value);
 
-	if ("visual_tree" == option)
+	if (L"visual_tree" == option)
 		visual_tree = isYes(value);
 
-	if ("bold_parent" == option)
+	if (L"bold_parent" == option)
 		bold_parent = isYes(value);
 
-	if ("loop_move" == option)
+	if (L"loop_move" == option)
 		loop_move = isYes(value);
 
-	if ("old_sched" == option)
+	if (L"old_sched" == option)
 		old_sched = isYes(value);
 
-	if ("days_warn" == option)
-		days_warn_deadline = atoi(value.c_str());
+	if (L"days_warn" == option)
+	{
+		char num[5];
+		wcstombs(num, value.c_str(), 5);
+		days_warn_deadline = atoi(num);
+	}
 
-	if ("us_dates" == option)
+	if (L"us_dates" == option)
 		us_dates = isYes(value);
 
-	if ("sort_order" == option)
+	if (L"sort_order" == option)
 		sort_order = value.c_str();
 
-	if ("editor" == option)
-		strncpy(editor, value.c_str(), 16);
+	if (L"editor" == option)
+		wcstombs(editor, value.c_str(), 64);
 }
 
-void Config::insertKeyMap(key_map& k, string action, string keys)
+void Config::insertKeyMap(key_map& k, wstring action, wstring keys)
 {
-	if ((keys.length() == 1) || (keys[1] == '#'))
+	if ((keys.length() == 1) || (keys[1] == L'#'))
 	{
 		key_action act;
 		act.action = action;
 		k.erase(keys[0]);
-		k.insert(pair<char,key_action>(keys[0],act));
+		k.insert(pair<wchar_t,key_action>(keys[0],act));
 	}
 	else
 	{
 		if (0 == k.count(keys[0]))
 		{
 			key_action act;
-			act.action = "";
-			k.insert(pair<char,key_action>(keys[0],act));
+			act.action = L"";
+			k.insert(pair<wchar_t,key_action>(keys[0],act));
 		}
 		insertKeyMap(k[keys[0]].subkeys, action, keys.substr(1));
 	}
 }
 
-bool Config::getAction(char key, string& action)
+bool Config::getAction(wchar_t key, wstring& action)
 {
 	static key_map* key_comb = NULL;
 
@@ -202,14 +209,14 @@ bool Config::getAction(char key, string& action)
 			{
 				key_comb = NULL;
 			}
-			if ( act.action != "")
+			if ( act.action != L"")
 			{
 				action = act.action;
 				return true;
 			}
 			else
 			{
-				action = "";
+				action = L"";
 				return false;
 			}
 		}
@@ -225,14 +232,14 @@ bool Config::getAction(char key, string& action)
 		{
 			key_comb = &act.subkeys;
 		}
-		if ( act.action != "")
+		if ( act.action != L"")
 		{
 			action = act.action;
 			return true;
 		}
 	}
 
-	action = "";
+	action = L"";
 	return false;
 }
 
@@ -250,17 +257,17 @@ void Config::resetTheme()
 		color_win[i].exist = false;
 }
 
-void Config::getThemeOption(string& option, string& value)
+void Config::getThemeOption(wstring& option, wstring& value)
 {
-	if ("row" == option)
+	if (L"row" == option)
 	{
 		getThemeRow(value);
 	}
-	else if ("columns" == option)
+	else if (L"columns" == option)
 	{
 		getThemeTree(value);
 	}
-	else if ("category_length" == option)
+	else if (L"category_length" == option)
 	{
 		getThemeCategoryLength(value);
 	}
@@ -270,11 +277,11 @@ void Config::getThemeOption(string& option, string& value)
 	}
 }
 
-void Config::getThemeRow(string& value)
+void Config::getThemeRow(wstring& value)
 {
 	theme_row& row = rows[row_index];
-	string::size_type i, j;
-	string str;
+	wstring::size_type i, j;
+	wstring str;
 	int win; 
 
 	if (row_index == MAX_THEME_ROWS)
@@ -284,7 +291,7 @@ void Config::getThemeRow(string& value)
 	}
 
 	/* get row height */
-	if ((i=value.find("(", 0)) == string::npos)
+	if ((i=value.find(L"(", 0)) == string::npos)
 	{
 		fprintf(stderr, "Error: Bogus theme\n");
 		exit(1);
@@ -301,25 +308,27 @@ void Config::getThemeRow(string& value)
 			row.absolute_height = true;
 			str = value.substr(0, i);
 		}
-		row.height = atoi(str.c_str());
+		char num[5];
+		wcstombs(num, str.c_str(), 5);
+		row.height = atoi(num);
 	}
 	else
 		row.height = 0;
 
 	/* windows */
 	win = 0;
-	while (i != string::npos) {
-		string::size_type n;
+	while (i != wstring::npos) {
+		wstring::size_type n;
 
 		j=i+1;
-		i=value.find(",", j);
+		i=value.find(L",", j);
 		if (win == MAX_THEME_COLS)
 		{
 			fprintf(stderr, "Error: too many windows in a row for theme\n");
 			exit(1);
 		}
 
-		if (i == string::npos)
+		if (i == wstring::npos)
 		     n = value.length()-j-1;
 		else n = i-j;
 		getThemeWindow(value.substr(j,n), 
@@ -331,28 +340,32 @@ void Config::getThemeRow(string& value)
 	row_index++;
 }
 
-void Config::getThemeWindow(string fmt, theme_window& w)
+void Config::getThemeWindow(wstring fmt, theme_window& w)
 {
-	string::size_type i;
+	wstring::size_type i;
 
-	if ((i=fmt.find("|", 0)) != string::npos)
+	if ((i=fmt.find(L"|", 0)) != wstring::npos)
 	{
-		if (fmt[i-1] == '%')
+		if (fmt[i-1] == L'%')
 		{
 			w.absolute_width = false;
-			w.width = atoi(fmt.substr(0,i-1).c_str());
+			char num[5];
+			wcstombs(num, fmt.substr(0,i-1).c_str(), 5);
+			w.width = atoi(num);
 		}
 		else
 		{
 			w.absolute_width = true;
-			w.width = atoi(fmt.substr(0,i).c_str());
+			char num[5];
+			wcstombs(num, fmt.substr(0,i).c_str(), 5);
+			w.width = atoi(num);
 		}
 		fmt = fmt.substr(i+1);
 	}
 	else
 		w.width = 0;
 
-	if ("" == fmt)
+	if (L"" == fmt)
 	{
 		if (row_index == 0)
 		{
@@ -361,57 +374,57 @@ void Config::getThemeWindow(string fmt, theme_window& w)
 		}
 		w.window = WNULL;
 	}
-	else if ("blank" == fmt)
+	else if (L"blank" == fmt)
 		w.window = WBLANK;
-	else if ("vpipe" == fmt)
+	else if (L"vpipe" == fmt)
 		w.window = WVPIPE;
-	else if ("hpipe" == fmt)
+	else if (L"hpipe" == fmt)
 		w.window = WHPIPE;
-	else if ("help" == fmt)
+	else if (L"help" == fmt)
 		w.window = WHELP;
-	else if ("tree" == fmt)
+	else if (L"tree" == fmt)
 		w.window = WTREE;
-	else if ("text" == fmt)
+	else if (L"text" == fmt)
 		w.window = WTEXT;
-	else if ("schedule" == fmt)
+	else if (L"schedule" == fmt)
 		w.window = WSCHEDULE;
-	else if ("info" == fmt)
+	else if (L"info" == fmt)
 		w.window = WINFO;
 	else
 	{
-		fprintf(stderr, "Error: unknown window %s\n", fmt.c_str());
+		fwprintf(stderr, L"Error: unknown window %ls\n", fmt.c_str());
 		exit(1);
 	}
 }
 
-void Config::getThemeTree(string& value)
+void Config::getThemeTree(wstring& value)
 {
-	string::size_type i = 0, j = 0;
-	string str;
+	wstring::size_type i = 0, j = 0;
+	wstring str;
 
 	tree_index=0;
-	while (i != string::npos)
+	while (i != wstring::npos)
 	{
 		if (tree_index>MAX_THEME_TREECOLS)
 		{
 			fprintf(stderr, "Error: too many cols in a tree for theme\n");
 			exit(1);
 		}
-		i=value.find(",", j);
+		i=value.find(L",", j);
 		str = value.substr(j,i-j);
-		if ("title" == str)
+		if (L"title" == str)
 		{
 			tree_columns[tree_index] = WTREE;
 		}
-		else if ("priority" == str)
+		else if (L"priority" == str)
 		{
 			tree_columns[tree_index] = WPRIORITY;
 		}
-		else if ("category" == str)
+		else if (L"category" == str)
 		{
 			tree_columns[tree_index] = WCATEGORY;
 		}
-		else if ("deadline" == str)
+		else if (L"deadline" == str)
 		{
 			tree_columns[tree_index] = WDEADLINE;
 		}
@@ -424,74 +437,81 @@ void Config::getThemeTree(string& value)
 	}
 }
 
-void Config::getThemeCategoryLength(string& value)
+void Config::getThemeCategoryLength(wstring& value)
 {
-	category_length = atoi(value.c_str());
+	char num[5];
+	wcstombs(num, value.c_str(), 5);
+	category_length = atoi(num);
 }
 
-void Config::getThemeColors(string& option, string& value)
+void Config::getThemeColors(wstring& option, wstring& value)
 {
 	short int color_index;
 	string::size_type i,j;
 
-	if ("color" == option)
+	if (L"color" == option)
 		color_index = CT_DEFAULT;
-	else if ("selected" == option)
+	else if (L"selected" == option)
 		color_index = CT_SELECTED;
-	else if ("warn" == option)
+	else if (L"warn" == option)
 		color_index = CT_WARN;
-	else if ("pipe" == option)
+	else if (L"pipe" == option)
 		color_index = CT_PIPE;
-	else if ("help" == option)
+	else if (L"help" == option)
 		color_index = CT_HELP;
-	else if ("tree" == option)
+	else if (L"tree" == option)
 		color_index = CT_TREE;
-	else if ("text" == option)
+	else if (L"text" == option)
 		color_index = CT_TEXT;
-	else if ("schedule" == option)
+	else if (L"schedule" == option)
 		color_index = CT_SCHEDULE;
-	else if ("info" == option)
+	else if (L"info" == option)
 		color_index = CT_INFO;
 	else
 	{
-		fprintf(stderr, "Error: color theme %s undefined\n", option.c_str());
+		fwprintf(stderr, L"Error: color theme %ls undefined\n", option.c_str());
 		exit(1);
 	}
 
-	j=value.find("(", 0);
-	i=value.find(",", 0);
+	j=value.find(L"(", 0);
+	i=value.find(L",", 0);
 	if (j<i)
 	{
-		j=value.find(")", 0);
-		i=value.find(",", j);
+		j=value.find(L")", 0);
+		i=value.find(L",", j);
 	}
 	color_win[color_index].exist = true;
 	color_win[color_index].foreground = getThemeColor(value.substr(0, i));
 	color_win[color_index].background = getThemeColor(value.substr(i+1));
 }
 
-short int Config::getThemeColor(string color)
+short int Config::getThemeColor(wstring color)
 {
 	static short int color_num = 8;
 	short int color_id;
-	string::size_type i,j;
-	string str;
+	wstring::size_type i,j;
+	wstring str;
 
 	/* color defined by RGB */
-	if (color[0] == '(')
+	if (color[0] == L'(')
 	{
+		char num[5];
+
 		colors[num_colors].color = color_num;
-		i = color.find(",", 0);
+		i = color.find(L",", 0);
 		str = color.substr(1, i);
-		colors[num_colors].red = atoi(str.c_str());
+		wcstombs(num, str.c_str(), 5);
+		colors[num_colors].red = atoi(num);
 		j = i+1;
-		i = color.find(",", j);
+		i = color.find(L",", j);
 		str = color.substr(j, i);
-		colors[num_colors].green = atoi(str.c_str());
+		wcstombs(num, str.c_str(), 5);
+		colors[num_colors].green = atoi(num);
 		j = i+1;
-		i = color.find(",", j);
+		i = color.find(L",", j);
 		str = color.substr(j, i);
-		colors[num_colors].blue = atoi(str.c_str());
+		wcstombs(num, str.c_str(), 5);
+		colors[num_colors].blue = atoi(num);
 		color_id = color_num;
 		color_num++;
 		num_colors++;
@@ -499,27 +519,27 @@ short int Config::getThemeColor(string color)
 	/* color by name */
 	else
 	{
-		if ("black" == color)
+		if (L"black" == color)
 			color_id = COLOR_BLACK;
-		else if ("red" == color)
+		else if (L"red" == color)
 			color_id = COLOR_RED;
-		else if ("green" == color)
+		else if (L"green" == color)
 			color_id = COLOR_GREEN;
-		else if ("yellow" == color)
+		else if (L"yellow" == color)
 			color_id = COLOR_YELLOW;
-		else if ("blue" == color)
+		else if (L"blue" == color)
 			color_id = COLOR_BLUE;
-		else if ("magenta" == color)
+		else if (L"magenta" == color)
 			color_id = COLOR_MAGENTA;
-		else if ("cyan" == color)
+		else if (L"cyan" == color)
 			color_id = COLOR_CYAN;
-		else if ("white" == color)
+		else if (L"white" == color)
 			color_id = COLOR_WHITE;
-		else if ("transparent" == color)
+		else if (L"transparent" == color)
 			color_id = -1;
 		else
 		{
-			fprintf(stderr, "Error: color %s undefined\n", color.c_str());
+			fwprintf(stderr, L"Error: color %ls undefined\n", color.c_str());
 			exit(1);
 		}
 	}
@@ -527,19 +547,19 @@ short int Config::getThemeColor(string color)
 	return color_id;
 }
 
-int Config::getContext(string& str)
+int Config::getContext(wstring& str)
 {
 	int context;
 
-	if ("keys" == str)
+	if (L"keys" == str)
 	{
 		context = C_KEYS;
 	}
-	else if ("general" == str)
+	else if (L"general" == str)
 	{
 		context = C_GENERAL;
 	}
-	else if ("theme" == str)
+	else if (L"theme" == str)
 	{
 		context = C_THEME;
 		resetTheme();
@@ -597,7 +617,7 @@ bool Config::useUSDates()
 	return us_dates;
 }
 
-string& Config::getSortOrder()
+wstring& Config::getSortOrder()
 {
 	return sort_order;
 }

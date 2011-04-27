@@ -45,7 +45,7 @@ private:
 	Config &config;
 	Writer &writer;
 	pToDo copied;
-	string sortOrder;
+	wstring sortOrder;
 	wstring search_pattern;
 	Cmd &cmd; /* command interface */
 	set<wstring> hidden_categories;

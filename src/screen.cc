@@ -102,15 +102,15 @@ void Screen::draw_helpbar(window_coor c)
 		whelp->_addch(' ');
 	action_list list;
 	config.getActionList(list);
-	string help_bar = " " + list["quit"] + ":quit  " + \
-		list["up"]   + ":up  "   + list["down"]    + ":down  " + \
-		list["out"]  + ":out  "  + list["in"]      + ":in  " + \
-		list["done"] + ":done  " + list["addTodo"] + ":add  " + \
-		list["editTitle"] + ":modify";
+	wstring help_bar = L" " + list[L"quit"] + L":quit  " + \
+		list[L"up"]   + L":up  "   + list[L"down"]    + L":down  " + \
+		list[L"out"]  + L":out  "  + list[L"in"]      + L":in  " + \
+		list[L"done"] + L":done  " + list[L"addTodo"] + L":add  " + \
+		list[L"editTitle"] + L":modify";
 	whelp->_move(0,0);
 	whelp->_addstr(help_bar);
 	whelp->_move(0, c.cols-8);
-	string more_help = list["help"] + ":help";
+	wstring more_help = list[L"help"] + L":help";
 	whelp->_addstr(more_help);
 	whelp->_refresh();
 }
@@ -864,13 +864,13 @@ void Screen::infoPercent(int percent)
 		h._addstr(str[i]); \
 	h._refresh(); \
 	} while (0)
-void Screen::helpPopUp(string str[], int len)
+void Screen::helpPopUp(wstring str[], int len)
 {
 	int lines, cols;
         getmaxyx(stdscr, lines, cols); 
 	Window help_box(lines-8, cols-16, 4, 8);
 	help_box._box();
-	string s = "--- Press 'q' key to close, or space bar for next page ---";
+	wstring s = L"--- Press 'q' key to close, or space bar for next page ---";
 	help_box._move(lines-10, (cols/2)-8-(s.length()/2));
 	help_box._addstr(s);
 	help_box._refresh();

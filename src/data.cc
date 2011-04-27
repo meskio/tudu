@@ -165,7 +165,7 @@ bool& ToDo::actCollapse()
 	return cursor_in;
 }
 
-string cmpOrder;
+wstring cmpOrder;
 bool cmp(pToDo t1, pToDo t2)
 {
 	bool res = true;
@@ -552,11 +552,11 @@ int iToDo::depth()
 	return path.size();
 }
 
-void iToDo::sort(string order)
+void iToDo::sort(wstring order)
 {
 	cmpOrder = order;
-	if (cmpOrder.find('u') == string::npos)
-		cmpOrder += 'u';
+	if (cmpOrder.find(L'u') == wstring::npos)
+		cmpOrder += L'u';
 	root->_sort();
 }
 

@@ -82,7 +82,7 @@ I'll think about it. Could be a nice feature.
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>support for non-latin keybindings pairs</title>
 		<text>support for non-latin keybindings pairs, ideally we should have a table of them, so when I use, for example, russian keyboard layout, I don't need to switch to english layout for operating tudu
 </text>

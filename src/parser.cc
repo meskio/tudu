@@ -284,7 +284,7 @@ bool Writer::save()
 	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
 	file << "<todo>" << endl;
 	i = new iToDo(todo);
-	i->sort("");
+	i->sort(L"");
 	while(--(*i));
 	_save();
 	delete i;

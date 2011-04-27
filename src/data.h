@@ -121,7 +121,7 @@ public:
 	 * u = user
 	 * the same leters in capital are for inverse order
 	 */
-	void sort(string order);
+	void sort(wstring order);
 	bool search(wstring& str);
 	bool searchUp(wstring& str);
 protected:

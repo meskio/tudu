@@ -59,7 +59,7 @@ public:
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);
-	void helpPopUp(string str[], int len);
+	void helpPopUp(wstring str[], int len);
 private:
 	Window *whelp;
 	Window *wtree;

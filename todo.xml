@@ -62,14 +62,47 @@ I'll think about it. Could be a nice feature.
 		<text>
 </text>
 	</todo>
+	<todo done="no" collapse="no">
+		<title>tudu -h gives config error, it should not check the config</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>dates in human format</title>
+		<text>option for entering dates in "human" format like "2d", which will result in deadline date=today+2 days; 3w, 3m and so on.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>optional navigating throw tree with only "j" and "k"</title>
+		<text>option for navigating throw tree with only "j" and "k", so when cursor stands on a level 0 with with sub level, pressing j will lead to changing a cursor position to 0-1, then 0-2 and so on, probably the depth level of such behavior should be adjustable through config file
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>mark default options in man file</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>support for non-latin keybindings pairs</title>
+		<text>support for non-latin keybindings pairs, ideally we should have a table of them, so when I use, for example, russian keyboard layout, I don't need to switch to english layout for operating tudu
+</text>
+	</todo>
 	<todo done="yes" collapse="no">
 		<title>arrows on date editor</title>
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>tudu -h gives config error, it should not check the config</title>
-		<text>
+	<todo done="yes" collapse="no">
+		<title>freeze moving task</title>
+		<text>Program freezes and doesn't respond even to C-c
+ubuntu 10.10 32-bit with almost standard configuration with tudu 0.8;
+
+reproduce:
+make a list with such an hierarchy:
+ 1
+ -1.1
+ -1.2
+Then try to move 1.2 down, this will result in program freeze
 </text>
 	</todo>
 	<todo done="yes" collapse="no">

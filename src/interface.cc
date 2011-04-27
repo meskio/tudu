@@ -509,10 +509,14 @@ void Interface::move_up()
 
 void Interface::move_down()
 {
+	iToDo aux = cursor;
+	++aux;
+	if (aux.end())
+		return;
+
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
-	iToDo aux = cursor;
 	aux.addChild(t);
 	while (aux != cursor) next();
 	drawTodo();

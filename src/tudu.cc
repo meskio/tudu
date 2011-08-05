@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -37,14 +37,14 @@ extern int errno;
 
 #define version() \
 	cout << VERSION_STR << endl; \
-	cout << "TuDu Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
 
 #define copyright() \
 	cout << VERSION_STR << endl; \
-	cout << "Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
+	cout << "Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
  	cout << "TuDu is free software; you can redistribute it and/or modify" << endl; \
  	cout << "it under the terms of the GNU General Public License as published by" << endl; \
  	cout << "the Free Software Foundation; version 3 of the License." << endl << endl; \

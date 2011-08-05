@@ -1,16 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="yes" collapse="no">
-		<title>showonly doesn't work</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>cmd don't autofill with categories</title>
-		<text>
-</text>
-	</todo>
 	<todo done="no" collapse="no">
 		<title>on done-undone it plots wrong the screen</title>
 		<text>
@@ -105,34 +95,6 @@ http://taskwarrior.org/boards/6/topics/79
 		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
 
 Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>support for non-latin keybindings pairs</title>
-		<text>support for non-latin keybindings pairs, ideally we should have a table of them, so when I use, for example, russian keyboard layout, I don't need to switch to english layout for operating tudu
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>arrows on date editor</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>freeze moving task</title>
-		<text>Program freezes and doesn't respond even to C-c
-ubuntu 10.10 32-bit with almost standard configuration with tudu 0.8;
-
-reproduce:
-make a list with such an hierarchy:
- 1
- -1.1
- -1.2
-Then try to move 1.2 down, this will result in program freeze
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>fix debian bug #611077</title>
-		<text>
 </text>
 	</todo>
 </todo>

@@ -308,6 +308,8 @@ bool Interface::isHide(iToDo& todo)
 	/* if is in hidden category */
 	bool hideCat = false;
 	set<wstring>& categories = todo->getCategories();
+	if (categories.empty() && hidden_categories.count(L""))
+		hideCat = true;
 	for (set<wstring>::iterator it = categories.begin();
 	     it != categories.end(); it++)
 	{

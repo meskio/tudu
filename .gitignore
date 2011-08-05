@@ -1,6 +1,7 @@
 *.o
 *.swp
 Makefile
+tags
 /.vimrc
 /src/defs.h
 /src/tudu

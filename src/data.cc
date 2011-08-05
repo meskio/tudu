@@ -99,11 +99,14 @@ wstring ToDo::getCategoriesStr()
 void ToDo::addCategory(const wstring& c)
 {
 	_category.insert(c);
+	if (c != NONE_CATEGORY) categories.insert(c);
 }
 
 void ToDo::setCategories(set<wstring>& c)
 {
 	_category = c;
+	for (set<wstring>::iterator it = c.begin(); it != c.end(); it++)
+		if (*it != NONE_CATEGORY) categories.insert(*it);
 }
 
 void ToDo::setCategoriesStr(wstring& c)

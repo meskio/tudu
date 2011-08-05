@@ -1,6 +1,31 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
+	<todo done="yes" collapse="no">
+		<title>showonly doesn't work</title>
+		<text>
+</text>
+	</todo>
+	<todo done="yes" collapse="no">
+		<title>cmd don't autofill with categories</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>on done-undone it plots wrong the screen</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>tudu -h gives config error, it should not check the config</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>mark default options in man file</title>
+		<text>
+</text>
+	</todo>
 	<todo done="no" collapse="no">
 		<title>command line interface for sort order or show info while press b</title>
 		<text>
@@ -58,16 +83,6 @@ I'll think about it. Could be a nice feature.
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>on done-undone it plots wrong the screen</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>tudu -h gives config error, it should not check the config</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>dates in human format</title>
 		<text>option for entering dates in "human" format like "2d", which will result in deadline date=today+2 days; 3w, 3m and so on.
 </text>
@@ -78,8 +93,18 @@ I'll think about it. Could be a nice feature.
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>mark default options in man file</title>
-		<text>
+		<title>time accounting</title>
+		<text>How about a feature to log when I had spent time on it in the past, which is sporadic for my long long list of todo's.  Such log can be amusing when looking back a few years down the road -- why did I spent that amount of time doing that !?
+ 
+Taskwarrior has some thoughts on it
+http://taskwarrior.org/boards/6/topics/79
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>show category on the tudurc</title>
+		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
+
+Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
 </text>
 	</todo>
 	<todo done="yes" collapse="no">

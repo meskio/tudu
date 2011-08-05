@@ -1,9 +1,9 @@
 REQUIRE_ACR_VERSION 0.8.2
 
 PKGNAME tudu
-VERSION 0.8
+VERSION 0.8.1
 CONTACT Ruben Pollan ; meskio@sindominio.net
-YEAR = 2010 ;
+YEAR = 2011 ;
 
 LANG_CXX!
 
@@ -40,7 +40,7 @@ CHECK WIDEC_CURSES <<EOF
 echo "#define _XOPEN_SOURCE_EXTENDED" > test.c \
 echo "#include<$CURSES_INCLUDE>" >> test.c \
 echo "main(){ addwstr(L\"\"); }" >> test.c \
-eval \$${COMPILER} ${CXXFLAGS} ${LDFLAGS} test.c >/dev/null 2>&1 \
+eval \$${COMPILER} ${CXXFLAGS} test.c ${LDFLAGS} >/dev/null 2>&1 \
 if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi \
 rm test.c
 <<EOF

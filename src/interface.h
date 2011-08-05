@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -45,7 +45,7 @@ private:
 	Config &config;
 	Writer &writer;
 	pToDo copied;
-	string sortOrder;
+	wstring sortOrder;
 	wstring search_pattern;
 	Cmd &cmd; /* command interface */
 	set<wstring> hidden_categories;

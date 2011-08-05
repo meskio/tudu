@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -41,7 +41,7 @@ Interface::~Interface()
 void Interface::main()
 {
 	wint_t key;
-	string action;
+	wstring action;
 
 	while (cursor.out());
 	while (--cursor);
@@ -65,61 +65,61 @@ void Interface::main()
 		else if (config.getAction(key, action))
 		{
 			screen.infoClear();
-			if ("quit" == action)
+			if (L"quit" == action)
 			{
 				if (writer.save())
 					break;
 				else
 					screen.infoMsg("File can not be saved");
 			}
-			if ("quitNoSave" == action)
+			if (L"quitNoSave" == action)
 				if (screen.confirmQuit()) break;
-			if ("out" == action) left();
-			if ("in" == action) right();
-			if ("down" == action) down();
-			if ("up" == action) up();
-			if ("move_down" == action) move_down();
-			if ("move_up" == action) move_up();
-			if ("delete" == action) del();
-			if ("delDeadline" == action) delDeadline();
-			if ("delPriority" == action) delPriority();
-			if ("delSched" == action) delSched();
-			if ("paste" == action) paste();
-			if ("pasteUp" == action) pasteUp();
-			if ("pasteChild" == action) pasteChild();
-			if ("done" == action) done();
-			if ("addTodo" == action) addLine();
-			if ("addTodoUp" == action) addLineUp();
-			if ("editTitle" == action) modifyLine();
-			if ("editDeadline" == action) editDeadline();
-			if ("setPriority" == action) setPriority();
-			if ("setCategory" == action) setCategory();
-			if ("editText" == action) editText();
-			if ("editSched" == action) editSched();
-			if ("schedUp" == action) schedUp();
-			if ("schedDown" == action) schedDown();
-			if ("downText" == action) downText();
-			if ("upText" == action) upText();
-			if ("collapse" == action) collapse();
-			if ("hideDone" == action) hide_done();
-			if ("search" == action) search();
-			if ("searchNext" == action) search_next();
-			if ("searchPrev" == action) search_prev();
-			if ("cmd" == action) command_line();
-			if ("sortByTitle" == action) sortByTitle();
-			if ("sortByDone" == action) sortByDone();
-			if ("sortByDeadline" == action) sortByDeadline();
-			if ("sortByPriority" == action) sortByPriority();
-			if ("sortByCategory" == action) sortByCategory();
-			if ("sortByUser" == action) sortByUser();
-			if ("sortRevTitle" == action) sortRevTitle();
-			if ("sortRevDone" == action) sortRevDone();
-			if ("sortRevDeadline" == action) sortRevDeadline();
-			if ("sortRevPriority" == action) sortRevPriority();
-			if ("sortRevCategory" == action) sortRevCategory();
-			if ("sortRevUser" == action) sortRevUser();
-			if ("save" == action) save();
-			if ("help" == action) help();
+			if (L"out" == action) left();
+			if (L"in" == action) right();
+			if (L"down" == action) down();
+			if (L"up" == action) up();
+			if (L"move_down" == action) move_down();
+			if (L"move_up" == action) move_up();
+			if (L"delete" == action) del();
+			if (L"delDeadline" == action) delDeadline();
+			if (L"delPriority" == action) delPriority();
+			if (L"delSched" == action) delSched();
+			if (L"paste" == action) paste();
+			if (L"pasteUp" == action) pasteUp();
+			if (L"pasteChild" == action) pasteChild();
+			if (L"done" == action) done();
+			if (L"addTodo" == action) addLine();
+			if (L"addTodoUp" == action) addLineUp();
+			if (L"editTitle" == action) modifyLine();
+			if (L"editDeadline" == action) editDeadline();
+			if (L"setPriority" == action) setPriority();
+			if (L"setCategory" == action) setCategory();
+			if (L"editText" == action) editText();
+			if (L"editSched" == action) editSched();
+			if (L"schedUp" == action) schedUp();
+			if (L"schedDown" == action) schedDown();
+			if (L"downText" == action) downText();
+			if (L"upText" == action) upText();
+			if (L"collapse" == action) collapse();
+			if (L"hideDone" == action) hide_done();
+			if (L"search" == action) search();
+			if (L"searchNext" == action) search_next();
+			if (L"searchPrev" == action) search_prev();
+			if (L"cmd" == action) command_line();
+			if (L"sortByTitle" == action) sortByTitle();
+			if (L"sortByDone" == action) sortByDone();
+			if (L"sortByDeadline" == action) sortByDeadline();
+			if (L"sortByPriority" == action) sortByPriority();
+			if (L"sortByCategory" == action) sortByCategory();
+			if (L"sortByUser" == action) sortByUser();
+			if (L"sortRevTitle" == action) sortRevTitle();
+			if (L"sortRevDone" == action) sortRevDone();
+			if (L"sortRevDeadline" == action) sortRevDeadline();
+			if (L"sortRevPriority" == action) sortRevPriority();
+			if (L"sortRevCategory" == action) sortRevCategory();
+			if (L"sortRevUser" == action) sortRevUser();
+			if (L"save" == action) save();
+			if (L"help" == action) help();
 		}
 	}
 }
@@ -308,6 +308,8 @@ bool Interface::isHide(iToDo& todo)
 	/* if is in hidden category */
 	bool hideCat = false;
 	set<wstring>& categories = todo->getCategories();
+	if (categories.empty() && hidden_categories.count(L""))
+		hideCat = true;
 	for (set<wstring>::iterator it = categories.begin();
 	     it != categories.end(); it++)
 	{
@@ -509,10 +511,14 @@ void Interface::move_up()
 
 void Interface::move_down()
 {
+	iToDo aux = cursor;
+	++aux;
+	if (aux.end())
+		return;
+
 	pToDo t = &(*cursor);
 	cursor.del();
 	eraseCursor();
-	iToDo aux = cursor;
 	aux.addChild(t);
 	while (aux != cursor) next();
 	drawTodo();
@@ -970,73 +976,73 @@ void Interface::search_prev()
 
 void Interface::sortByTitle()
 {
-	sortOrder = 't' + sortOrder;
+	sortOrder = L't' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDone()
 {
-	sortOrder = 'd' + sortOrder;
+	sortOrder = L'd' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByDeadline()
 {
-	sortOrder = 'l' + sortOrder;
+	sortOrder = L'l' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByPriority()
 {
-	sortOrder = 'p' + sortOrder;
+	sortOrder = L'p' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByCategory()
 {
-	sortOrder = 'c' + sortOrder;
+	sortOrder = L'c' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortByUser()
 {
-	sortOrder = 'u' + sortOrder;
+	sortOrder = L'u' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevTitle()
 {
-	sortOrder = 'T' + sortOrder;
+	sortOrder = L'T' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDone()
 {
-	sortOrder = 'D' + sortOrder;
+	sortOrder = L'D' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevDeadline()
 {
-	sortOrder = 'L' + sortOrder;
+	sortOrder = L'L' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevPriority()
 {
-	sortOrder = 'P' + sortOrder;
+	sortOrder = L'P' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevCategory()
 {
-	sortOrder = 'C' + sortOrder;
+	sortOrder = L'C' + sortOrder;
 	drawTodo();
 }
 
 void Interface::sortRevUser()
 {
-	sortOrder = 'U' + sortOrder;
+	sortOrder = L'U' + sortOrder;
 	drawTodo();
 }
 
@@ -1060,52 +1066,51 @@ void Interface::help()
 	config.getActionList(list);
 
 
-	string str[LINES_HELP];
+	wstring str[LINES_HELP];
 	int i = 0;
-	str[i++] = "  TASK CREATION\n";
-	str[i++] = "  " + list["addTodo"] + "\tadd a new task below the cursor\n";
-	str[i++] = "  " + list["addTodoUp"] + "\tadd a new task above the cursor\n";
-	str[i++] = "  " + list["editTitle"] + "\tedit task's title\n";
-	str[i++] = "  " + list["editText"] + "\tadd/edit task's long description text\n";
-	str[i++] = "  " + list["setPriority"] + "\tadd/edit task's priority\n";
-	str[i++] = "  " + list["setCategory"] + "\tadd/edit task's category\n";
-	str[i++] = "  " + list["editDeadline"] + "\tadd/edit task's deadline\n";
-	str[i++] = "  " + list["editSched"] + "\tadd/edit taks's scheduled date\n";
-	str[i++] = "\n";
-	str[i++] = "  NAVIGATION\n";
-	str[i++] = "  " + list["in"] + "\tgo one level deeper\n";
-	str[i++] = "  " + list["out"] + "\tgo to the outer lever\n";
-	str[i++] = "  " + list["down"] + "\tgo down\n";
-	str[i++] = "  " + list["up"] + "\tgo up\n";
-	str[i++] = "  " + list["collapse"] + "\tcollapse/expand a task\n";
-	str[i++] = "  " + list["hideDone"] + "\thide/unhide tasks marked as done\n";
-	str[i++] = "  " + list["move_down"] + "\tmove a task downwards\n";
-	str[i++] = "  " + list["move_up"] + "\tmove a task upwards\n";
-	str[i++] = "  " + list["schedUp"] + "\tmove up the task on the scheduler\n";
-	str[i++] = "  " + list["schedDown"] +  "\tmove down the task on the scheduler\n";
-	str[i++] = "  " + list["downText"] + "\tscroll text down\n";
-	str[i++] = "  " + list["upText"] + "\tscroll text up\n";
-	str[i++] = "  " + list["search"] + "\tsearch on titles\n";
-	str[i++] = "  " + list["searchNext"] + "\tgo to next search result\n";
-	str[i++] = "  " + list["save"] + "\tsave changes\n";
-	str[i++] = "  " + list["quit"] + "\tquit\n";
-	str[i++] = "  " + list["quitNoSave"] + "\tquit without saving\n";
-	str[i++] = "\n";
-	str[i++] = "  EDITING\n";
-	str[i++] = "  " + list["done"] + "\tmark/unmark a task as done\n";
-	str[i++] = "  " + list["delete"] + "\tdelete a task\n";
-	str[i++] = "  " + list["delPriority"] + "\tdelete task's priority\n";
-	str[i++] = "  " + list["delDeadline"] + "\tdelete task's deadline\n";
-	str[i++] = "  " + list["delSched"] + "\tdelete task's scheduled date\n";
-	str[i++] = "  " + list["paste"] + "\tpaste last deletion below the cursor\n";
-	str[i++] = "  " + list["pasteUp"] + "\tpaste last deletion above the cursor\n";
-	str[i++] = "  " + list["pasteChild"] + "\tpaste last deletion as a subtask\n";
-	str[i++] = "\n";
-	str[i++] = "  COMMANDS\n";
-	str[i++] = "  :help\tshow manual page\n";
-	str[i++] = "\n";
-	str[i++] = "  Please refer to the manual page for more commands, sorting\n";
-	str[i]   = "  by different criteria and category management.\n";
+	str[i++] = L"  TASK CREATION\n";
+	str[i++] = L"  " + list[L"addTodo"] + L"\tadd a new task below the cursor\n";
+	str[i++] = L"  " + list[L"addTodoUp"] + L"\tadd a new task above the cursor\n";
+	str[i++] = L"  " + list[L"editTitle"] + L"\tedit task's title\n";
+	str[i++] = L"  " + list[L"editText"] + L"\tadd/edit task's long description text\n";
+	str[i++] = L"  " + list[L"setPriority"] + L"\tadd/edit task's priority\n";
+	str[i++] = L"  " + list[L"setCategory"] + L"\tadd/edit task's category\n";
+	str[i++] = L"  " + list[L"editDeadline"] + L"\tadd/edit task's deadline\n";
+	str[i++] = L"  " + list[L"editSched"] + L"\tadd/edit taks's scheduled date\n";
+	str[i++] = L"\n";
+	str[i++] = L"  NAVIGATION\n";
+	str[i++] = L"  " + list[L"in"] +L"\tgo one level deeper\n";
+	str[i++] = L"  " + list[L"out"] +L"\tgo to the outer lever\n";
+	str[i++] = L"  " + list[L"down"] +L"\tgo down\n";
+	str[i++] = L"  " + list[L"up"] +L"\tgo up\n";
+	str[i++] = L"  " + list[L"collapse"] +L"\tcollapse/expand a task\n";
+	str[i++] = L"  " + list[L"hideDone"] +L"\thide/unhide tasks marked as done\n";
+	str[i++] = L"  " + list[L"move_down"] +L"\tmove a task downwards\n";
+	str[i++] = L"  " + list[L"move_up"] +L"\tmove a task upwards\n";
+	str[i++] = L"  " + list[L"schedUp"] +L"\tmove up the task on the scheduler\n";
+	str[i++] = L"  " + list[L"schedDown"] + L"\tmove down the task on the scheduler\n";
+	str[i++] = L"  " + list[L"downText"] +L"\tscroll text down\n";
+	str[i++] = L"  " + list[L"upText"] +L"\tscroll text up\n";
+	str[i++] = L"  " + list[L"search"] +L"\tsearch on titles\n";
+	str[i++] = L"  " + list[L"searchNext"] +L"\tgo to next search result\n";
+	str[i++] = L"  " + list[L"save"] +L"\tsave changes\n";
+	str[i++] = L"  " + list[L"quit"] +L"\tquit\n";
+	str[i++] = L"  " + list[L"quitNoSave"] +L"\tquit without saving\n";
+	str[i++] = L"\n";
+	str[i++] = L"  EDITING\n";
+	str[i++] = L"  " + list[L"done"] +L"\tmark/unmark a task as done\n";
+	str[i++] = L"  " + list[L"delete"] +L"\tdelete a task\n";
+	str[i++] = L"  " + list[L"delPriority"] +L"\tdelete task's priority\n";
+	str[i++] = L"  " + list[L"delDeadline"] +L"\tdelete task's deadline\n";
+	str[i++] = L"  " + list[L"delSched"] +L"\tdelete task's scheduled date\n";
+	str[i++] = L"  " + list[L"paste"] +L"\tpaste last deletion below the cursor\n";
+	str[i++] = L"  " + list[L"pasteUp"] +L"\tpaste last deletion above the cursor\n";
+	str[i++] = L"  " + list[L"pasteChild"] +L"\tpaste last deletion as a subtask\n";
+	str[i++] = L"\n";
+	str[i++] = L"  COMMANDS\n";
+	str[i++] = L"  :help\tshow manual page\n";
+	str[i++] = L"\n";
+	str[i++] = L"  Please refer to the manual page for more commands, sorting\n";
+	str[i]   = L"  by different criteria and category management.\n";
 	screen.helpPopUp(str, i);
 }
-

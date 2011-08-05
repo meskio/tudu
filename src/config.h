@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -24,12 +24,12 @@
 #include "window.h"
 
 struct key_action;
-typedef map<char,key_action> key_map;
+typedef map<wchar_t,key_action> key_map;
 struct key_action {
-	string action;
+	wstring action;
 	key_map subkeys;
 };
-typedef map<string,string> action_list;
+typedef map<wstring,wstring> action_list;
 
 #define PRIORITY_LENGTH 1
 #define DEADLINE_LENGTH 12
@@ -88,7 +88,7 @@ public:
 	Config();
 
 	bool load(const char* path);
-	bool getAction(char key, string& action);
+	bool getAction(wchar_t key, wstring& action);
 	void getActionList(action_list& list);
 	bool getCollapse();
 	bool& getHideDone();
@@ -99,7 +99,7 @@ public:
 	bool getOldSched();
 	int getDaysWarn();
 	bool useUSDates();
-	string& getSortOrder();
+	wstring& getSortOrder();
 	char* getEditor();
 	int getCategoryLength();
 	void genWindowCoor(int lines, int cols, windows_defs& coor);
@@ -134,7 +134,7 @@ private:
 	bool us_dates;
 	bool loop_move;
 	bool old_sched;
-	string sort_order;
+	wstring sort_order;
 	char editor[64];
 	/* themes */
 	int row_index;
@@ -146,19 +146,19 @@ private:
 	color_t colors[NUM_CT*2];
 	short int num_colors;
 
-	void getOutContextOption(string& option, string& value);
-	bool isYes(string& value);
-	void getGeneralOption(string& option, string& value);
-	void insertKeyMap(key_map& k, string action, string keys);
+	void getOutContextOption(wstring& option, wstring& value);
+	bool isYes(wstring& value);
+	void getGeneralOption(wstring& option, wstring& value);
+	void insertKeyMap(key_map& k, wstring action, wstring keys);
 	void resetTheme();
-	void getThemeOption(string& option, string& value);
-	void getThemeRow(string& value);
-	void getThemeWindow(string fmt, theme_window& w);
-	void getThemeTree(string& value);
-	void getThemeCategoryLength(string& value);
-	void getThemeColors(string& option, string& value);
-	short int getThemeColor(string color);
-	int getContext(string& str);
+	void getThemeOption(wstring& option, wstring& value);
+	void getThemeRow(wstring& value);
+	void getThemeWindow(wstring fmt, theme_window& w);
+	void getThemeTree(wstring& value);
+	void getThemeCategoryLength(wstring& value);
+	void getThemeColors(wstring& option, wstring& value);
+	short int getThemeColor(wstring color);
+	int getContext(wstring& str);
 	bool genWindowHeights(int lines, int height[]);
 	bool genWindowWidths(int row_index, int cols, windows_defs& coor, int width[]);
 	bool genWindowTree(windows_defs& coor, int height, int x, int y);

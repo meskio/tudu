@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -59,7 +59,7 @@ public:
 	void infoMsg(const char str[]);
 	void infoClear();
 	void infoPercent(int percent);
-	void helpPopUp(string str[], int len);
+	void helpPopUp(wstring str[], int len);
 private:
 	Window *whelp;
 	Window *wtree;

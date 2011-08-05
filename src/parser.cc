@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -284,7 +284,7 @@ bool Writer::save()
 	file << "<!DOCTYPE tudu SYSTEM \"" << PATH_DTD << "\">" << endl;
 	file << "<todo>" << endl;
 	i = new iToDo(todo);
-	i->sort("");
+	i->sort(L"");
 	while(--(*i));
 	_save();
 	delete i;

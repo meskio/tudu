@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -535,6 +535,20 @@ void DateEditor::right()
 {
 	if (cursor<9) ++cursor;
 	if ((2==cursor) || (5==cursor)) ++cursor;
+}
+
+void DateEditor::up()
+{
+	if ((text[cursor] < '0') || (text[cursor] > '9'))
+		text[cursor] = '0';
+	if (text[cursor] < '9')
+		text[cursor]++;
+}
+
+void DateEditor::down()
+{
+	if ((text[cursor] > '0') && (text[cursor] <= '9'))
+		text[cursor]--;
 }
 
 void DateEditor::home()

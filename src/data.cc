@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2010 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -99,11 +99,14 @@ wstring ToDo::getCategoriesStr()
 void ToDo::addCategory(const wstring& c)
 {
 	_category.insert(c);
+	if (c != NONE_CATEGORY) categories.insert(c);
 }
 
 void ToDo::setCategories(set<wstring>& c)
 {
 	_category = c;
+	for (set<wstring>::iterator it = c.begin(); it != c.end(); it++)
+		if (*it != NONE_CATEGORY) categories.insert(*it);
 }
 
 void ToDo::setCategoriesStr(wstring& c)
@@ -165,7 +168,7 @@ bool& ToDo::actCollapse()
 	return cursor_in;
 }
 
-string cmpOrder;
+wstring cmpOrder;
 bool cmp(pToDo t1, pToDo t2)
 {
 	bool res = true;
@@ -283,9 +286,9 @@ bool cmp(pToDo t1, pToDo t2)
 				if (t1->_category != t2->_category)
 				{
 					if (t1->_category.empty())
-						res = false;
-					else if (t2->_category.empty())
 						res = true;
+					else if (t2->_category.empty())
+						res = false;
 					else
 						res = (t1->getCategoriesStr()>t2->getCategoriesStr());
 					out = true;
@@ -552,11 +555,11 @@ int iToDo::depth()
 	return path.size();
 }
 
-void iToDo::sort(string order)
+void iToDo::sort(wstring order)
 {
 	cmpOrder = order;
-	if (cmpOrder.find('u') == string::npos)
-		cmpOrder += 'u';
+	if (cmpOrder.find(L'u') == wstring::npos)
+		cmpOrder += L'u';
 	root->_sort();
 }
 

@@ -101,12 +101,12 @@ done
 : ${INSTALL_PROGRAM:=${INSTALL} -m 755 -s}
 : ${INSTALL_MAN:=${INSTALL} -m 444}
 : ${INSTALL_LIB:=${INSTALL} -c}
- PKGNAME='tudu' ; VERSION='0.8' ; CONTACT_MAIL="meskio@sindominio.net" ; CONTACT_NAME="Ruben Pollan" ; CONTACT="Ruben Pollan <meskio@sindominio.net>" ;
+ PKGNAME='tudu' ; VERSION='0.8.1' ; CONTACT_MAIL="meskio@sindominio.net" ; CONTACT_NAME="Ruben Pollan" ; CONTACT="Ruben Pollan <meskio@sindominio.net>" ;
 }
                 
 show_usage() {
 cat <<EOF2
-'configure' configures tudu-0.8 to adapt to many kinds of systems.
+'configure' configures tudu-0.8.1 to adapt to many kinds of systems.
 
 Usage: ./configure [OPTION]... [VAR=VALUE]...
 
@@ -163,7 +163,7 @@ take_environ() {
 }
 
 show_version() {
-echo "tudu-0.8 configuration script done with acr v0.8.2.
+echo "tudu-0.8.1 configuration script done with acr v0.8.2.
 The 'Free Software Foundation' message is only for autodetection.
 Originally written by pancake <youterm.com>."
 exit 0
@@ -181,7 +181,7 @@ case $flag in
 	show_version ; ;;
 "-r"|"--r"|"--report")
 echo "PKGNAME:   tudu"
-echo "VERSION:   0.8"
+echo "VERSION:   0.8.1"
 echo "LANGS:     c++"
 echo "OPTIONAL:  libncursesw"
 	exit 0
@@ -264,7 +264,7 @@ ACR_RMFILES=" test.c test.cxx a.out a.exe"
 
 
 : 
-YEAR="2010"
+YEAR="2011"
 COMPILER=CXX
 HAVE_LANG_CXX=1
 printf "checking for c++ compiler... "
@@ -350,7 +350,7 @@ if [ "$LD_CURSES" = "" ]; then
 case "$undefined_variable" in 0|"") echo ; echo "ERROR: There is no curses installed!" >&2 ; echo ; exit 1 ;; esac; fi
 LDFLAGS="${LDFLAGS} $LD_CURSES"
 printf "checking for WIDEC_CURSES... "
-echo "#define _XOPEN_SOURCE_EXTENDED" > test.c  ; echo "#include<$CURSES_INCLUDE>" >> test.c  ; echo "main(){ addwstr(L\"\"); }" >> test.c  ; eval \$${COMPILER} ${CXXFLAGS} ${LDFLAGS} test.c >/dev/null 2>&1  ; if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi  ; rm test.c 
+echo "#define _XOPEN_SOURCE_EXTENDED" > test.c  ; echo "#include<$CURSES_INCLUDE>" >> test.c  ; echo "main(){ addwstr(L\"\"); }" >> test.c  ; eval \$${COMPILER} ${CXXFLAGS} test.c ${LDFLAGS} >/dev/null 2>&1  ; if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi  ; rm test.c 
 if [ "$WIDEC_CURSES" = 1 ]; then
 	echo yes
 else

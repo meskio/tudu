@@ -1,6 +1,7 @@
 0.8.1
 	* Added arrow keys on date editor
 	* Added support for non-latin keybinding pairs
+	* Fixed wrong plotting while change tudu task position
 	* Fixed category problems (autofill, showonly, ...)
 	* Fixed Makefile problems reported on debian bug #611077
 	* Removed freeze on moving task

@@ -2,11 +2,6 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
-		<title>on done-undone it plots wrong the screen</title>
-		<text>
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>tudu -h gives config error, it should not check the config</title>
 		<text>
 </text>

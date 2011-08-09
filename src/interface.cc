@@ -134,6 +134,8 @@ void Interface::drawTodo()
 {
 	screen.treeClear();
 	cursor.sort(sortOrder);
+
+	/* if there is no task to display create a dummy one */
 	if (isHide(cursor) && !prev() && !next())
 	{
 		while (cursor.out());
@@ -141,20 +143,22 @@ void Interface::drawTodo()
 		inherit();
 		cursor_line = 0;
 	}
-	iToDo aux = cursor;
 
+	/* get the percent done of the whole tree */
+	iToDo aux = cursor;
 	while (cursor.out());
 	while (--cursor);
 	screen.infoPercent(cursor.percentUp());
+	cursor = aux;
 
 	/* redraw screen */
-	cursor = aux;
 	fitCursor();
 	int line = cursor_line;
 	while ((cursor_line > 0) && prev());
 	if (cursor_line < 0)
 	{
-		screen.drawTitle(cursor_line, cursor.depth(), cursor->getTitle(), -cursor_line);
+		screen.drawTitle(cursor_line, cursor.depth(), 
+		                 cursor->getTitle(), -cursor_line);
 		next();
 	}
 	while (cursor_line < screen.treeLines())
@@ -228,20 +232,43 @@ void Interface::eraseCursor()
 
 bool Interface::fitCursor()
 {
+	bool needRedraw = false;
 	int treeLines = screen.treeLines();
 	int taskLines = screen.taskLines(cursor.depth(), *cursor);
+	iToDo task = cursor;
 
+	/* keep the tree on the screen if it can fit there */
+	int line = cursor_line;
+	while (prev());
+	int firstLine = cursor_line;
+	iToDo firstTask = cursor;   //FIXME
+	while (cursor_line < treeLines-5)
+		if (!next()) break;
+	if ((cursor_line < treeLines-5) || (firstLine > 0))
+	{
+		cursor_line = 0;
+		cursor = firstTask;
+		needRedraw = true;
+		while (cursor != task) next();
+	}
+	else
+	{
+		cursor_line = line;
+		cursor = task;
+	}
+
+	/* check if the task is out of the screen scroll */
 	if (taskLines > treeLines-8)
 	{
 		if (cursor_line + taskLines >= treeLines)
 		{
 			cursor_line = treeLines - taskLines;
-			return true;
+			needRedraw = true;
 		}
 		else if (cursor_line < 0)
 		{
 			cursor_line = 0;
-			return true;
+			needRedraw = true;
 		}
 	}
 	else if (cursor_line + taskLines >= treeLines - 4)
@@ -249,38 +276,19 @@ bool Interface::fitCursor()
 		int line = cursor_line;
 		cursor_line = treeLines - taskLines - 4;
 		if (cursor_line < 0) cursor_line = 0;
-		if (cursor_line != line) return true;
+		if (cursor_line != line) needRedraw = true;
 	}
 	else if (cursor_line < 4)
 	{
-		iToDo aux = cursor;
 		int line = cursor_line;
 		while (cursor_line > line - 4)
 			if (!prev()) break;
 		cursor_line = 0;
-		while (aux != cursor) next();
-		if (cursor_line != line) return true;
-	}
-	else
-	{
-		iToDo aux = cursor;
-		int line = cursor_line;
-		while (cursor_line != 0)
-			if (!prev()) break;
-		if (cursor_line == 0)
-		{
-			cursor = aux;
-			cursor_line = line;
-		}
-		else
-		{
-			cursor_line = 0;
-			while (aux != cursor) next();
-			return true;
-		}
+		while (task != cursor) next();
+		if (cursor_line != line) needRedraw = true;
 	}
 
-	return false;
+	return needRedraw;
 }
 
 void Interface::drawCursor()

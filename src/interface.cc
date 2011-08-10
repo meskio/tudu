@@ -241,7 +241,7 @@ bool Interface::fitCursor()
 	int line = cursor_line;
 	while (prev());
 	int firstLine = cursor_line;
-	iToDo firstTask = cursor;   //FIXME
+	iToDo firstTask = cursor;
 	while (cursor_line < treeLines-5)
 		if (!next()) break;
 	if ((cursor_line < treeLines-5) || (firstLine > 0))

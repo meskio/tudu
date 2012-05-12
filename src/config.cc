@@ -123,9 +123,12 @@ void Config::getOutContextOption(wstring& option, wstring& value)
 	}
 }
 
-bool Config::isYes(wstring& value)
+inline bool Config::isYes(wstring& value)
 {
-	return (L"yes" == value);
+	if (L"yes" == value)
+		return true;
+
+	return false;
 }
 
 void Config::getGeneralOption(wstring& option, wstring& value)

@@ -99,6 +99,7 @@ public:
 	bool getOldSched();
 	int getDaysWarn();
 	bool useUSDates();
+	wstring& getTuduFile();
 	wstring& getSortOrder();
 	char* getEditor();
 	int getCategoryLength();
@@ -134,6 +135,7 @@ private:
 	bool us_dates;
 	bool loop_move;
 	bool old_sched;
+	wstring tudu_file;
 	wstring sort_order;
 	char editor[64];
 	/* themes */

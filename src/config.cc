@@ -48,6 +48,7 @@ bool Config::load(const char* path)
 	file.open(path);
 	if (!file) return false;
 
+	tudu_file = L"";
 	sort_order = L"";
 	editor[0] = '\0';
 	while (!file.eof())
@@ -163,6 +164,9 @@ void Config::getGeneralOption(wstring& option, wstring& value)
 
 	if (L"us_dates" == option)
 		us_dates = isYes(value);
+
+	if (L"tudu_file" == option)
+		tudu_file = value.c_str();
 
 	if (L"sort_order" == option)
 		sort_order = value.c_str();
@@ -615,6 +619,11 @@ int Config::getDaysWarn()
 bool Config::useUSDates()
 {
 	return us_dates;
+}
+
+wstring& Config::getTuduFile()
+{
+	return tudu_file;
 }
 
 wstring& Config::getSortOrder()

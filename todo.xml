@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
+	<todo done="yes" collapse="no">
+		<title>configure the path to the xml file</title>
+		<text>please, add an option to tudurc that allows to specify non-default location of tudu.xml file. Just like -f option, but persistently stored in file.
+</text>
+	</todo>
 	<todo done="no" collapse="no">
 		<title>scroll on help segfaults</title>
 		<text>

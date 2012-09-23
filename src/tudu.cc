@@ -100,8 +100,12 @@ int main(int argc, char **argv, char *env[])
 	strcat(file_rc,"/.tudurc");
 	config.load(file_rc);
 
-	strncpy(file_xml,env[i]+5,117);
-	strcat(file_xml,"/.tudu.xml");
+	if (config.getTuduFile() == L"") {
+		strncpy(file_xml,env[i]+5,117);
+		strcat(file_xml,"/.tudu.xml");
+	} else {
+		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
+	}
 
 	/*
 	 * Parse the comand line arguments

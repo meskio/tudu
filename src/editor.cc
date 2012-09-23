@@ -52,6 +52,7 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 
 	while (!exit)
 	{
+		updateText();
 		if (window->_getch(key) == KEY_CODE_YES)
 		{
 			switch (key)
@@ -92,7 +93,6 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 					break;
 			}
 		}
-		updateText();
 	}
 	noecho();
 	curs_set(0);
@@ -101,13 +101,7 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 	return result;
 }
 
-void Editor::initialize()
-{
-	window->_move(y, x);
-	window->_addstr(text);
-	window->_move(y, x+cursor);
-	window->_refresh();
-}
+void Editor::initialize() {}
 
 void Editor::updateText() {}
 void Editor::left() {}

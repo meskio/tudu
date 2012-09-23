@@ -106,6 +106,7 @@ protected:
 	set<wstring>::iterator first;
 	int length;
 
+	bool cmp(unsigned int idx, wstring str);
 	void tab();
 };
 
@@ -133,6 +134,7 @@ protected:
 	int param;
 
 	void initialize();
+	bool cmp(wstring str);
 	void tab();
 	void command_completion(wstring& com);
 	void category_completion(wstring& cat, int num_param);

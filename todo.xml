@@ -22,6 +22,11 @@
 </text>
 	</todo>
 	<todo done="yes" collapse="no">
+		<title>completion on multiple categories don't work</title>
+		<text>
+</text>
+	</todo>
+	<todo done="yes" collapse="no">
 		<title>tudu -h gives config error, it should not check the config</title>
 		<text>
 </text>

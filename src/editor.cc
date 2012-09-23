@@ -20,7 +20,6 @@
 #include "editor.h"
 #include "cmd.h"
 
-#define cmp(str) text.compare(0, length, str, 0, length)
 
 Editor::Editor()
 {
@@ -279,8 +278,20 @@ Editor::return_t CategoryEditor::edit(Window& win, int begin_y, int begin_x, int
 	return Editor::edit(win, begin_y, begin_x, 11);
 }
 
+bool CategoryEditor::cmp(unsigned int idx, wstring str)
+{
+	return text.compare(idx, length-idx, str, 0, length-idx);
+}
+
 void CategoryEditor::tab() /* do completion */
 {
+	unsigned int i = text.find(L",", 0);
+	i++;
+	if (i >= text.length())
+	{
+		i = 0;
+	}
+
 	/* if it is no the first time */
 	if ((cursor == (int)text.length()) &&
 	    (search != categories.end()) &&
@@ -288,9 +299,9 @@ void CategoryEditor::tab() /* do completion */
 	{
 		search++;
 		if ((search != categories.end()) && 
-		   (!cmp(*search)))
+		   (!cmp(i, *search)))
 		{
-			text = *search;
+			text = text.substr(0, i) + *search;
 			cursor = text.length();
 		}
 		else
@@ -306,12 +317,12 @@ void CategoryEditor::tab() /* do completion */
 		length = text.length();
 		for (search = categories.begin(); 
 		    (search != categories.end()) && 
-		    (cmp(*search)); 
+		    (cmp(i, *search)); 
 		    search++);
 		if ((search != categories.end()) && 
-		    (!cmp(*search)))
+		    (!cmp(i, *search)))
 		{
-			text = *search;
+			text = text.substr(0, i) + *search;
 			first = search;
 			cursor = text.length();
 		}
@@ -382,6 +393,11 @@ void CmdEditor::initialize()
 	}
 
 	HistoryEditor::initialize();
+}
+
+bool CmdEditor::cmp(wstring str)
+{
+	return text.compare(0, length, str, 0, length);
 }
 
 void CmdEditor::tab() /* do completion */

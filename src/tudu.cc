@@ -91,11 +91,7 @@ int main(int argc, char **argv, char *env[])
 	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
 
 	Config config;
-	if (!config.load(CONFIG_FILE))
-	{
-		fprintf(stderr, "Err: Global config does not exist. The config should be %s\n", CONFIG_FILE);
-		exit(1);
-	}
+	bool configErr = !config.load(CONFIG_FILE); // the error will be displayed after check args
 	strncpy(file_rc,env[i]+5,119);
 	strcat(file_rc,"/.tudurc");
 	config.load(file_rc);
@@ -164,6 +160,12 @@ int main(int argc, char **argv, char *env[])
 			usage();
 			return 0;
 		}
+	}
+
+	if (configErr)
+	{
+		fprintf(stderr, "Err: Global config does not exist. The config should be %s\n", CONFIG_FILE);
+		exit(1);
 	}
 
 	/*

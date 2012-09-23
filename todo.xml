@@ -21,7 +21,7 @@
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>tudu -h gives config error, it should not check the config</title>
 		<text>
 </text>

@@ -279,7 +279,6 @@ bool CategoryEditor::cmp(unsigned int idx, wstring str)
 
 void CategoryEditor::tab() /* do completion */
 {
-	//FIXME: where is the cursor locate the ','
 	unsigned int j,i = 0;
 	while ((j = text.find(L",", i)) < (unsigned int)cursor) {
 		i = j+1;

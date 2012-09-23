@@ -11,7 +11,7 @@
 		<text>when terminal big enought so the help is in one page the SPACE key segfaults
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>a new category is not added to the categories list for completion</title>
 		<text>
 </text>

@@ -117,10 +117,10 @@ void ToDo::setCategoriesStr(wstring& c)
 	size_t posEnd, posStart = 0;
 	while ((posEnd = c.find(L',', posStart)) != wstring::npos)
 	{
-		_category.insert(c.substr(posStart, posEnd-posStart));
+		addCategory(c.substr(posStart, posEnd-posStart));
 		posStart = posEnd+1;
 	}
-	_category.insert(c.substr(posStart));
+	addCategory(c.substr(posStart));
 }
 
 bool ToDo::haveChild()

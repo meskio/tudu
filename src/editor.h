@@ -100,7 +100,7 @@ protected:
 class CategoryEditor: public LineEditor
 {
 public:
-	CategoryEditor();
+	return_t edit(Window& win, int begin_y, int begin_x, int ncols);
 protected:
 	set<wstring>::iterator search;
 	set<wstring>::iterator first;

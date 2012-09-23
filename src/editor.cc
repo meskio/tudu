@@ -273,8 +273,11 @@ unsigned int TitleEditor::cursorCol()
 /*
  *  Editor of Categories
  */
-CategoryEditor::CategoryEditor():
-		LineEditor(), search(categories.end()) {}
+Editor::return_t CategoryEditor::edit(Window& win, int begin_y, int begin_x, int ncols)
+{
+	search = categories.end();
+	return Editor::edit(win, begin_y, begin_x, 11);
+}
 
 void CategoryEditor::tab() /* do completion */
 {

@@ -269,7 +269,7 @@ unsigned int TitleEditor::cursorCol()
 Editor::return_t CategoryEditor::edit(Window& win, int begin_y, int begin_x, int ncols)
 {
 	search = categories.end();
-	return Editor::edit(win, begin_y, begin_x, 11);
+	return Editor::edit(win, begin_y, begin_x, ncols);
 }
 
 bool CategoryEditor::cmp(unsigned int idx, wstring str)

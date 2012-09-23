@@ -12,12 +12,12 @@
 </text>
 	</todo>
 	<todo done="yes" collapse="no">
-		<title>a new category is not added to the categories list for completion</title>
+		<title>editing a category longer thant the line it prints several lines</title>
 		<text>
 </text>
 	</todo>
-	<todo done="no" collapse="no">
-		<title>editing a category longer thant the line it prints several lines</title>
+	<todo done="yes" collapse="no">
+		<title>a new category is not added to the categories list for completion</title>
 		<text>
 </text>
 	</todo>

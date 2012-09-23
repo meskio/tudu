@@ -6,14 +6,9 @@
 		<text>please, add an option to tudurc that allows to specify non-default location of tudu.xml file. Just like -f option, but persistently stored in file.
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>scroll on help segfaults</title>
 		<text>when terminal big enought so the help is in one page the SPACE key segfaults
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>RGB color definition don't works</title>
-		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">

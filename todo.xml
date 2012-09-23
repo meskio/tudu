@@ -8,7 +8,7 @@
 	</todo>
 	<todo done="no" collapse="no">
 		<title>scroll on help segfaults</title>
-		<text>
+		<text>when terminal big enought so the help is in one page the SPACE key segfaults
 </text>
 	</todo>
 	<todo done="no" collapse="no">

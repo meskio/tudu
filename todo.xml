@@ -2,6 +2,26 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
+		<title>scroll on help segfaults</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>RGB color definition don't works</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>a new category is not added to the categories list for completion</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>editing a category longer thant the line it prints several lines</title>
+		<text>
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>tudu -h gives config error, it should not check the config</title>
 		<text>
 </text>
@@ -90,6 +110,11 @@ http://taskwarrior.org/boards/6/topics/79
 		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
 
 Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>rpath error</title>
+		<text>use the path from eric christensen
 </text>
 	</todo>
 </todo>

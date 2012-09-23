@@ -274,41 +274,48 @@ Editor::return_t CategoryEditor::edit(Window& win, int begin_y, int begin_x, int
 
 bool CategoryEditor::cmp(unsigned int idx, wstring str)
 {
-	return text.compare(idx, length-idx, str, 0, length-idx);
+	return text.compare(idx, length, str, 0, length);
 }
 
 void CategoryEditor::tab() /* do completion */
 {
-	unsigned int i = text.find(L",", 0);
-	i++;
-	if (i >= text.length())
-	{
-		i = 0;
+	//FIXME: where is the cursor locate the ','
+	unsigned int j,i = 0;
+	while ((j = text.find(L",", i)) < (unsigned int)cursor) {
+		i = j+1;
+	}
+	wstring pre(text.substr(0, i));
+	wstring cat(text.substr(i, j-i));
+	wstring pos;
+	if (j < text.length()) {
+		pos = text.substr(j);
+	} else {
+		j = text.length();
 	}
 
 	/* if it is no the first time */
-	if ((cursor == (int)text.length()) &&
+	if ((cursor == (int)j) &&
 	    (search != categories.end()) &&
-	    (text == *search))
+	    (cat == *search))
 	{
 		search++;
 		if ((search != categories.end()) && 
 		   (!cmp(i, *search)))
 		{
-			text = text.substr(0, i) + *search;
-			cursor = text.length();
+			text = pre + *search + pos;
+			cursor = i+search->length();
 		}
 		else
 		{
-			text = text.substr(0, length);
+			text = pre + cat.substr(0, length) + pos;
 			search = first;
-			cursor = length;
+			cursor = i+length;
 		}
 	}
 	/* if it is the first time */
 	else
 	{
-		length = text.length();
+		length = j-i;
 		for (search = categories.begin(); 
 		    (search != categories.end()) && 
 		    (cmp(i, *search)); 
@@ -316,9 +323,9 @@ void CategoryEditor::tab() /* do completion */
 		if ((search != categories.end()) && 
 		    (!cmp(i, *search)))
 		{
-			text = text.substr(0, i) + *search;
+			text = pre + *search + pos;
 			first = search;
-			cursor = text.length();
+			cursor = i+search->length();
 		}
 	}
 }

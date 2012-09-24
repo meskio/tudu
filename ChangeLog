@@ -1,4 +1,10 @@
 0.8.1
+	* Added configuration variable 'tudu_file' to set the path to the xml file
+	* Improved the category editor
+	* Don't check configuration files when invoked with '-h' and '-v'
+	* Fixed segfault on scroll help page when the resolution is big
+
+0.8.1
 	* Added arrow keys on date editor
 	* Added support for non-latin keybinding pairs
 	* Fixed wrong plotting while change tudu task position

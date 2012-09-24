@@ -1,34 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="yes" collapse="no">
-		<title>configure the path to the xml file</title>
-		<text>please, add an option to tudurc that allows to specify non-default location of tudu.xml file. Just like -f option, but persistently stored in file.
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>scroll on help segfaults</title>
-		<text>when terminal big enought so the help is in one page the SPACE key segfaults
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>editing a category longer thant the line it prints several lines</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>a new category is not added to the categories list for completion</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>completion on multiple categories don't work</title>
-		<text>
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>tudu -h gives config error, it should not check the config</title>
-		<text>
+	<todo done="no" collapse="no">
+		<title>show category on the tudurc</title>
+		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
+
+Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
 </text>
 	</todo>
 	<todo done="no" collapse="no">
@@ -72,27 +49,6 @@
 </text>
 	</todo>
 	<todo done="no" collapse="no">
-		<title>configure the tudu.xml to load</title>
-		<text>On 10:56, Thu 25 Mar 10, Ioan Calin Borcoman wrote:
-&gt; One more thing - would it be hard for tudu to do something like git?
-&gt; That is, if there is a .tudu xml file in the current dir or one of the
-&gt; parent dirs, load it by default? This way, I could keep my todo for my
-&gt; app with the code, on my repository. It's not a big deal, as tudu -f
-&gt; tudu.xml is not that complicated, but I think it could be nice.
-
-Maybe with an env variable like TUDU_XML, if is not set tudu read your
-$HOME/.tudu.xml if is set tudu reads the file on it. So you can set in
-your .profile:
-export TUDU_XML=.tudu.xml
-
-But in this case I'm not sure what to do if the $TUDU_XML file don't exist.
-Should I create it? I think the answer is yes, but in your case could not be
-what you wanted.
-
-I'll think about it. Could be a nice feature.
-</text>
-	</todo>
-	<todo done="no" collapse="no">
 		<title>dates in human format</title>
 		<text>option for entering dates in "human" format like "2d", which will result in deadline date=today+2 days; 3w, 3m and so on.
 </text>
@@ -108,18 +64,6 @@ I'll think about it. Could be a nice feature.
  
 Taskwarrior has some thoughts on it
 http://taskwarrior.org/boards/6/topics/79
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>show category on the tudurc</title>
-		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
-
-Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
-</text>
-	</todo>
-	<todo done="no" collapse="no">
-		<title>rpath error</title>
-		<text>use the path from eric christensen
 </text>
 	</todo>
 </todo>

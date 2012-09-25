@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -99,6 +99,7 @@ public:
 	bool getOldSched();
 	int getDaysWarn();
 	bool useUSDates();
+	wstring& getTuduFile();
 	wstring& getSortOrder();
 	char* getEditor();
 	int getCategoryLength();
@@ -134,6 +135,7 @@ private:
 	bool us_dates;
 	bool loop_move;
 	bool old_sched;
+	wstring tudu_file;
 	wstring sort_order;
 	char editor[64];
 	/* themes */

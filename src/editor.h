@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -100,12 +100,13 @@ protected:
 class CategoryEditor: public LineEditor
 {
 public:
-	CategoryEditor();
+	return_t edit(Window& win, int begin_y, int begin_x, int ncols);
 protected:
 	set<wstring>::iterator search;
 	set<wstring>::iterator first;
 	int length;
 
+	bool cmp(unsigned int idx, wstring str);
 	void tab();
 };
 
@@ -133,6 +134,7 @@ protected:
 	int param;
 
 	void initialize();
+	bool cmp(wstring str);
 	void tab();
 	void command_completion(wstring& com);
 	void category_completion(wstring& cat, int num_param);

@@ -1,9 +1,9 @@
 REQUIRE_ACR_VERSION 0.8.2
 
 PKGNAME tudu
-VERSION 0.8.1
+VERSION 0.8.2
 CONTACT Ruben Pollan ; meskio@sindominio.net
-YEAR = 2011 ;
+YEAR = 2012 ;
 
 LANG_CXX!
 
@@ -39,9 +39,9 @@ LDFLAGS += $LD_CURSES ;
 CHECK WIDEC_CURSES <<EOF
 echo "#define _XOPEN_SOURCE_EXTENDED" > test.c \
 echo "#include<$CURSES_INCLUDE>" >> test.c \
-echo "main(){ addwstr(L\"\"); }" >> test.c \
+echo "int main(){ addwstr(L\"\"); }" >> test.c \
 eval \$${COMPILER} ${CXXFLAGS} test.c ${LDFLAGS} >/dev/null 2>&1 \
-if [ $? = 0 ]; then WIDEC_CURSES=1; else WIDEC_CURSES=0; fi \
+WIDEC_CURSES=$? \
 rm test.c
 <<EOF
 IFNOT WIDEC_CURSES { DIENOW There is no wide character support on curses! ; }

@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -867,7 +867,7 @@ void Screen::infoPercent(int percent)
 void Screen::helpPopUp(wstring str[], int len)
 {
 	int lines, cols;
-        getmaxyx(stdscr, lines, cols); 
+	getmaxyx(stdscr, lines, cols); 
 	Window help_box(lines-8, cols-16, 4, 8);
 	help_box._box();
 	wstring s = L"--- Press 'q' key to close, or space bar for next page ---";
@@ -908,8 +908,11 @@ void Screen::helpPopUp(wstring str[], int len)
 				break;
 			case KEY_NPAGE: case ' ':
 				cursor += lines;
-				if (cursor > len-lines)
+				if (cursor > len-lines) {
 					cursor = len + 1 - lines;
+					if (cursor < 0)
+						cursor = 0;
+				}
 				draw_help();
 				break;
 			case KEY_PPAGE: case 'b':

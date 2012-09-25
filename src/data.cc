@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -117,10 +117,10 @@ void ToDo::setCategoriesStr(wstring& c)
 	size_t posEnd, posStart = 0;
 	while ((posEnd = c.find(L',', posStart)) != wstring::npos)
 	{
-		_category.insert(c.substr(posStart, posEnd-posStart));
+		addCategory(c.substr(posStart, posEnd-posStart));
 		posStart = posEnd+1;
 	}
-	_category.insert(c.substr(posStart));
+	addCategory(c.substr(posStart));
 }
 
 bool ToDo::haveChild()

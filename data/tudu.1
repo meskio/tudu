@@ -1,4 +1,4 @@
-.\"  Copyright (C) 2007-2009 Ruben Pollan Bella <meskio@sindominio.net>         
+.\"  Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>         
 .\"  Copyright (C) 2010 Enrique Matías Sánchez <cronopios@gmail.com>
   
 .\"                                                                        
@@ -222,6 +222,9 @@ Use US date format (mm/dd/yyyy), by default it uses dd/mm/yyyy.
 .IP "old_sched = yes|no"
 Whether display or not past scheduled tasks on the scheduler. In case of yes the
 scheduled tasks for days already past will be displayed on warn color.
+.IP "tudu_file = full-path"
+Location of the tudu xml to be load if no '-f' parameter is given. The path have
+to be a full path. If is not set ~/.tudu.xml will be use.
 .IP "sort_order = string"
 Default order in which tasks will be shown. Tasks are ordered by the 1st letter
 in the string, then by the 2nd, and so on.
@@ -275,9 +278,10 @@ deadline.
 .IP "category_length = numChar"
 Number of characters to be displayed of the category.
 .IP "color = color_text, color_background"
-The default colors for the text and background. The colors can be defined as
-\fB(r, g, b)\fR, where r, g and b are numbers from 0 to 1000, or with the words:
-black, red, green, yellow, blue, magenta, cyan, white, transparent.
+The default colors for the text and background. If your terminal has support to 
+change colora the colors can be defined  as \fB(r, g, b)\fR, where r, g and b are
+numbers from 0 to 1000, or with the words: black, red, green, yellow, blue, 
+magenta, cyan, white, transparent.
 .IP "window = color_text, color_background"
 For each window can be defined it's own colors. The colors of vpipe and hpipe are
 the same, and defined with the window name \fBpipe\fR.

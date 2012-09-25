@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -37,14 +37,14 @@ extern int errno;
 
 #define version() \
 	cout << VERSION_STR << endl; \
-	cout << "TuDu Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
 
 #define copyright() \
 	cout << VERSION_STR << endl; \
-	cout << "Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
+	cout << "Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>" << endl << endl; \
  	cout << "TuDu is free software; you can redistribute it and/or modify" << endl; \
  	cout << "it under the terms of the GNU General Public License as published by" << endl; \
  	cout << "the Free Software Foundation; version 3 of the License." << endl << endl; \
@@ -91,17 +91,17 @@ int main(int argc, char **argv, char *env[])
 	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
 
 	Config config;
-	if (!config.load(CONFIG_FILE))
-	{
-		fprintf(stderr, "Err: Global config does not exist. The config should be %s\n", CONFIG_FILE);
-		exit(1);
-	}
+	bool configErr = !config.load(CONFIG_FILE); // the error will be displayed after check args
 	strncpy(file_rc,env[i]+5,119);
 	strcat(file_rc,"/.tudurc");
 	config.load(file_rc);
 
-	strncpy(file_xml,env[i]+5,117);
-	strcat(file_xml,"/.tudu.xml");
+	if (config.getTuduFile() == L"") {
+		strncpy(file_xml,env[i]+5,117);
+		strcat(file_xml,"/.tudu.xml");
+	} else {
+		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
+	}
 
 	/*
 	 * Parse the comand line arguments
@@ -160,6 +160,12 @@ int main(int argc, char **argv, char *env[])
 			usage();
 			return 0;
 		}
+	}
+
+	if (configErr)
+	{
+		fprintf(stderr, "Err: Global config does not exist. The config should be %s\n", CONFIG_FILE);
+		exit(1);
 	}
 
 	/*

@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2011 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -20,7 +20,6 @@
 #include "editor.h"
 #include "cmd.h"
 
-#define cmp(str) text.compare(0, length, str, 0, length)
 
 Editor::Editor()
 {
@@ -53,6 +52,7 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 
 	while (!exit)
 	{
+		updateText();
 		if (window->_getch(key) == KEY_CODE_YES)
 		{
 			switch (key)
@@ -93,7 +93,6 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 					break;
 			}
 		}
-		updateText();
 	}
 	noecho();
 	curs_set(0);
@@ -102,13 +101,7 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 	return result;
 }
 
-void Editor::initialize()
-{
-	window->_move(y, x);
-	window->_addstr(text);
-	window->_move(y, x+cursor);
-	window->_refresh();
-}
+void Editor::initialize() {}
 
 void Editor::updateText() {}
 void Editor::left() {}
@@ -273,44 +266,65 @@ unsigned int TitleEditor::cursorCol()
 /*
  *  Editor of Categories
  */
-CategoryEditor::CategoryEditor():
-		LineEditor(), search(categories.end()) {}
+Editor::return_t CategoryEditor::edit(Window& win, int begin_y, int begin_x, int ncols)
+{
+	search = categories.end();
+	return Editor::edit(win, begin_y, begin_x, ncols);
+}
+
+bool CategoryEditor::cmp(unsigned int idx, wstring str)
+{
+	return text.compare(idx, length, str, 0, length);
+}
 
 void CategoryEditor::tab() /* do completion */
 {
+	unsigned int j,i = 0;
+	while ((j = text.find(L",", i)) < (unsigned int)cursor) {
+		i = j+1;
+	}
+	wstring pre(text.substr(0, i));
+	wstring cat(text.substr(i, j-i));
+	wstring pos;
+	if (j < text.length()) {
+		pos = text.substr(j);
+	} else {
+		j = text.length();
+	}
+
 	/* if it is no the first time */
-	if ((cursor == (int)text.length()) &&
+	if ((cursor == (int)j) &&
 	    (search != categories.end()) &&
-	    (text == *search))
+	    (cat == *search))
 	{
 		search++;
 		if ((search != categories.end()) && 
-		   (!cmp(*search)))
+		   (!cmp(i, *search)))
 		{
-			text = *search;
-			cursor = text.length();
+			text = pre + *search + pos;
+			cursor = i+search->length();
 		}
 		else
 		{
-			text = text.substr(0, length);
+			text = pre + cat.substr(0, length) + pos;
 			search = first;
-			cursor = length;
+			cursor = i+length;
 		}
 	}
 	/* if it is the first time */
 	else
 	{
-		length = text.length();
+		length = j-i;
 		for (search = categories.begin(); 
 		    (search != categories.end()) && 
-		    (cmp(*search)); 
+		    (cmp(i, *search)); 
 		    search++);
 		if ((search != categories.end()) && 
-		    (!cmp(*search)))
+		    (!cmp(i, *search)))
 		{
-			text = *search;
+			text = pre + *search + pos;
 			first = search;
-			cursor = text.length();
+			cursor = i+search->length();
 		}
 	}
 }
@@ -379,6 +393,11 @@ void CmdEditor::initialize()
 	}
 
 	HistoryEditor::initialize();
+}
+
+bool CmdEditor::cmp(wstring str)
+{
+	return text.compare(0, length, str, 0, length);
 }
 
 void CmdEditor::tab() /* do completion */

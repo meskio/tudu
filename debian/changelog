@@ -1,6 +1,7 @@
 tudu (0.8.2-1) unstable; urgency=low
 
   * New upstream release.
+  * Patch the source to include CPPFLAGS
 
  -- Ruben Pollan Bella <meskio@sindominio.net>  Mon, 24 Sep 2012 23:23:23 +0200
 

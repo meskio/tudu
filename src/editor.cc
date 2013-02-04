@@ -116,13 +116,13 @@ void Editor::tab() {}
 void Editor::other() {}
 
 void Editor::esc()
-{ 
+{
 	exit = true;
 	result = NOT_SAVED;
 }
 
 void Editor::enter()
-{ 
+{
 	exit = true;
 }
 
@@ -143,7 +143,7 @@ void LineEditor::updateText()
 
 	window->_move(y, x);
 	window->_addstr(text.substr(offset, cols));
-	for (unsigned int i = text.length()-offset; i < cols; i++) 
+	for (unsigned int i = text.length()-offset; i < cols; i++)
 			window->_addch(' ');
 	window->_move(y, x+cursor-offset);
 	window->_refresh();
@@ -298,7 +298,7 @@ void CategoryEditor::tab() /* do completion */
 	    (cat == *search))
 	{
 		search++;
-		if ((search != categories.end()) && 
+		if ((search != categories.end()) &&
 		   (!cmp(i, *search)))
 		{
 			text = pre + *search + pos;
@@ -315,11 +315,11 @@ void CategoryEditor::tab() /* do completion */
 	else
 	{
 		length = j-i;
-		for (search = categories.begin(); 
-		    (search != categories.end()) && 
-		    (cmp(i, *search)); 
+		for (search = categories.begin();
+		    (search != categories.end()) &&
+		    (cmp(i, *search));
 		    search++);
-		if ((search != categories.end()) && 
+		if ((search != categories.end()) &&
 		    (!cmp(i, *search)))
 		{
 			text = pre + *search + pos;
@@ -383,7 +383,7 @@ void HistoryEditor::backspace()
  */
 void CmdEditor::initialize()
 {
-	/* initialize if is new command, 
+	/* initialize if is new command,
 	 * in other case we expect it to be already initialized */
 	if (text == L"")
 	{
@@ -412,7 +412,7 @@ void CmdEditor::tab() /* do completion */
 	{
 		params.push_back(text.substr(begin, end-begin));
 	}
-	if (wstring::npos != end) 
+	if (wstring::npos != end)
 	{
 		params.push_back(text.substr(begin, end-begin));
 		rest_params = text.substr(end+1);
@@ -456,7 +456,7 @@ void CmdEditor::command_completion(wstring& com)
 	    (com == com_search->first))
 	{
 		com_search++;
-		if ((com_search != commands.end()) && 
+		if ((com_search != commands.end()) &&
 		   (!cmp(com_search->first)))
 		{
 			com = com_search->first;
@@ -474,11 +474,11 @@ void CmdEditor::command_completion(wstring& com)
 	{
 		length = com.length();
 		//TODO: try upper_bound
-		for (com_search = commands.begin(); 
-		    (com_search != commands.end()) && 
-		    (cmp(com_search->first)); 
+		for (com_search = commands.begin();
+		    (com_search != commands.end()) &&
+		    (cmp(com_search->first));
 		    com_search++);
-		if ((com_search != commands.end()) && 
+		if ((com_search != commands.end()) &&
 		    (!cmp(com_search->first)))
 		{
 			com = com_search->first;
@@ -498,7 +498,7 @@ void CmdEditor::category_completion(wstring& cat, int num_param)
 	    (cat == *search))
 	{
 			search++;
-			if ((search != categories.end()) && 
+			if ((search != categories.end()) &&
 			   (!param_cmp(*search)))
 			{
 				cat = *search;
@@ -513,11 +513,11 @@ void CmdEditor::category_completion(wstring& cat, int num_param)
 	else
 	{
 		length = cat.length();
-		for (search = categories.begin(); 
-		    (search != categories.end()) && 
-		    (param_cmp(*search)); 
+		for (search = categories.begin();
+		    (search != categories.end()) &&
+		    (param_cmp(*search));
 		    search++);
-		if ((search != categories.end()) && 
+		if ((search != categories.end()) &&
 		    (!param_cmp(*search)))
 		{
 			cat = *search;

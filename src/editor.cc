@@ -46,7 +46,6 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 	cols = ncols;
 	exit = false;
 	result = SAVED;
-	echo();
 	curs_set(1);
 	initialize();
 
@@ -94,7 +93,6 @@ Editor::return_t Editor::edit(Window& win, int begin_y, int begin_x, int ncols)
 			}
 		}
 	}
-	noecho();
 	curs_set(0);
 	window->_refresh();
 
@@ -134,18 +132,25 @@ void LineEditor::updateText()
 {
 	static int offset = 0;
 
-	if (cols > text.length())
+	// number of columns needed to display the text on the screen
+	// it only matters for length lower than cols
+	const int text_cols = wcswidth(text.c_str(), cols);
+	int cursor_cols = cursor > offset ?
+	                  wcswidth(text.substr(offset, cursor-offset).c_str(), cols) : 0;
+
+	if ((int)cols > text_cols) {
 		offset = 0;
-	if (cursor >= (int)cols+offset)
-		offset = cursor-cols+1;
-	if (cursor < offset)
+	} else if (cursor < offset) {
 		offset = cursor;
+	} else while (cursor_cols >= (int)cols) {
+		cursor_cols -= wcwidth(text[offset]);
+		offset++;
+	}
 
 	window->_move(y, x);
-	window->_addstr(text.substr(offset, cols));
-	for (unsigned int i = text.length()-offset; i < cols; i++)
-			window->_addch(' ');
-	window->_move(y, x+cursor-offset);
+	window->_addstr(text.substr(offset), cols);
+
+	window->_move(y, x+cursor_cols);
 	window->_refresh();
 }
 
@@ -204,64 +209,63 @@ void LineEditor::other()
  */
 void TitleEditor::initialize()
 {
-	textLines = ((int)text.length()-1) / (int)cols;
-
-	for (int i = 0; i <= textLines; i++)
-	{
-		wstring line(text.substr(i*cols, cols));
-		window->_move(y+i, x);
-		window->_addstr(line);
-	}
-	window->_move(y+cursorLine(), x+cursorCol());
-	window->_refresh();
+	const int text_cols = wcswidth(text.c_str(), string::npos);
+	textLines = (text_cols-1) / (int)cols;
 }
 
 void TitleEditor::updateText()
 {
-	if (textLines != ((int)(text.length()-1) / (int)cols))
-	{
+	const int text_cols = wcswidth(text.c_str(), string::npos);
+	if (textLines != ((text_cols-1) / (int)cols)) {
 		exit = true;
 		result = REDRAW;
 		return;
 	}
 
-	for (int i = 0; i <= textLines; i++)
-	{
-		wstring line(text.substr(i*cols, cols));
-		window->_move(y+i, x);
-		window->_addstr(line);
+	int i = 0;
+	bool cursor_found = false;
+	for (int line = 0; line <= textLines; line++) {
+		window->_move(y+line, x);
+		int num_cols = window->_addstr(text.substr(i), cols);
+
+		// calculate line and col of the cursor
+		if (!cursor_found && (i+num_cols > cursor)) {
+			cursor_line = line;
+			cursor_col = 0;
+			for (int c = i; c < cursor; c++) {
+				cursor_col += wcwidth(text[c]);
+			}
+			cursor_found = true;
+		}
+
+		i += num_cols;
 	}
 
-	for (unsigned int i = ((text.length()-1) % cols); i < cols-1; i++)
-			window->_addch(' ');
-	window->_move(y+cursorLine(), x+cursorCol());
+	window->_move(y+cursor_line, x+cursor_col);
 	window->_refresh();
 }
 
 void TitleEditor::up()
 {
-	if (cursorLine() > 0)
-		cursor -= cols;
+	if (cursor_line <= 0)
+		return;
+
+	for (unsigned int c = 0; c < cols; cursor--) {
+		c += wcwidth(text[cursor]);
+	}
 }
 
 void TitleEditor::down()
 {
-	if ((int)cursorLine() < textLines)
-	{
-		cursor += cols;
-		if (cursor > (int)text.length())
-			cursor = text.length();
+	if ((int)cursor_line >= textLines)
+		return;
+
+	for (unsigned int c = 0; c < cols; cursor++) {
+		c += wcwidth(text[cursor]);
 	}
-}
-
-unsigned int TitleEditor::cursorLine()
-{
-	return cursor / cols;
-}
-
-unsigned int TitleEditor::cursorCol()
-{
-	return cursor % cols;
+	if (cursor > (int)text.length()) {
+		cursor = text.length();
+	}
 }
 
 

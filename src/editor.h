@@ -87,14 +87,13 @@ class TitleEditor: public LineEditor
 {
 protected:
 	int textLines;
+	int cursor_col;
+	int cursor_line;
 
 	void initialize();
 	void updateText();
 	void up();
 	void down();
-
-	unsigned int cursorLine();
-	unsigned int cursorCol();
 };
 
 class CategoryEditor: public LineEditor

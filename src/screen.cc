@@ -343,13 +343,23 @@ void Screen::drawTitle(int line, int depth, wstring& title, int startLine)
 {
 	int lines, cols;
 	wtree->_getmaxyx(lines, cols);
+	const unsigned int title_cols = wcswidth(title.c_str(), string::npos);
+	const unsigned int line_cols = cols-startTitle(depth);
 
-	for (unsigned int i = startLine; i <= (title.length() / (cols-startTitle(depth))); i++)
+	int c = 0;
+	for (unsigned int i = 0; i <= (title_cols / (line_cols)); i++)
 	{
 		if ((int)(line + i) >= lines) break;
-		unsigned int lenTitleLine = cols-startTitle(depth);
-		wstring titleLine = title.substr(i*lenTitleLine,lenTitleLine);
-		wtree->_addstr(line + i, startTitle(depth), titleLine);
+
+		if ((int)i < startLine) {
+			for (unsigned int col = 0; col < line_cols; c++) {
+				col += wcwidth(title[c]);
+			}
+			continue;
+		}
+
+		wstring titleLine = title.substr(c, line_cols);
+		c += wtree->_addstr(line + i, startTitle(depth), titleLine, line_cols);
 	}
 }
 
@@ -434,7 +444,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 	/* draw category */
 	if (coor.exist[WCATEGORY])
 	{
-		wstring category = t.getCategoriesStr().substr(0, config.getCategoryLength());
+		wstring category = t.getCategoriesStr();
 		if (isCursor)
 			wcategory->_attron(COLOR_SELECTED);
 		else
@@ -442,7 +452,7 @@ void Screen::drawTask(int line, int depth, ToDo& t, bool isCursor)
 		if (!category.empty())
 		{
 			wcategory->_move(line, 0);
-			wcategory->_addstr(category);
+			wcategory->_addstr(category, config.getCategoryLength());
 		}
 		if (isCursor)
 			wcategory->_attroff(COLOR_SELECTED);
@@ -536,9 +546,9 @@ void Screen::drawSched(Sched &sched, pToDo cursor)
 		if (cursor == (*i))
 			wschedule->_attron(COLOR_SELECTED);
 		wschedule->_addstr("    ");
-		wstring title = (*i)->getTitle().substr(0,coor.coor[WSCHEDULE].cols-4);
-		wschedule->_addstr(title);
-		if (title.length() < (size_t)coor.coor[WSCHEDULE].cols-4)
+		wstring title = (*i)->getTitle();
+		int printed_chars = wschedule->_addstr(title, coor.coor[WSCHEDULE].cols-4);
+		if ((int)title.length() == printed_chars)
 			wschedule->_addstr("\n");
 		line++;
 	}

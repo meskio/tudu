@@ -90,6 +90,38 @@ int Window::_addstr(int y, int x, const wstring &str)
 	return mvwaddwstr(win, y, x,  str.c_str());
 }
 
+int Window::_addstr(const wstring &str, const unsigned int cols)
+{
+	unsigned int i = 0, c = 0;
+	while (i < str.length()) {
+		const unsigned int width = wcwidth(str[i]);
+		if (width > cols-c) {
+			i--;
+			break;
+		}
+
+		cchar_t ch;
+		ch.attr = 0;
+		ch.chars[0] = str[i];
+		ch.chars[1] = L'\0';
+		wadd_wch(win, &ch);
+
+		c += wcwidth(str[i]);
+		i++;
+	}
+	while (cols != c) {
+		waddch(win, ' ');
+		c++;
+	}
+	return i+1;
+}
+
+int Window::_addstr(int y, int x, const wstring &str, const unsigned int cols)
+{
+	wmove(win, y, x);
+	return _addstr(str, cols);
+}
+
 int Window::_addch(const char ch)
 {
 	return waddch(win, ch);

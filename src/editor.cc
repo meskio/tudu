@@ -151,9 +151,9 @@ void LineEditor::updateText()
 
 void LineEditor::left()
 {
-	if (cursor>0) --cursor;
-	else if (text.length() == 0)
-	{
+	if (cursor>0) {
+		--cursor;
+	} else if (text.length() == 0) {
 		exit = true;
 		result = NOT_SAVED;
 	}
@@ -161,7 +161,9 @@ void LineEditor::left()
 
 void LineEditor::right()
 {
-	if (cursor<(int)text.length()) ++cursor;
+	if (cursor<(int)text.length()) {
+		++cursor;
+	}
 }
 
 void LineEditor::home()

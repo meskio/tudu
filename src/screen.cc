@@ -345,9 +345,11 @@ void Screen::drawTitle(int line, int depth, wstring& title, int startLine)
 	wtree->_getmaxyx(lines, cols);
 	const unsigned int title_cols = wcswidth(title.c_str(), string::npos);
 	const unsigned int line_cols = cols-startTitle(depth);
+	const unsigned int title_lines = (title_cols && !(title_cols % line_cols)) ? (title_cols / line_cols)-1
+					: (title_cols / line_cols);
 
 	int c = 0;
-	for (unsigned int i = 0; i <= (title_cols / (line_cols)); i++)
+	for (unsigned int i = 0; i <= title_lines; i++)
 	{
 		if ((int)(line + i) >= lines) break;
 
@@ -769,12 +771,12 @@ int Screen::treeLines()
 
 int Screen::taskLines(int depth, ToDo &t)
 {
-	int titleLength = t.getTitle().length();
-	int titleLines = (titleLength / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
+	const unsigned int title_cols = wcswidth(t.getTitle().c_str(), string::npos);
+	int title_lines = (title_cols / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
 	
-	if (titleLength && !(titleLength % (coor.coor[WTREE].cols-startTitle(depth))))
-			titleLines -= 1;
-	return titleLines;
+	if (title_cols && !(title_cols % (coor.coor[WTREE].cols-startTitle(depth))))
+			title_lines -= 1;
+	return title_lines;
 }
 
 Editor::return_t Screen::searchText(wstring& pattern, int cursorPos)

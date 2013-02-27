@@ -96,7 +96,6 @@ int Window::_addstr(const wstring &str, const unsigned int cols)
 	while (i < str.length()) {
 		const unsigned int width = wcwidth(str[i]);
 		if (width > cols-c) {
-			i--;
 			break;
 		}
 
@@ -113,7 +112,7 @@ int Window::_addstr(const wstring &str, const unsigned int cols)
 		waddch(win, ' ');
 		c++;
 	}
-	return i+1;
+	return i;
 }
 
 int Window::_addstr(int y, int x, const wstring &str, const unsigned int cols)

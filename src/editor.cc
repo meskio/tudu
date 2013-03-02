@@ -241,6 +241,10 @@ void TitleEditor::updateText()
 		i += num_cols;
 	}
 
+	if (!cursor_found) {
+		cursor_col = text_cols;
+		cursor_line = textLines;
+	}
 	window->_move(y+cursor_line, x+cursor_col);
 	window->_refresh();
 }

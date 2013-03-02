@@ -72,6 +72,20 @@ Because i use the same .tudu.xml for home and office. And i want only to see off
  
 Taskwarrior has some thoughts on it
 http://taskwarrior.org/boards/6/topics/79
+
+
+Una de las prestaciones que no he encontrado en otros programas de gestión de tareas es sobre la duración de las tareas, poder decir el tiempo estimado que requiero para cada tarea, y que me avise si me saturo.
+
+En la versión en papel que empecé a usar (sin continuidad) solía poner la duración estimada de la tarea, pero claro el papel no me hacía la suma.
+
+Lo más interesante que encontré fuen en Lightning ó Mozilla Sunbird, donde en la agenda-calendario te marca los días en los que tienes tareas pendientes creo recordar. Además se puede poner el % que has realizado, y no recuerdo si también la duración estimada de cada tarea, pero cada dato se trata por separado, no se usa para facilitar la gestión del tiempo que es necesario reservar para las tareas. Es decir, sabiendo que para dentro de 2 días tengo que hacer 5 tareas que me llevaran Xi.%i tiempo en total, puedo saber si me va a dar tiempo ó no. En Lightning tienes la agenda, gestionas que no se solapen las citas, pero si en los huecos ocupados tienes tiempo justo para las tareas pendientes también debería ser razón para no poner una cita nueva.
+
+Pues eso, que podría ser una feature para TuDu que te avise de que el día tiene 24 horas (ó útiles para hacer tareas menos).
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>deadline and scheduler with hour</title>
+		<text>La fecha de fin es solo fecha, por lo que veo no se puede poner también la hora. ¿ó se puede configurar que si?
 </text>
 	</todo>
 </todo>

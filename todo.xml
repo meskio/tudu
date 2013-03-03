@@ -16,7 +16,7 @@ in fixed column width.
 Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>mark default options in man file</title>
 		<text>
 </text>

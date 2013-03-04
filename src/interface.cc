@@ -62,6 +62,10 @@ void Interface::main()
 			if (KEY_HOME == key) home();
 			if (KEY_END == key) end();
 		}
+		else if (0xc == key)  //  Ctrl-L
+		{
+			resizeTerm();
+		}
 		else if (config.getAction(key, action))
 		{
 			screen.infoClear();

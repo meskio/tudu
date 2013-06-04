@@ -1,4 +1,4 @@
-0.8.1
+0.8.2
 	* Added configuration variable 'tudu_file' to set the path to the xml file
 	* Improved the category editor
 	* Don't check configuration files when invoked with '-h' and '-v'

@@ -63,7 +63,7 @@ Because i use the same .tudu.xml for home and office. And i want only to see off
 	</todo>
 	<todo done="no" collapse="no">
 		<title>optional navigating throw tree with only "j" and "k"</title>
-		<text>option for navigating throw tree with only "j" and "k", so when cursor stands on a level 0 with with sub level, pressing j will lead to changing a cursor position to 0-1, then 0-2 and so on, probably the depth level of such behavior should be adjustable through config file
+		<text>option for navigating through tree with only "j" and "k", so when cursor stands on a level 0 with with sub level, pressing j will lead to changing a cursor position to 0-1, then 0-2 and so on, probably the depth level of such behavior should be adjustable through config file
 </text>
 	</todo>
 	<todo done="no" collapse="no">
@@ -85,7 +85,7 @@ Pues eso, que podría ser una feature para TuDu que te avise de que el día tien
 	</todo>
 	<todo done="no" collapse="no">
 		<title>deadline and scheduler with hour</title>
-		<text>La fecha de fin es solo fecha, por lo que veo no se puede poner también la hora. ¿ó se puede configurar que si?
+		<text>Add hour and minuts to the deadline date
 </text>
 	</todo>
 </todo>

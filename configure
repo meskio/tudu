@@ -101,12 +101,12 @@ done
 : ${INSTALL_PROGRAM:=${INSTALL} -m 755 -s}
 : ${INSTALL_MAN:=${INSTALL} -m 444}
 : ${INSTALL_LIB:=${INSTALL} -c}
- PKGNAME='tudu' ; VERSION='0.8.2' ; CONTACT_MAIL="meskio@sindominio.net" ; CONTACT_NAME="Ruben Pollan" ; CONTACT="Ruben Pollan <meskio@sindominio.net>" ;
+ PKGNAME='tudu' ; VERSION='0.9' ; CONTACT_MAIL="meskio@sindominio.net" ; CONTACT_NAME="Ruben Pollan" ; CONTACT="Ruben Pollan <meskio@sindominio.net>" ;
 }
                 
 show_usage() {
 cat <<EOF2
-'configure' configures tudu-0.8.2 to adapt to many kinds of systems.
+'configure' configures tudu-0.9 to adapt to many kinds of systems.
 
 Usage: ./configure [OPTION]... [VAR=VALUE]...
 
@@ -163,7 +163,7 @@ take_environ() {
 }
 
 show_version() {
-echo "tudu-0.8.2 configuration script done with acr v0.8.8.
+echo "tudu-0.9 configuration script done with acr v0.8.8.
 The 'Free Software Foundation' message is only for autodetection.
 Originally written by pancake <youterm.com>."
 exit 0
@@ -187,7 +187,7 @@ case $flag in
 	show_version ; ;;
 "-r"|"--r"|"--report")
 echo "PKGNAME:   tudu"
-echo "VERSION:   0.8.2"
+echo "VERSION:   0.9"
 echo "LANGS:     c++"
 echo "OPTIONAL:  libncursesw"
 	exit 0
@@ -270,7 +270,7 @@ ACR_RMFILES=" test.c test.cxx a.out a.exe"
 
 
 : 
-YEAR="2012"
+YEAR="2013"
 COMPILER=CXX
 HAVE_LANG_CXX=1
 printf "checking for c++ compiler... "

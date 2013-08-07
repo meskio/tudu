@@ -1,24 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
-	<todo done="yes" collapse="no">
-		<title>double-width character support</title>
-		<text>Japanese language uses many kind characters. Some of them                                                                                                                
-like Kanji and Hiragana, occupy double width compared to Alphabet.                                                                                                       
-It means simple character count is not enough for correct drawing                                                                                                        
-in fixed column width.
-</text>
-	</todo>
 	<todo done="no" collapse="no">
 		<title>show category on the tudurc</title>
 		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
 
 Because i use the same .tudu.xml for home and office. And i want only to see office categories on my laptop and only home categories on the privat pc.
-</text>
-	</todo>
-	<todo done="yes" collapse="no">
-		<title>mark default options in man file</title>
-		<text>
 </text>
 	</todo>
 	<todo done="no" collapse="no">

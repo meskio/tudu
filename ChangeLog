@@ -1,3 +1,8 @@
+0.9
+	* Added support for double with characters (like some chinese characters)
+	* Added the default options on the man page
+	* Fix a bug with some characters echoing on the editor
+
 0.8.2
 	* Added configuration variable 'tudu_file' to set the path to the xml file
 	* Improved the category editor

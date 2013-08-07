@@ -202,24 +202,25 @@ like \fB[ general ]\fR. Other config files can be included with the option:
 The options of each section are:
 
 .SS general
-.IP "collapse = yes|no"
+.IP "collapse = yes|\fBno\fR"
 Collapse the tasks by default.
-.IP "hide_done = yes|no"
+.IP "hide_done = yes|\fBno\fR"
 Whether to hide tasks marked as done.
-.IP "hide_percent = yes|no"
+.IP "hide_percent = yes|\fBno\fR"
 Whether to hide the percentage display on each task.
-.IP "visual_tree = yes|no"
+.IP "visual_tree = yes|\fBno\fR"
 Toggle graphical tree. It shows marks, like \fB(+)\fR at the left of the tasks.
 It is necessary in some shells that can not display bold characters.
-.IP "bold_parent = yes|no"
+.IP "bold_parent = \fByes\fR|no"
 Hilight the parents with children with bold letters.
-.IP "loop_move = yes|no"
+.IP "loop_move = yes|\fBno\fR"
 Whether to jump to the beginning (or end) when the end (or beginning) is reached.
 .IP "days_warn = number"
 How many days before the task is due will the deadline sport a warning remark.
-.IP "us_dates = yes|no"
+By default is 7.
+.IP "us_dates = yes|\fBno\fR"
 Use US date format (mm/dd/yyyy), by default it uses dd/mm/yyyy.
-.IP "old_sched = yes|no"
+.IP "old_sched = \fByes\fR|no"
 Whether display or not past scheduled tasks on the scheduler. In case of yes the
 scheduled tasks for days already past will be displayed on warn color.
 .IP "tudu_file = full-path"

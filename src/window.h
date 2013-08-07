@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -43,6 +43,8 @@ public:
 	int _addstr(int y, int x, const wchar_t *str);
 	int _addstr(int y, int x, const string &str);
 	int _addstr(int y, int x, const wstring &str);
+	int _addstr(const wstring &str, const unsigned int cols);
+	int _addstr(int y, int x, const wstring &str, unsigned int cols);
 	int _addch(const char ch);
 	int _addch(int y, int x, const char ch);
 	int _refresh();

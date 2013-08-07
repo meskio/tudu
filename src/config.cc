@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -32,10 +32,11 @@ enum context_type {
 	C_THEME
 };
 
-Config::Config()
+Config::Config():
+	collapse(false), hide_done(false), hide_percent(false),
+	visual_tree(false), bold_parent(true), loop_move(false),
+	days_warn_deadline(7), us_dates(false), old_sched(true)
 {
-	collapse = false;
-	hide_done = false;
 	category_length = DEFAULT_CATEGORY_LENGTH;
 }
 

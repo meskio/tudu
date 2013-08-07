@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -75,7 +75,6 @@ void Text::edit(Window& win)
 	lines = win._lines();
 	cols = win._cols();
 	win._move(cursor_y, cursor_x);
-	echo();
 	curs_set(1);
 	win._refresh();
 	
@@ -138,7 +137,6 @@ void Text::edit(Window& win)
 		win._refresh();
 		isKeyCode = (win._getch(key) == KEY_CODE_YES);
 	}
-	noecho();
 	curs_set(0);
 	print(win);
 	cursor_y = INT_MIN;

@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -87,14 +87,13 @@ class TitleEditor: public LineEditor
 {
 protected:
 	int textLines;
+	int cursor_col;
+	int cursor_line;
 
 	void initialize();
 	void updateText();
 	void up();
 	void down();
-
-	unsigned int cursorLine();
-	unsigned int cursorCol();
 };
 
 class CategoryEditor: public LineEditor

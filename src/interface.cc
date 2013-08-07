@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2012 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -61,6 +61,10 @@ void Interface::main()
 			if (KEY_NPAGE == key) nextPage();
 			if (KEY_HOME == key) home();
 			if (KEY_END == key) end();
+		}
+		else if (0xc == key)  //  Ctrl-L
+		{
+			resizeTerm();
 		}
 		else if (config.getAction(key, action))
 		{

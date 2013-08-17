@@ -34,7 +34,6 @@ public:
 
 	bool parse(ToDo& todo, Sched& sched);
 private:
-	Sched *sched;
 	wifstream file;
 	wstring str;
 	wstring txt;

@@ -48,7 +48,9 @@ void Sched::add(pToDo todo)
 			i++;
 		}
 		else
+		{
 			todo->schedPosition() = 1;
+		}
 	}
 	else
 	{

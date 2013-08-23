@@ -229,7 +229,9 @@ void TitleEditor::updateText()
 		int num_cols = window->_addstr(text.substr(i), cols);
 
 		// calculate line and col of the cursor
-		if (!cursor_found && (i+num_cols > cursor)) {
+		if (!cursor_found &&
+			((line == textLines) || (i+num_cols > cursor)))
+		{
 			cursor_line = line;
 			cursor_col = 0;
 			for (int c = i; c < cursor; c++) {
@@ -241,10 +243,6 @@ void TitleEditor::updateText()
 		i += num_cols;
 	}
 
-	if (!cursor_found) {
-		cursor_col = text_cols;
-		cursor_line = textLines;
-	}
 	window->_move(y+cursor_line, x+cursor_col);
 	window->_refresh();
 }

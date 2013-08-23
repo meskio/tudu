@@ -131,9 +131,9 @@ private:
 	bool hide_percent;
 	bool visual_tree;
 	bool bold_parent;
+	bool loop_move;
 	int  days_warn_deadline;
 	bool us_dates;
-	bool loop_move;
 	bool old_sched;
 	wstring tudu_file;
 	wstring sort_order;

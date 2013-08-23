@@ -1,3 +1,8 @@
+0.9.1
+	* Added CPPFLAGS to the makefiles
+	* Fixed a segfault adding sched
+	* Fixed the cursor drawing on the editor
+
 0.9
 	* Added support for double with characters (like some chinese characters)
 	* Added the default options on the man page

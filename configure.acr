@@ -8,6 +8,7 @@ YEAR = 2013 ;
 LANG_CXX!
 
 CXXFLAGS += -Wall -O2 ;
+CPPFLAGS += "" ;
 SRCS += tudu.cc data.cc editor.cc interface.cc window.cc text.cc parser.cc
         config.cc date.cc screen.cc sched.cc cmd.cc ;
 

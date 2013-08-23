@@ -5,6 +5,7 @@ INSTALL_PROGRAM=@INSTALL_PROGRAM@
 .PHONY: all install uninstall clean mrproper
 CXX=@CXX@
 CXXFLAGS=@CXXFLAGS@
+CPPFLAGS=@CPPFLAGS@
 LDFLAGS=@LDFLAGS@
 SRCS=@SRCS@
 
@@ -17,10 +18,10 @@ OBJS=$(SRCS:.cc=.o)
 all: $(PKGNAME)
 
 $(PKGNAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
 .cc.o:
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
 
 install: all
 	mkdir -p $(DESTDIR)$(BINDIR)

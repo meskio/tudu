@@ -40,7 +40,7 @@ void Sched::add(pToDo todo)
 	for (i = sched.begin(); (i != sched.end()) && ((*i)->sched() < todo->sched()); i++);
 	if (todo->schedPosition() == 0)
 	{
-		if ((*i)->sched() == todo->sched())
+		if ((i != sched.end()) && ((*i)->sched() == todo->sched()))
 		{
 			for (; ((*i)->sched() == todo->sched()); i++);
 			i--;

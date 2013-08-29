@@ -1,16 +1,21 @@
 Source: tudu
 Section: utils
 Priority: optional
-Maintainer: Ruben Pollan Bella <meskio@sindominio.net>
-Build-Depends: debhelper (>= 9.0.0), cdbs, libncursesw5-dev, libncurses5-dev
+Maintainer: Ruben Pollan <meskio@sindominio.net>
+Build-Depends:
+ debhelper (>= 9),
+ libncurses5-dev,
+ libncursesw5-dev
 Standards-Version: 3.9.3
 Homepage: http://code.meskio.net/tudu/
 
 Package: tudu
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: Command line hierarchical ToDo list
- ToDo list manager in ncurses, with hierarchical representation of the tasks. 
+ ToDo list manager in ncurses, with hierarchical representation of the tasks.
  Each task has:
    * Title
    * Long text description

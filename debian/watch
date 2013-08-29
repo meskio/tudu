@@ -1,3 +1,2 @@
-# watch control file for uscan
 version=3
-http://code.meskio.net/tudu/tudu-(.*)\.tar\.gz
+http://code.meskio.net/tudu/tudu-(\d\S*)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz))

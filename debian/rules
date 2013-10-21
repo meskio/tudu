@@ -2,3 +2,8 @@
 
 %:
 	dh $@ --parallel
+
+override_dh_auto_configure:
+	rm -f configure Makefile */Makefile
+	acr
+	dh_auto_configure

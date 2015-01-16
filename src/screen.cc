@@ -1,6 +1,6 @@
 
 /*************************************************************************
- * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>    *
+ * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>    *
  *                                                                       *
  *  This file is part of TuDu.                                           *
  *                                                                       *
@@ -771,7 +771,9 @@ int Screen::treeLines()
 
 int Screen::taskLines(int depth, ToDo &t)
 {
-	const unsigned int title_cols = wcswidth(t.getTitle().c_str(), string::npos);
+	unsigned int title_cols = wcswidth(t.getTitle().c_str(), string::npos);
+	if (title_cols==(unsigned int)-1) // nonprintable wide character occurs among these characters
+			title_cols=0;
 	int title_lines = (title_cols / (coor.coor[WTREE].cols-startTitle(depth))) + 1;
 	
 	if (title_cols && !(title_cols % (coor.coor[WTREE].cols-startTitle(depth))))

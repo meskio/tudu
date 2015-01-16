@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2013 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -61,6 +61,8 @@ void Interface::main()
 			if (KEY_NPAGE == key) nextPage();
 			if (KEY_HOME == key) home();
 			if (KEY_END == key) end();
+			if (KEY_SF == key) move_down(); // shift+down
+			if (KEY_SR == key) move_up(); // shift+up
 		}
 		else if (0xc == key)  //  Ctrl-L
 		{
@@ -125,6 +127,7 @@ void Interface::main()
 			if (L"save" == action) save();
 			if (L"help" == action) help();
 		}
+		else if (key==' ') done();
 	}
 }
 

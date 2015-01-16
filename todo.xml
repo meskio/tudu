@@ -2,6 +2,49 @@
 <!DOCTYPE tudu SYSTEM "/usr/local/share/tudu/tudu.dtd">
 <todo>
 	<todo done="no" collapse="no">
+		<title>tmpnam warning</title>
+		<text>interface.cc:770:15: warning: ignoring return value of ‘char* tmpnam(char*)’, declared with attribute warn_unused_result [-Wunused-result]
+interface.cc:773:17: warning: ignoring return value of ‘char* tmpnam(char*)’, declared with attribute warn_unused_result [-Wunused-result]
+
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>split README for the package??</title>
+		<text>I would suggest to split installation information out of the README file
+and into README.install since that isn't useful for users of the binary
+packages.
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>hyphen-used-as-minus-sign</title>
+		<text>http://lintian.debian.org/tags/hyphen-used-as-minus-sign.html
+
+data/tudu.1:227
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>dangerous usage of char[]</title>
+		<text>&gt; [src/tudu.cc:96]: (error) Dangerous usage of 'file_rc' (strncpy doesn't always null-terminate it).
+&gt; [src/tudu.cc:101]: (error) Dangerous usage of 'file_xml' (strncpy doesn't always null-terminate it).
+</text>
+	</todo>
+	<todo done="no" collapse="no">
+		<title>bfbtest</title>
+		<text>&gt; bfbtester:
+&gt; 
+&gt; Several crashes like this:
+&gt; 
+&gt; *** Crash &lt;/.../tudu-0.9.1/debian/tudu/usr/bin/tudu&gt; ***
+&gt; args:           [10240]
+&gt; envs:           LANG=[10235]
+&gt; Signal:         6 ( Aborted )
+&gt; Core?           Yes
+
+Maybe the same than:
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=716408
+</text>
+	</todo>
+	<todo done="no" collapse="no">
 		<title>show category on the tudurc</title>
 		<text>I use the commmand :showonly cat1 cat2 to see only this two categories. This works very fine. Is it possible to add this in .tudurc?
 

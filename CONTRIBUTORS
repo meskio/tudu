@@ -5,3 +5,4 @@ Thorbjörn Jemander - Removed the dangerous ctrl-C
 evgeny - fixing wrong year in deadline and schedule
 Ioan Calin Borcoman - Fixed sched load segfault
 Takeshi Hamasaki - added Ctrl-L support
+Krzysztof Sawicki - Fixed segfault on load schedule and add extra keybindings

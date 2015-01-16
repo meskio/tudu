@@ -1,3 +1,8 @@
+0.10
+	* Added move task witch shift+up/down
+	* Added mark task as done/undone with space
+	* Fixed segfault on loading schedule
+
 0.9.1
 	* Added CPPFLAGS to the makefiles
 	* Fixed a segfault adding sched

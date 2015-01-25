@@ -4,10 +4,11 @@ Priority: optional
 Maintainer: Ruben Pollan <meskio@sindominio.net>
 Build-Depends:
  acr,
+ chrpath,
  debhelper (>= 9),
  libncurses5-dev,
  libncursesw5-dev
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Homepage: http://code.meskio.net/tudu/
 Vcs-Browser: https://gitorious.org/tudu/tudu/source/debian
 Vcs-Git: git://gitorious.org/tudu/tudu.git -b debian

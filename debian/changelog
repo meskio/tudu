@@ -1,8 +1,11 @@
-tudu (0.9.1-1) unstable; urgency=low
+tudu (0.10-1) experimental; urgency=low
 
-  * New upstream release.
+  * New upstream release. (Closes: #765529)
+  * Use debhelper instead of cdbs.
+  * Add upstream metadata.
+  * Improve watch rule.
 
- -- Ruben Pollan <meskio@sindominio.net>  Sat, 24 Aug 2013 01:21:14 +0200
+ -- Ruben Pollan <meskio@sindominio.net>  Fri, 16 Jan 2015 01:21:14 +0200
 
 tudu (0.8.2-1) unstable; urgency=low
 

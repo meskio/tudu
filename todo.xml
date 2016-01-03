@@ -22,7 +22,7 @@ packages.
 data/tudu.1:227
 </text>
 	</todo>
-	<todo done="no" collapse="no">
+	<todo done="yes" collapse="no">
 		<title>dangerous usage of char[]</title>
 		<text>&gt; [src/tudu.cc:96]: (error) Dangerous usage of 'file_rc' (strncpy doesn't always null-terminate it).
 &gt; [src/tudu.cc:101]: (error) Dangerous usage of 'file_xml' (strncpy doesn't always null-terminate it).

@@ -93,12 +93,12 @@ int main(int argc, char **argv, char *env[])
 	Config config;
 	bool configErr = !config.load(CONFIG_FILE); // the error will be displayed after check args
 	strncpy(file_rc,env[i]+5,119);
-	strcat(file_rc,"/.tudurc");
+	strncat(file_rc,"/.tudurc", 9);
 	config.load(file_rc);
 
 	if (config.getTuduFile() == L"") {
 		strncpy(file_xml,env[i]+5,117);
-		strcat(file_xml,"/.tudu.xml");
+		strncat(file_xml,"/.tudu.xml", 10);
 	} else {
 		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
 	}

@@ -268,6 +268,7 @@ void Parser::patt(iToDo& iterator)
 Writer::Writer(const char* pathToSave, ToDo& t): todo(t) 
 {
 	strncpy(path, pathToSave, 128);
+	path[128] = '\0';
 	file.imbue(locale(""));
 }
 

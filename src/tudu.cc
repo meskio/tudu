@@ -93,11 +93,13 @@ int main(int argc, char **argv, char *env[])
 	Config config;
 	bool configErr = !config.load(CONFIG_FILE); // the error will be displayed after check args
 	strncpy(file_rc,env[i]+5,119);
+	file_rc[119] = '\0';
 	strncat(file_rc,"/.tudurc", 9);
 	config.load(file_rc);
 
 	if (config.getTuduFile() == L"") {
 		strncpy(file_xml,env[i]+5,117);
+		file_xml[117] = '\0';
 		strncat(file_xml,"/.tudu.xml", 10);
 	} else {
 		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
@@ -113,6 +115,7 @@ int main(int argc, char **argv, char *env[])
 			++i;
 			if (i < argc)
 				strncpy(file_xml, argv[i], 127);
+				file_xml[127] = '\0';
 			else
 			{
 				usage();
@@ -129,12 +132,14 @@ int main(int argc, char **argv, char *env[])
 					int j;
 					for (j = 0; strncmp(env[j],"PWD=",4); ++j);
 					strncpy(file_rc,env[j]+4,99);
+					file_rc[99] = '\0';
 					strcat(file_rc,"/");
 					strncat(file_rc,argv[i],27);
 				}
 				else
 				{
 					strncpy(file_rc, argv[i], 127);
+					file_rc[127] = '\0';
 				}
 				config.load(file_rc);
 			}

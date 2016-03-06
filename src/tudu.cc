@@ -113,9 +113,10 @@ int main(int argc, char **argv, char *env[])
 		if (!strncmp("-f",argv[i],2))
 		{
 			++i;
-			if (i < argc)
+			if (i < argc) {
 				strncpy(file_xml, argv[i], 127);
 				file_xml[127] = '\0';
+			}
 			else
 			{
 				usage();

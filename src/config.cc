@@ -33,9 +33,9 @@ enum context_type {
 };
 
 Config::Config():
-	collapse(false), hide_done(false), hide_percent(false),
+	key_comb(NULL), collapse(false), hide_done(false), hide_percent(false),
 	visual_tree(false), bold_parent(true), loop_move(false),
-	days_warn_deadline(7), us_dates(false), old_sched(true), key_comb(NULL)
+	days_warn_deadline(7), us_dates(false), old_sched(true)
 {
 	category_length = DEFAULT_CATEGORY_LENGTH;
 }
@@ -199,8 +199,6 @@ void Config::insertKeyMap(key_map& k, wstring action, wstring keys)
 
 bool Config::getAction(wchar_t key, wstring& action)
 {
-//	static key_map* key_comb = NULL;
-
 	if (key_comb)
 	{
 		if (key_comb->count(key) == 1)

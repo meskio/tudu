@@ -89,6 +89,7 @@ public:
 
 	bool load(const char* path);
 	bool getAction(wchar_t key, wstring& action);
+	void clearKeys();
 	void getActionList(action_list& list);
 	bool getCollapse();
 	bool& getHideDone();
@@ -125,6 +126,7 @@ private:
 	} color_pair_t;
 
 	key_map tree_keys;
+	key_map* key_comb;
 	action_list action_keys;
 	bool collapse;
 	bool hide_done;

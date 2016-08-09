@@ -63,6 +63,7 @@ void Interface::main()
 			if (KEY_END == key) end();
 			if (KEY_SF == key) move_down(); // shift+down
 			if (KEY_SR == key) move_up(); // shift+up
+			config.clearKeys();
 		}
 		else if (0xc == key)  //  Ctrl-L
 		{

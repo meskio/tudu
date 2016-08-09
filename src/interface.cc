@@ -763,7 +763,6 @@ void Interface::editText()
 	char* editor = config.getEditor();
 	if (strlen(editor) != 0)
 	{
-		char path[L_tmpnam];
 		char s[86];
 		char* argv[32];
 		int argc;
@@ -771,17 +770,15 @@ void Interface::editText()
 		Text& text = cursor->getText();
 
 		/* create a temporal file */
-		tmpnam(path);
-		int fout;
-		while ((fout = open(path, O_CREAT|O_WRONLY|O_EXCL, S_IRUSR|S_IWUSR)) == -1)
-				tmpnam(path);
+		char template_name[]="/tmp/cmguiTuduXXXXXX";
+		int fout=mkostemp(template_name,0);
 		close(fout);
 
-		wofstream ofs(path);
+		wofstream ofs(template_name);
 		ofs.imbue(locale(""));
 		ofs << text;
 		ofs.close();
-		sprintf(s, editor, path);
+		sprintf(s, editor, template_name);
 
 		argc=0;
 		argv[argc] = strtok(s, " \t");
@@ -807,11 +804,11 @@ void Interface::editText()
 		}
 		doupdate();
 		
-		wifstream ifs(path);
+		wifstream ifs(template_name);
 		ifs.imbue(locale(""));
 		ifs >> text;
 		ifs.close();
-		unlink(path);
+		unlink(template_name);
 
 		echo();
 		curs_set(1);

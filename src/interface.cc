@@ -771,7 +771,11 @@ void Interface::editText()
 
 		/* create a temporal file */
 		char template_name[]="/tmp/cmguiTuduXXXXXX";
+#ifdef __APPLE__
+		int fout=mkstemps(template_name,0);
+#else
 		int fout=mkostemp(template_name,0);
+#endif
 		close(fout);
 
 		wofstream ofs(template_name);

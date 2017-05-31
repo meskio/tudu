@@ -771,7 +771,7 @@ void Interface::editText()
 
 		/* create a temporal file */
 		char template_name[]="/tmp/cmguiTuduXXXXXX";
-		int fout=mkostemp(template_name,0);
+		int fout=mkstemp(template_name);
 		close(fout);
 
 		wofstream ofs(template_name);

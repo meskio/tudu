@@ -770,11 +770,12 @@ void Interface::editText()
 		Text& text = cursor->getText();
 
 		/* create a temporal file */
-		char template_name[]="/tmp/cmguiTuduXXXXXX";
+		char template_name[] = "/tmp/cmguiTuduXXXXXX";
+
 #ifdef __APPLE__
-		int fout=mkstemps(template_name,0);
+		int fout = mkstemps(template_name, 0);
 #else
-		int fout=mkostemp(template_name,0);
+		int fout = mkostemp(template_name, 0);
 #endif
 		close(fout);
 

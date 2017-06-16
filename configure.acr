@@ -1,9 +1,9 @@
 REQUIRE_ACR_VERSION 0.8.2
 
 PKGNAME tudu
-VERSION 0.10
+VERSION 0.10.1
 CONTACT Ruben Pollan ; meskio@sindominio.net
-YEAR = 2015 ;
+YEAR = 2017 ;
 
 LANG_CXX!
 

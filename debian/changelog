@@ -1,3 +1,10 @@
+tudu (0.10.2-1) unstable; urgency=medium
+
+  * New upstream release. (Closes: #765529, #860821)
+  * Uploaded to unstable.
+
+ -- Ruben Pollan <meskio@sindominio.net>  Fri, 16 Jun 2017 20:04:07 +0200
+
 tudu (0.10-1) experimental; urgency=low
 
   * New upstream release. (Closes: #765529)

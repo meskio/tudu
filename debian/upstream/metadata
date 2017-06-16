@@ -1,8 +1,8 @@
 Name: tudu
 Contact: meskio@sindominio.net
-Homepage: http://code.meskio.net/tudu
+Homepage: https://code.meskio.net/tudu
 Changelog: https://gitlab.com/tudu/tudu/raw/master/ChangeLog
 Repository: git@gitlab.com:tudu/tudu.git
 Repository-Browse: https://gitlab.com/tudu/tudu/
-Screenshots: http://code.meskio.net/tudu/tudu.jpg
-Watch: http://code.meskio.net/tudu/tudu-(\d\S*)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz))
+Screenshots: https://code.meskio.net/tudu/tudu.jpg
+Watch: https://code.meskio.net/tudu/tudu-(\d\S*)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz))

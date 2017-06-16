@@ -1,3 +1,7 @@
+0.10.1
+	* Fixed tmpnam warning
+	* Fixed not null terminated strings
+
 0.10
 	* Added move task witch shift+up/down
 	* Added mark task as done/undone with space

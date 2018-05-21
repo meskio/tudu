@@ -6,7 +6,7 @@ Build-Depends:
  acr,
  chrpath,
  debhelper (>= 10),
- libncursesw5-dev
+ libncurses-dev
 Standards-Version: 3.9.8
 Homepage: https://code.meskio.net/tudu/
 Vcs-Browser: https://gitlab.com/tudu/tudu/tree/debian

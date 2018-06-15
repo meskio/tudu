@@ -57,7 +57,7 @@ private:
 	wofstream file;
 	ToDo& todo;
 	iToDo* i;
-	char path[128];
+	char path[256];
 
 	void _save();
 	void amp(wstring& str);

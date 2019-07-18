@@ -1,3 +1,9 @@
+tudu (0.10.3-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Ruben Pollan <meskio@sindominio.net>  Thu, 18 Jul 2019 12:35:12 +0200
+
 tudu (0.10.2-1) unstable; urgency=medium
 
   * New upstream release. (Closes: #765529, #860821)

@@ -23,7 +23,7 @@
 #include "includes.h"
 class Interface;
 #include "data.h"
-#include "sched.h"
+#include "scheduler.h"
 #include "config.h"
 #include "parser.h"
 #include "editor.h"

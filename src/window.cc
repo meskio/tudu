@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -34,7 +34,7 @@ Window::Window(int lines, int cols, int y, int x)
 Window::Window()
 {
 	int lines, cols;
-        getmaxyx(stdscr, lines, cols); 
+        getmaxyx(stdscr, lines, cols);
 	win = newwin(lines, cols, 0, 0);
 	keypad(win, TRUE);
 }
@@ -92,27 +92,22 @@ int Window::_addstr(int y, int x, const wstring &str)
 
 int Window::_addstr(const wstring &str, const unsigned int cols)
 {
-	unsigned int i = 0, c = 0;
-	while (i < str.length()) {
-		const unsigned int width = wcwidth(str[i]);
-		if (width > cols-c) {
-			break;
-		}
+    unsigned int i = 0, c = 0;
+    while (i < str.length()) {
+        unsigned int width = wcwidth(str[i]);
+        if (c+width > cols) {
+            break;
+        }
+        c+=width;
+        i++;
+    }
 
-		cchar_t ch;
-		ch.attr = 0;
-		ch.chars[0] = str[i];
-		ch.chars[1] = L'\0';
-		wadd_wch(win, &ch);
+    waddwstr(win, str.substr(0,i).c_str());
+    if(cols>c) {
+        waddwstr(win, wstring(cols-c,' ').c_str());
+    }
 
-		c += wcwidth(str[i]);
-		i++;
-	}
-	while (cols != c) {
-		waddch(win, ' ');
-		c++;
-	}
-	return i;
+    return i;
 }
 
 int Window::_addstr(int y, int x, const wstring &str, const unsigned int cols)

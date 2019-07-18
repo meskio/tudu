@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#include "sched.h"
+#include "scheduler.h"
 
 /*
  * when del don't update the position of the neighbours

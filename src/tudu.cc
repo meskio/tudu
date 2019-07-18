@@ -23,7 +23,7 @@ extern int errno;
 #include "interface.h"
 #include "screen.h"
 #include "data.h"
-#include "sched.h"
+#include "scheduler.h"
 #include "parser.h"
 #include "config.h"
 
@@ -37,7 +37,7 @@ extern int errno;
 
 #define version() \
 	cout << VERSION_STR << endl; \
-	cout << "TuDu Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;
@@ -100,7 +100,7 @@ int main(int argc, char **argv, char *env[])
 	if (config.getTuduFile() == L"") {
 		strncpy(file_xml,env[i]+5,117);
 		file_xml[117] = '\0';
-		strncat(file_xml,"/.tudu.xml", 10);
+		strncat(file_xml,"/.tudu.xml", 11);
 	} else {
 		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
 	}

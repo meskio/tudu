@@ -100,7 +100,7 @@ int main(int argc, char **argv, char *env[])
 	if (config.getTuduFile() == L"") {
 		strncpy(file_xml,env[i]+5,117);
 		file_xml[117] = '\0';
-		strncat(file_xml,"/.tudu.xml", 10);
+		strncat(file_xml,"/.tudu.xml", 11);
 	} else {
 		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
 	}

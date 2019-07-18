@@ -1,3 +1,10 @@
+0.10.3
+	* Fixed segfault on drawing window
+	* Fixed out of bounds in xml save path
+
+0.10.2
+	* Fixed project url page
+
 0.10.1
 	* Fixed tmpnam warning
 	* Fixed not null terminated strings

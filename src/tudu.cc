@@ -37,7 +37,7 @@ extern int errno;
 
 #define version() \
 	cout << VERSION_STR << endl; \
-	cout << "TuDu Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
+	cout << "TuDu Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>" << endl; \
 	cout << "TuDu comes with ABSOLUTELY NO WARRANTY; for details type `tudu -vv'" << endl; \
 	cout << "This is free software; you are welcome to redistribute it" << endl; \
 	cout << "under certain conditions. Type `tudu -vv' for details." << endl;

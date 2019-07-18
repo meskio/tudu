@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *

@@ -7,3 +7,5 @@ Ioan Calin Borcoman - Fixed sched load segfault
 Takeshi Hamasaki - added Ctrl-L support
 Krzysztof Sawicki - Fixed segfault on load schedule and add extra keybindings
 Evgenii Sovetkin - Fixed typo in '-f' arg parsing
+Zero King - fixed out-of-bounds acces on xml save
+Arkadiusz Dabrowski - fixed segfault on window drawing

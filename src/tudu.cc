@@ -23,7 +23,7 @@ extern int errno;
 #include "interface.h"
 #include "screen.h"
 #include "data.h"
-#include "sched.h"
+#include "scheduler.h"
 #include "parser.h"
 #include "config.h"
 

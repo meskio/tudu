@@ -26,7 +26,7 @@
 #include "data.h"
 #include "config.h"
 #include "editor.h"
-#include "sched.h"
+#include "scheduler.h"
 
 class Screen
 {

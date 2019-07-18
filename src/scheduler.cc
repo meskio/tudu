@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  **************************************************************************/
 
-#include "sched.h"
+#include "scheduler.h"
 
 /*
  * when del don't update the position of the neighbours

@@ -10,7 +10,7 @@ Build-Depends:
 Standards-Version: 4.0.0
 Homepage: https://code.meskio.net/tudu/
 Vcs-Browser: https://gitlab.com/tudu/tudu/tree/debian
-Vcs-Git: git@gitlab.com:tudu/tudu.git -b debian
+Vcs-Git: https://gitlab.com/tudu/tudu.git -b debian
 
 Package: tudu
 Architecture: any

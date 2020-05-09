@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2015 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2020 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -152,7 +152,11 @@ child_info ToDo::getChildInfo()
 					|| !chinf.deadline.valid()))
 				chinf.deadline = aux.deadline;
 		}
-		chinf.percent = sum_percent/j;
+		if (j == 0) {
+			chinf.percent = _done? 100: 0;
+		} else {
+			chinf.percent = sum_percent/j;
+		}
 	}
 
 	return chinf;

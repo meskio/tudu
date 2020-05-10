@@ -1,6 +1,6 @@
 
 /**************************************************************************
- * Copyright (C) 2007-2019 Ruben Pollan Bella <meskio@sindominio.net>     *
+ * Copyright (C) 2007-2020 Ruben Pollan Bella <meskio@sindominio.net>     *
  *                                                                        *
  *  This file is part of TuDu.                                            *
  *                                                                        *
@@ -175,6 +175,7 @@ int Window::_lines()
 {
 	int lines, cols;
 	getmaxyx(win, lines, cols);
+	(void)cols;
 	return lines;
 }
 
@@ -182,6 +183,7 @@ int Window::_cols()
 {
 	int lines, cols;
 	getmaxyx(win, lines, cols);
+	(void)lines;
 	return cols;
 }
 

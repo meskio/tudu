@@ -1,3 +1,7 @@
+0.10.4
+	* Fixed a possible division by zero
+	* Silence a compilation warning
+
 0.10.3
 	* Fixed segfault on drawing window
 	* Fixed out of bounds in xml save path

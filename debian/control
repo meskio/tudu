@@ -5,9 +5,9 @@ Maintainer: Ruben Pollan <meskio@sindominio.net>
 Build-Depends:
  acr,
  chrpath,
- debhelper (>= 10),
+ debhelper (>= 13),
  libncurses-dev
-Standards-Version: 4.0.0
+Standards-Version: 4.5.0.2
 Homepage: https://code.meskio.net/tudu/
 Vcs-Browser: https://gitlab.com/tudu/tudu/tree/debian
 Vcs-Git: https://gitlab.com/tudu/tudu.git -b debian

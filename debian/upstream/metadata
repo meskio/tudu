@@ -4,5 +4,7 @@ Homepage: https://code.meskio.net/tudu
 Changelog: https://gitlab.com/tudu/tudu/raw/master/ChangeLog
 Repository: https://gitlab.com/tudu/tudu.git
 Repository-Browse: https://gitlab.com/tudu/tudu/
+Bug-Database: https://gitlab.com/tudu/tudu/-/issues
+Bug-Database: https://gitlab.com/tudu/tudu/-/issues/new
 Screenshots: https://code.meskio.net/tudu/tudu.jpg
 Watch: https://code.meskio.net/tudu/tudu-(.+)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz))

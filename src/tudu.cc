@@ -88,22 +88,8 @@ int main(int argc, char **argv, char *env[])
 	ignore_ctrl_c.sa_flags = 0;
 	sigaction(SIGINT, &ignore_ctrl_c, NULL);
 
-	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
-
 	Config config;
 	bool configErr = !config.load(CONFIG_FILE); // the error will be displayed after check args
-	strncpy(file_rc,env[i]+5,119);
-	file_rc[119] = '\0';
-	strncat(file_rc,"/.tudurc", 9);
-	config.load(file_rc);
-
-	if (config.getTuduFile() == L"") {
-		strncpy(file_xml,env[i]+5,117);
-		file_xml[117] = '\0';
-		strncat(file_xml,"/.tudu.xml", 11);
-	} else {
-		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
-	}
 
 	/*
 	 * Parse the comand line arguments
@@ -166,6 +152,21 @@ int main(int argc, char **argv, char *env[])
 			usage();
 			return 0;
 		}
+	}
+
+	for (i = 0; strncmp(env[i],"HOME=",5); ++i);
+
+	strncpy(file_rc,env[i]+5,119);
+	file_rc[119] = '\0';
+	strncat(file_rc,"/.tudurc", 9);
+	config.load(file_rc);
+
+	if (config.getTuduFile() == L"") {
+		strncpy(file_xml,env[i]+5,117);
+		file_xml[117] = '\0';
+		strncat(file_xml,"/.tudu.xml", 11);
+	} else {
+		wcstombs(file_xml, config.getTuduFile().c_str(), 128);
 	}
 
 	if (configErr)

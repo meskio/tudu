@@ -1089,7 +1089,7 @@ void Interface::help()
 	str[i++] = L"  " + list[L"setPriority"] + L"\tadd/edit task's priority\n";
 	str[i++] = L"  " + list[L"setCategory"] + L"\tadd/edit task's category\n";
 	str[i++] = L"  " + list[L"editDeadline"] + L"\tadd/edit task's deadline\n";
-	str[i++] = L"  " + list[L"editSched"] + L"\tadd/edit taks's scheduled date\n";
+	str[i++] = L"  " + list[L"editSched"] + L"\tadd/edit task's scheduled date\n";
 	str[i++] = L"\n";
 	str[i++] = L"  NAVIGATION\n";
 	str[i++] = L"  " + list[L"in"] +L"\tgo one level deeper\n";

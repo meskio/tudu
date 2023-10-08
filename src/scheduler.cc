@@ -42,10 +42,12 @@ void Sched::add(pToDo todo)
 	{
 		if ((i != sched.end()) && ((*i)->sched() == todo->sched()))
 		{
-			for (; ((*i)->sched() == todo->sched()); i++);
-			i--;
-			todo->schedPosition() = (*i)->schedPosition() + 1;
-			i++;
+			if (i != sched.begin()){
+				for (; ((*i)->sched() == todo->sched()); i++);
+				i--;
+				todo->schedPosition() = (*i)->schedPosition() + 1;
+				i++;
+			}
 		}
 		else
 		{
